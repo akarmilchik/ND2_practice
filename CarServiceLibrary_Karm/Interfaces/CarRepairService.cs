@@ -2,7 +2,7 @@
 
 namespace CarServiceLibrary_Karm
 {
-    public interface CarService
+    public interface CarRepairService
     {
         List<Service> ServiceList { get; set; }
         void CalcOrderPrice();
