@@ -1,6 +1,6 @@
 ﻿namespace CarServiceLibrary_Karm
 {
-    public class CarParts
+    public class CarPart
     {
         public string Name { get; set; }
 

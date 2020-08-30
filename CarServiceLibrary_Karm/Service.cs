@@ -4,6 +4,10 @@
     {
         public string Description { get; set; }
 
+        public string ServiceType { get; set; }
+
+        public string ServiceCategory { get; set; }
+
         public decimal Price { get; set; }
 
     }
