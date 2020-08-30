@@ -6,7 +6,7 @@ namespace CarServiceLibrary_Karm
     {
         public Car OrderCar;
 
-        public Customer OrderCustomer;
+        public ICustomer OrderCustomer;
 
         public List<Service> ChosenServiceList;
 

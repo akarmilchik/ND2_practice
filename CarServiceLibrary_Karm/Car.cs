@@ -2,7 +2,7 @@
 
 namespace CarServiceLibrary_Karm
 {
-    public class Car
+    public class Car : ICar
     {
         public string Model { get; set; }
 
