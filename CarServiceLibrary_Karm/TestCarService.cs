@@ -6,20 +6,22 @@ using System.Text;
 
 namespace CarServiceLibrary_Karm
 {
-    public class TestService : ICarRepairService<WorkOrder>
+    public class TestCarService : ICarRepairService<WorkOrder>
     {
-
-        public bool Check(WorkOrder workOrder)
-        {
-
-            bool isValid = true;
-
+        bool isValid = true;
+        public bool CheckExist(WorkOrder workOrder)
+        {            
             if (workOrder.OrderCar == null || workOrder.OrderCustomer == null || workOrder.ChosenServiceList.Count == 0 || workOrder.OrderCar.Parts.Count == 0)
             {
                 Console.WriteLine("Some data was not entered");
                 isValid = false;
             }
 
+            return isValid;
+        }
+
+        public bool CheckPrice(WorkOrder workOrder)
+        {
             foreach (var itemService in workOrder.ChosenServiceList)
             {
                 if (itemService.Price == 0)
@@ -28,7 +30,10 @@ namespace CarServiceLibrary_Karm
                     isValid = false;
                 }
             }
-
+            return isValid;
+        }
+        public bool CheckParts(WorkOrder workOrder)
+        {
             var carPart = workOrder.OrderCar.Parts.AsEnumerable().Select(v => v.Type == "Electrical" && v.Category == "Engine").FirstOrDefault();
 
             if (carPart == true)
@@ -55,9 +60,10 @@ namespace CarServiceLibrary_Karm
 
             }
 
-
             return isValid;
-
         }
+
+
+    }
     }
 }
