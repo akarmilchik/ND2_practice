@@ -1,3 +1,4 @@
+using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,7 +6,7 @@ using System.Linq;
 namespace CarServiceLibrary_Karm.Test
 {
     [TestFixture]
-    public class TestCarServiceTest
+    public class TestCarServiceTests
     {
         [OneTimeSetUp]
         public void Setup()
@@ -14,15 +15,15 @@ namespace CarServiceLibrary_Karm.Test
         }
 
         [Test]
-        public void CheckExist_WorkOrderProvided_TrueResultReturned()
+        public void CheckAll_WorkOrderProvided_TrueResultReturned()
         {
             // Arrange
             var VwPassat5Parts = new List<CarPart>()
             {
                 new CarPart { Name = "VW ADR 1.8P", Category = "Engine", Type = "Petrol" },
                 new CarPart { Name = "18565R15", Category = "Wheels", Type = "Steel" },
-                new CarPart { Name = "RedCherry", Category = "Body", Type = "Sedan" },
-                new CarPart { Name = "MKPP5", Category = "Transmission", Type = "Mechanical" }
+                new CarPart { Name = "Red Cherry", Category = "Body", Type = "Sedan" },
+                new CarPart { Name = "MKPP 5", Category = "Transmission", Type = "Mechanical" }
             };
 
 
@@ -50,21 +51,25 @@ namespace CarServiceLibrary_Karm.Test
 
             // Act
             var validCheckExist = STO.CheckExist(OrderNumOne);
+            var validCheckPrice = STO.CheckPrice(OrderNumOne);
+            var validCheckParts = STO.CheckParts(OrderNumOne);
 
             // Assert
             Assert.AreEqual(true, validCheckExist);
+            Assert.AreEqual(true, validCheckPrice);
+            Assert.AreEqual(true, validCheckParts);
         }
 
         [Test]
-        public void CheckPrice_WorkOrderProvided_TrueResultReturned()
+        public void CheckAllMoq_WorkOrderProvided_TrueResultReturned()
         {
             // Arrange
             var VwPassat5Parts = new List<CarPart>()
             {
                 new CarPart { Name = "VW ADR 1.8P", Category = "Engine", Type = "Petrol" },
                 new CarPart { Name = "18565R15", Category = "Wheels", Type = "Steel" },
-                new CarPart { Name = "RedCherry", Category = "Body", Type = "Sedan" },
-                new CarPart { Name = "MKPP5", Category = "Transmission", Type = "Mechanical" }
+                new CarPart { Name = "Red Cherry", Category = "Body", Type = "Sedan" },
+                new CarPart { Name = "MKPP 5", Category = "Transmission", Type = "Mechanical" }
             };
 
 
@@ -90,11 +95,19 @@ namespace CarServiceLibrary_Karm.Test
 
             var STO = new TestCarService();
 
+            var mock = new Mock<ICarRepairService<TestCarService>>();
+
+          //  mock.Setup(m => m.CheckExist(It.IsAny<WorkOrder>)).Returns(false);
+
             // Act
             var validCheckExist = STO.CheckExist(OrderNumOne);
+            var validCheckPrice = STO.CheckPrice(OrderNumOne);
+            var validCheckParts = STO.CheckParts(OrderNumOne);
 
             // Assert
             Assert.AreEqual(true, validCheckExist);
+            Assert.AreEqual(true, validCheckPrice);
+            Assert.AreEqual(true, validCheckParts);
         }
 
 
