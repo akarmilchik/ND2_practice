@@ -89,6 +89,22 @@ namespace CarServiceLibrary_Karm
 
             return 0m;
         }
+
+        private bool CheckTransportForApproachOperations(WorkOrder workOrder)
+        {
+            var checkRes = false;
+            for (int i = 0; i < workOrder.ChosenServiceList.Count; i++)
+            {
+                if (Operations.Any(k => k.OperationCategory.Equals(workOrder.ChosenServiceList[k].OperationCategory)))
+                {
+                    checkRes =  true;
+                    break;
+                }
+            }
+            return checkRes;
+        }
+
+
     }
     
 }
