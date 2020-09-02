@@ -2,12 +2,11 @@
 
 namespace CarServiceLibrary_Karm
 {
-    public interface ICarRepairService<T> where T : class
+    interface ICarRepairService<T> where T : class
     {
+        public string Name { get; set; }
+
         bool CheckExist(T Model);
-
-
-
 
     }
 }
