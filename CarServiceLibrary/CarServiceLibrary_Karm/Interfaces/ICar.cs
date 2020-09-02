@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CarServiceLibrary_Karm
+namespace CarServiceLibrary_Karm.Interfaces
 {
     public interface ICar
     {

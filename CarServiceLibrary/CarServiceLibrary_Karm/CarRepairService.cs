@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CarServiceLibrary_Karm.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -6,10 +7,27 @@ using System.Text;
 
 namespace CarServiceLibrary_Karm
 {
-    public class TestCarService : ICarRepairService<WorkOrder>
+    public class CarRepairService : ICarRepairService
     {
         bool isValid = true;
-        bool CheckExist(WorkOrder workOrder)
+
+        public IDiscount Discount { get; private set; }
+
+        public string Name { get; set; }
+
+        public List<IOperation> Operations { get; set; }
+
+        //constructor
+        public CarRepairService(string name, List<IOperation> operations, IDiscount discount)
+        {
+            Name = name;
+            Operations = operations;
+            Discount = discount;
+
+        }
+
+
+        private bool CheckExist(WorkOrder workOrder)
         {            
             if (workOrder == null)
             {
@@ -19,7 +37,7 @@ namespace CarServiceLibrary_Karm
             return isValid;
         }
 
-        bool CheckPrice(WorkOrder workOrder)
+        private bool CheckPrice(WorkOrder workOrder)
         {
             foreach (var itemService in workOrder.ChosenServiceList)
             {
@@ -30,7 +48,7 @@ namespace CarServiceLibrary_Karm
             }
             return isValid;
         }
-        bool CheckParts(WorkOrder workOrder)
+        private bool CheckParts(WorkOrder workOrder)
         {
             var carPart = workOrder.OrderCar.Parts.AsEnumerable().Select(v => v.Type == "Electrical" && v.Category == "Engine").FirstOrDefault();
 
@@ -38,7 +56,7 @@ namespace CarServiceLibrary_Karm
             {
                 foreach (var itemService in workOrder.ChosenServiceList)
                 {
-                    if ((itemService.ServiceCategory == "Engine") && (itemService.ServiceType == "Petrol" || itemService.ServiceType == "Diesel"))
+                    if ((itemService.OperationCategory == "Engine") && (itemService.OperationType == "Petrol" || itemService.OperationType == "Diesel"))
                         isValid = false;
                 }
 
@@ -51,7 +69,7 @@ namespace CarServiceLibrary_Karm
             {
                 foreach (var itemService in workOrder.ChosenServiceList)
                 {
-                    if (itemService.ServiceCategory == "Engine" && itemService.ServiceType == "Electrical")
+                    if (itemService.OperationCategory == "Engine" && itemService.OperationType == "Electrical")
                         isValid = false;
                 }
 
@@ -61,7 +79,17 @@ namespace CarServiceLibrary_Karm
             return isValid;
         }
 
+        public decimal GetOrderPrice(WorkOrder workOrder)
+        {
+            var price = 0m;
 
+
+
+
+
+
+            return 0m;
+        }
     }
     
 }

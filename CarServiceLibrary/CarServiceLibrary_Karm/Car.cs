@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CarServiceLibrary_Karm.Interfaces;
+using System.Collections.Generic;
 
 namespace CarServiceLibrary_Karm
 {
@@ -9,6 +10,15 @@ namespace CarServiceLibrary_Karm
         public string VIN { get; set; }
 
         public List<CarPart> Parts;
+
+
+        public Car(string model, string VIN, List<CarPart> parts)
+        {
+            Model = model;
+            this.VIN = VIN;
+            Parts = parts;
+
+        }
             
     }
 }

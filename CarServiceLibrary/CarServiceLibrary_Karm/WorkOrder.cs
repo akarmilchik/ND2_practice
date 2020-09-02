@@ -8,7 +8,7 @@ namespace CarServiceLibrary_Karm
 
         public Customer OrderCustomer;
 
-        public List<Service> ChosenServiceList;
+        public List<Operation> ChosenServiceList;
 
     }
 }

@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace CarServiceLibrary_Karm
+namespace CarServiceLibrary_Karm.Interfaces
 {
-    interface ICarRepairService<T> where T : class
+    public interface ICarRepairService
     {
         public string Name { get; set; }
 
-        bool CheckExist(T Model);
+        public List<IOperation> Operations { get; set; }
+
+        public decimal GetOrderPrice(WorkOrder workOrder);
 
     }
 }

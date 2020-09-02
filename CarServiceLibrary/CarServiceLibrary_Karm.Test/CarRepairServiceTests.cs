@@ -6,7 +6,7 @@ using System.Linq;
 namespace CarServiceLibrary_Karm.Test
 {
     [TestFixture]
-    public class TestCarServiceTests
+    public class CarRepairServiceTests
     {
         [OneTimeSetUp]
         public void Setup()
@@ -31,23 +31,23 @@ namespace CarServiceLibrary_Karm.Test
 
             var AlexKarm = new Customer() { Name = "Alexey", SurName = "Karmilchyk" };
 
-            var ServiceListTestCarService = new List<Service>()
+            var ServiceListTestCarService = new List<Operation>()
             {
-                new Service() { Description = "Oil change in a petrol engine", Price = 70, ServiceCategory = "Engine", ServiceType = "Petrol" },
-                new Service() { Description = "Disc polishing", Price = 10, ServiceCategory = "Wheels", ServiceType = "Steel" },
-                new Service() { Description = "Painting the whole car body", Price = 500, ServiceCategory = "Body", ServiceType = "Sedan" },
-                new Service() { Description = "Transmission repair", Price = 120, ServiceCategory = "Transmission", ServiceType = "Machine" },
-                new Service() { Description = "Transmission repair", Price = 100, ServiceCategory = "Transmission", ServiceType = "Mechanical" }
+                new Operation() { Description = "Oil change in a petrol engine", Price = 70, OperationCategory = "Engine", OperationType = "Petrol" },
+                new Operation() { Description = "Disc polishing", Price = 10, OperationCategory = "Wheels", OperationType = "Steel" },
+                new Operation() { Description = "Painting the whole car body", Price = 500, OperationCategory = "Body", OperationType = "Sedan" },
+                new Operation() { Description = "Transmission repair", Price = 120, OperationCategory = "Transmission", OperationType = "Machine" },
+                new Operation() { Description = "Transmission repair", Price = 100, OperationCategory = "Transmission", OperationType = "Mechanical" }
             };
 
             var OrderNumOne = new WorkOrder()
             {
                 OrderCar = VwPassat5,
-                ChosenServiceList = new List<Service>() { ServiceListTestCarService[0], ServiceListTestCarService[1], ServiceListTestCarService[3] },
+                ChosenServiceList = new List<Operation>() { ServiceListTestCarService[0], ServiceListTestCarService[1], ServiceListTestCarService[3] },
                 OrderCustomer = AlexKarm
             };
 
-            var STO = new TestCarService();
+            var STO = new CarRepairService();
 
             // Act
             var validCheckExist = STO.CheckExist(OrderNumOne);
@@ -77,25 +77,25 @@ namespace CarServiceLibrary_Karm.Test
 
             var AlexKarm = new Customer() { Name = "Alexey", SurName = "Karmilchyk" };
 
-            var ServiceListTestCarService = new List<Service>()
+            var ServiceListTestCarService = new List<Operation>()
             {
-                new Service() { Description = "Oil change in a petrol engine", Price = 70, ServiceCategory = "Engine", ServiceType = "Petrol" },
-                new Service() { Description = "Disc polishing", Price = 10, ServiceCategory = "Wheels", ServiceType = "Steel" },
-                new Service() { Description = "Painting the whole car body", Price = 500, ServiceCategory = "Body", ServiceType = "Sedan" },
-                new Service() { Description = "Transmission repair", Price = 120, ServiceCategory = "Transmission", ServiceType = "Machine" },
-                new Service() { Description = "Transmission repair", Price = 100, ServiceCategory = "Transmission", ServiceType = "Mechanical" }
+                new Operation() { Description = "Oil change in a petrol engine", Price = 70, OperationCategory = "Engine", OperationType = "Petrol" },
+                new Operation() { Description = "Disc polishing", Price = 10, OperationCategory = "Wheels", OperationType = "Steel" },
+                new Operation() { Description = "Painting the whole car body", Price = 500, OperationCategory = "Body", OperationType = "Sedan" },
+                new Operation() { Description = "Transmission repair", Price = 120, OperationCategory = "Transmission", OperationType = "Machine" },
+                new Operation() { Description = "Transmission repair", Price = 100, OperationCategory = "Transmission", OperationType = "Mechanical" }
             };
 
             var OrderNumOne = new WorkOrder()
             {
                 OrderCar = VwPassat5,
-                ChosenServiceList = new List<Service>() { ServiceListTestCarService[0], ServiceListTestCarService[1], ServiceListTestCarService[3] },
+                ChosenServiceList = new List<Operation>() { ServiceListTestCarService[0], ServiceListTestCarService[1], ServiceListTestCarService[3] },
                 OrderCustomer = AlexKarm
             };
 
-            var STO = new TestCarService();
+            var STO = new CarRepairService();
 
-            var mock = new Mock<ICarRepairService<TestCarService>>();
+            var mock = new Mock<ICarRepairService<CarRepairService>>();
 
           //  mock.Setup(m => m.CheckExist(It.IsAny<WorkOrder>)).Returns(false);
 
