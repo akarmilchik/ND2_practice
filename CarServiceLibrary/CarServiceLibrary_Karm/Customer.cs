@@ -6,5 +6,11 @@
 
         public string SurName { get; set; }
 
+        public Customer(string name, string surName)
+        {
+            Name = name;
+            SurName = surName;
+        }
+
     }
 }

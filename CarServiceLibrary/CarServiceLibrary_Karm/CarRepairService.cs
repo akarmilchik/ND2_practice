@@ -9,7 +9,7 @@ namespace CarServiceLibrary_Karm
 {
     public class CarRepairService : ICarRepairService
     {
-        bool isValid = true;
+        private bool isValid = true;
 
         public IDiscount Discount { get; private set; }
 
@@ -17,7 +17,6 @@ namespace CarServiceLibrary_Karm
 
         public List<IOperation> Operations { get; set; }
 
-        //constructor
         public CarRepairService(string name, List<IOperation> operations, IDiscount discount)
         {
             Name = name;

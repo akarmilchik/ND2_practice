@@ -9,6 +9,11 @@ namespace CarServiceLibrary_Karm
     {
         public List<Customer> VIPCustomers { get; set; }
 
+        public Discount(List<Customer> customers)
+        {
+            VIPCustomers = customers;
+        }
+
         public decimal GetDiscount(decimal totalPrice, Customer customer)
         {
             var discount = 0m;
