@@ -5,11 +5,11 @@ using CarServiceLibrary_Karm.Interfaces;
 
 namespace CarServiceLibrary_Karm
 {
-    public class Discount : IDiscount
+    public class DefaultDiscount : IDiscount
     {
         public List<Customer> VIPCustomers { get; set; }
 
-        public Discount(List<Customer> customers)
+        public DefaultDiscount(List<Customer> customers)
         {
             VIPCustomers = customers;
         }

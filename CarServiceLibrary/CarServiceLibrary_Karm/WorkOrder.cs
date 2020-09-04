@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CarServiceLibrary_Karm.Interfaces;
 
 namespace CarServiceLibrary_Karm
 {
@@ -8,9 +9,9 @@ namespace CarServiceLibrary_Karm
 
         public Customer OrderCustomer;
 
-        public List<Operation> ChosenServiceList;
+        public List<IOperation> ChosenServiceList;
 
-        public WorkOrder(Car orderCar, Customer orderCustomer, List<Operation> chosenServiceList)
+        public WorkOrder(Car orderCar, Customer orderCustomer, List<IOperation> chosenServiceList)
         {
             OrderCar = orderCar;
             OrderCustomer = orderCustomer;

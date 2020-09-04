@@ -77,15 +77,14 @@ namespace CarServiceLibrary_Karm
 
             return isValid;
         }
-
         public decimal GetOrderPrice(WorkOrder workOrder)
         {
             var price = 0m;
 
-
-
-
-
+            if (CheckTransportForApproachOperations(workOrder))
+            { 
+                var approachOperations = 
+            }
 
             return 0m;
         }
@@ -104,6 +103,21 @@ namespace CarServiceLibrary_Karm
             return checkRes;
         }
 
+        private List<IOperation> GetApproachOperations(WorkOrder workOrder)
+        {
+            var result = new List<IOperation>() { };
+            foreach (IOperation operation in Operations)
+            {
+                for (int i = 0; i < workOrder.ChosenServiceList.Count; i++)
+                {
+                    if (operation.Name.Equals(workOrder.ChosenServiceList))
+                    //{ result.Add(}
+                }
+            }
+
+
+            return 
+        }
 
     }
     
