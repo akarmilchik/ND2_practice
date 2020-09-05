@@ -1,3 +1,4 @@
+using CarServiceLibrary_Karm.Interfaces;
 using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -8,12 +9,59 @@ namespace CarServiceLibrary_Karm.Test
     [TestFixture]
     public class CarRepairServiceTests
     {
-        [OneTimeSetUp]
+        [SetUp]
         public void Setup()
         {
 
         }
 
+        class StubDiscount : IDiscount
+        {
+            public List<Customer> VIPCustomers { get; set; }
+
+            public decimal GetDiscount(decimal totalSum, Customer customer)
+            {
+                return 0;
+            }
+        }
+
+        [Test]
+        public void GetOrderPrice_CorrectListProvided_CorrectTotalReturned()
+        {
+            // Arrange
+            var VwPassat5Parts = new List<CarPart>()
+            {
+                new CarPart("VW ADR 1.8P","Petrol","Engine"),
+                new CarPart("18565R15","Steel", "Wheels"),
+                new CarPart("Red Cherry", "Sedan", "Body"),
+                new CarPart("MKPP 5","Mechanical","Transmission")
+            };
+
+            var operationsList = new List<IOperation>()
+            {
+                new Operation("Petrol", "Engine","Oil change in a petrol engine", 70, "Change oil petrol"),
+                new Operation("Steel", "Wheels", "Disc polishing", 10, "Disc polishing"),
+                new Operation("Sedan", "Body", "Painting the whole car body", 500, "Painting whole body"),
+                new Operation("Machine", "Transmission", "Transmission repair", 120, "Transmission repair"),
+                new Operation("Mechanical", "Transmission", "Transmission repair", 100, "Transmission repair")
+            };
+            var VwPassat5 = new Car("Vokswagen Passat B5", "MG245110H901", VwPassat5Parts);
+
+            var AlexKarm = new Customer("Alexey", "Karmilchyk");
+
+            var order = new WorkOrder(VwPassat5, AlexKarm, new List<IOperation> { operationsList[0], operationsList[2], operationsList[4]});
+
+            var discount = new StubDiscount();
+
+            var carService = new CarRepairService("BestCar Service", operationsList, discount);
+
+            // Act
+            var price = carService.GetOrderPrice(order);
+
+            // Assert
+            Assert.AreEqual(670m, price);
+        }
+        /*
         [Test]
         public void CheckAll_WorkOrderProvided_TrueResultReturned()
         {
@@ -110,6 +158,6 @@ namespace CarServiceLibrary_Karm.Test
             Assert.AreEqual(true, validCheckParts);
         }
 
-
+        */
     }
 }

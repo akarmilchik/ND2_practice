@@ -81,22 +81,26 @@ namespace CarServiceLibrary_Karm
         {
             var price = 0m;
 
-            if (CheckTransportForApproachOperations(workOrder))
-            { 
-                var approachOperations = 
+            if (CheckTransportForContentPart(workOrder))
+            {
+                var approachOperations = GetApproachOperations(workOrder);
+
+                price = approachOperations.Sum(n => n.Price);
             }
 
-            return 0m;
+            return price;
         }
 
-        private bool CheckTransportForApproachOperations(WorkOrder workOrder)
+        private bool CheckTransportForContentPart(WorkOrder workOrder)
         {
-            var checkRes = false;
+            var checkRes = true;
+
             for (int i = 0; i < workOrder.ChosenServiceList.Count; i++)
             {
-                if (Operations.Any(k => k.OperationCategory.Equals(workOrder.ChosenServiceList[k].OperationCategory)))
+                if (!(workOrder.OrderCar.Parts.Any(k => k.Category.Equals(workOrder.ChosenServiceList[i].OperationCategory))) ||
+                    !(workOrder.OrderCar.Parts.Any(k => k.Type.Equals(workOrder.ChosenServiceList[i].OperationType))))
                 {
-                    checkRes =  true;
+                    checkRes =  false;
                     break;
                 }
             }
@@ -106,17 +110,21 @@ namespace CarServiceLibrary_Karm
         private List<IOperation> GetApproachOperations(WorkOrder workOrder)
         {
             var result = new List<IOperation>() { };
+
             foreach (IOperation operation in Operations)
             {
                 for (int i = 0; i < workOrder.ChosenServiceList.Count; i++)
                 {
-                    if (operation.Name.Equals(workOrder.ChosenServiceList))
-                    //{ result.Add(}
+                    if ((operation.Name.Equals(workOrder.ChosenServiceList[i].Name)) && 
+                        (operation.OperationCategory == workOrder.ChosenServiceList[i].OperationCategory) && 
+                        (operation.OperationType == workOrder.ChosenServiceList[i].OperationType))
+                    { 
+                        result.Add(operation); 
+                    }
                 }
             }
 
-
-            return 
+            return result;
         }
 
     }
