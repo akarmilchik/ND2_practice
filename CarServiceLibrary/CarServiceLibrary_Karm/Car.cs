@@ -10,15 +10,6 @@ namespace CarServiceLibrary_Karm
         public string VIN { get; set; }
 
         public List<CarPart> Parts;
-
-
-        public Car(string model, string VIN, List<CarPart> parts)
-        {
-            Model = model;
-            this.VIN = VIN;
-            Parts = parts;
-
-        }
             
     }
 }

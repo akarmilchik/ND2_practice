@@ -7,25 +7,18 @@ namespace CarServiceLibrary_Karm
 {
     public class DefaultDiscount : IDiscount
     {
-        public List<Customer> VIPCustomers { get; set; }
-
-        public DefaultDiscount(List<Customer> customers)
-        {
-            VIPCustomers = customers;
-        }
-
-        public decimal GetDiscount(decimal totalPrice, Customer customer)
+        public decimal GetDiscount(decimal totalPrice, Customer customer, List<Customer> VIPCustomers)
         {
             var discount = 0m;
 
-            if (totalPrice >= 100)
+            if (totalPrice >= 200)
             { 
                 discount += 5; 
             }
 
-            foreach (Customer goldenCustomer in VIPCustomers)
+            foreach (Customer customerVIP in VIPCustomers)
             {
-                if (goldenCustomer.Name.Equals(customer.Name) && goldenCustomer.SurName.Equals(customer.SurName))
+                if (customerVIP.Name.Equals(customer.Name) && customerVIP.SurName.Equals(customer.SurName))
                 {
                     discount += 10;
                 }
@@ -34,5 +27,6 @@ namespace CarServiceLibrary_Karm
             return totalPrice * discount / 100;
 
         }
+
     }
 }

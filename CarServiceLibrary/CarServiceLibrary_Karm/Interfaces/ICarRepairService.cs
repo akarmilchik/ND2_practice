@@ -10,5 +10,7 @@ namespace CarServiceLibrary_Karm.Interfaces
 
         public decimal GetOrderPrice(WorkOrder workOrder);
 
+
+
     }
 }

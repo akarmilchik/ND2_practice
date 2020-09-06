@@ -6,8 +6,7 @@ namespace CarServiceLibrary_Karm.Interfaces
 {
     public interface IDiscount
     {
-        public List<Customer> VIPCustomers { get; set; }
-        public decimal GetDiscount(decimal totalSum, Customer customer);
+        public decimal GetDiscount(decimal totalSum, Customer customer, List<Customer> VIPCustomers);
 
     }
 }

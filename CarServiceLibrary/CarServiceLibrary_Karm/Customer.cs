@@ -6,11 +6,8 @@
 
         public string SurName { get; set; }
 
-        public Customer(string name, string surName)
-        {
-            Name = name;
-            SurName = surName;
-        }
+        public string DiscountStatus { get; set; }
 
+        public decimal DiscountValue { get; set; }
     }
 }

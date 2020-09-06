@@ -10,13 +10,5 @@ namespace CarServiceLibrary_Karm
         public Customer OrderCustomer;
 
         public List<IOperation> ChosenServiceList;
-
-        public WorkOrder(Car orderCar, Customer orderCustomer, List<IOperation> chosenServiceList)
-        {
-            OrderCar = orderCar;
-            OrderCustomer = orderCustomer;
-            ChosenServiceList = chosenServiceList;
-        }
-
     }
 }
