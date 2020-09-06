@@ -160,7 +160,7 @@ namespace CarServiceLibrary_Karm.Test
 
             var VwPassat5 = new Car { Model = "Volkswagen Passat B5", VIN = "MG245110H901", Parts = VwPassat5Parts };
 
-            var AlexKarm = new Customer { Name = "Alexey", SurName = "Karmilchyk", DiscountStatus = "GOLD", DiscountValue = 10 };
+            var AlexKarm = new Customer { Name = "Alexey", SurName = "Karmilchyk", DiscountStatus = "GOLD"};
 
             var order = new WorkOrder { OrderCar = VwPassat5, OrderCustomer = AlexKarm, ChosenServiceList = new List<IOperation> { operationsList[0], operationsList[2], operationsList[4] } };
 
@@ -192,8 +192,8 @@ namespace CarServiceLibrary_Karm.Test
 
             var VwPassat5 = new Car() { Model = "Vokswagen Passat B5", VIN = "MG245110H901", Parts = VwPassat5Parts };
 
-            var customerGOLD = new Customer() { Name = "Alexey", SurName = "Karmilchyk", DiscountStatus = "GOLD", DiscountValue = 10 };
-            var customerGuest = new Customer() { Name = "Vasya", SurName = "Pupkin", DiscountStatus = "Guest", DiscountValue = 1 };
+            var customerGOLD = new Customer() { Name = "Alexey", SurName = "Karmilchyk", DiscountStatus = "GOLD"};
+            var customerGuest = new Customer() { Name = "Vasya", SurName = "Pupkin", DiscountStatus = "Guest"};
 
             var VIPCustomers = new List<Customer>() { customerGOLD };
 
@@ -209,22 +209,29 @@ namespace CarServiceLibrary_Karm.Test
             var Mock = new Mock<IDiscount>();
 
             Mock.Setup(p => p.GetDiscount(It.IsAny<decimal>(), It.IsAny<Customer>(), It.IsAny<List<Customer>>())).Returns(0);
-            Mock.Setup(p => p.GetDiscount(It.Is<decimal>(d => d > 200), It.IsAny<Customer>(), It.IsAny<List<Customer>>())).Returns(6);
+            Mock.Setup(p => p.GetDiscount(It.Is<decimal>(d => d > 200), It.IsAny<Customer>(), It.IsAny<List<Customer>>())).Returns(5);
+            Mock.Setup(p => p.GetDiscount(It.Is<decimal>(d => d > 200), customerGuest, VIPCustomers)).Returns(5);
             Mock.Setup(p => p.GetDiscount(It.Is<decimal>(d => d > 200), customerGOLD, VIPCustomers)).Returns(15);
 
+            var carService = new CarRepairService { Name = "BestCar Service", Operations = operationsList, Discount = Mock.Object, VIPCustomers = VIPCustomers };
 
-
-            // var mock = new Mock<ICarRepairService<CarRepairService>>();
-
-            //  mock.Setup(m => m.CheckExist(It.IsAny<WorkOrder>)).Returns(false);
+            var workOrder = new WorkOrder { OrderCar = VwPassat5, OrderCustomer = customerGuest, ChosenServiceList = new List<IOperation> { operationsList[1] } };
+            var workOrderFive = new WorkOrder { OrderCar = VwPassat5, OrderCustomer = customerGuest, ChosenServiceList = new List<IOperation> { operationsList[0], operationsList[2] } };
+            var workOrderFifteen = new WorkOrder { OrderCar = VwPassat5, OrderCustomer = customerGOLD, ChosenServiceList = new List<IOperation> { operationsList[0], operationsList[2], operationsList[4] } };
 
             // Act
-
+            var zeroDiscount = carService.GetOrderPrice(workOrder);
+            var fiveDiscount = carService.GetOrderPrice(workOrderFive);
+            var fifteenDiscount = carService.GetOrderPrice(workOrderFifteen);
 
             // Assert
+            Assert.AreEqual(10, zeroDiscount);
+            Assert.AreEqual(565, fiveDiscount);
+            Assert.AreEqual(655, fifteenDiscount);
 
+            Mock.Verify(d => d.GetDiscount(It.IsAny<decimal>(), It.IsAny<Customer>(), It.IsAny<List<Customer>>()), Times.Exactly(3));
         }
 
-        
+
     }
 }

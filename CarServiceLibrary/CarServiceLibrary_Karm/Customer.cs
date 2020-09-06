@@ -7,7 +7,5 @@
         public string SurName { get; set; }
 
         public string DiscountStatus { get; set; }
-
-        public decimal DiscountValue { get; set; }
     }
 }
