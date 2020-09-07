@@ -7,8 +7,6 @@ namespace CarServiceLibrary_Karm
 {
     public class CarRepairService : ICarRepairService
     {
-        private bool isValid = true;
-
         public IDiscount Discount { get; set; }
 
         public string Name { get; set; }
