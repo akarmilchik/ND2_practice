@@ -9,10 +9,59 @@ namespace CarServiceLibrary_Karm.Test
     [TestFixture]
     public class CarRepairServiceTests
     {
-        [SetUp]
+        private CarRepairService carService;
+        private CarRepairService carServiceDefDiscountVIPCustomers;
+        private WorkOrder order;
+        private WorkOrder orderIncorrectParts;
+        private WorkOrder orderIncorrectChosenOperations;
+
+        [OneTimeSetUp]
         public void Setup()
         {
+            var VwPassat5Parts = new List<CarPart>()
+            {
+                new CarPart { Name = "VW ADR 1.8P", Category = "Engine", Type = "Petrol" },
+                new CarPart { Name = "18565R15", Category = "Wheels", Type = "Steel" },
+                new CarPart { Name = "Red Cherry", Category = "Body", Type = "Sedan" },
+                new CarPart { Name = "MKPP 5", Category = "Transmission", Type = "Mechanical" }
+            };
 
+            var VwPassat5PartsIncorrect = new List<CarPart>()
+            {
+                new CarPart { Name = "VW ADR 1.8P", Category = "Engine", Type = "Diesel" },
+                new CarPart { Name = "18565R15", Category = "Wheels", Type = "Steel" },
+                new CarPart { Name = "Red Cherry", Category = "Body", Type = "Sedan" },
+                new CarPart { Name = "MKPP 5", Category = "Transmission", Type = "Mechanical" }
+            };
+
+            var operationsList = new List<IOperation>()
+            {
+                new Operation() { Description = "Oil change in a petrol engine", Price = 70, OperationCategory = "Engine", OperationType = "Petrol" },
+                new Operation() { Description = "Disc polishing", Price = 10, OperationCategory = "Wheels", OperationType = "Steel" },
+                new Operation() { Description = "Painting the whole car body", Price = 500, OperationCategory = "Body", OperationType = "Sedan" },
+                new Operation() { Description = "Transmission repair", Price = 120, OperationCategory = "Transmission", OperationType = "Machine" },
+                new Operation() { Description = "Transmission repair", Price = 100, OperationCategory = "Transmission", OperationType = "Mechanical" }
+            };
+
+            var VwPassat5 = new Car { Model = "Volkswagen Passat B5", VIN = "MG245110H901", Parts = VwPassat5Parts };
+            var VwPassat5IncorrectParts = new Car { Model = "Volkswagen Passat B5", VIN = "MG245110H901", Parts = VwPassat5PartsIncorrect };
+
+            var AlexKarm = new Customer { Name = "Alexey", SurName = "Karmilchyk" };
+            var customerGOLD = new Customer() { Name = "Alexey", SurName = "Karmilchyk", DiscountStatus = "GOLD" };
+            var customerGuest = new Customer() { Name = "Vasya", SurName = "Pupkin", DiscountStatus = "Guest" };
+
+            var VIPcutomers = new List<Customer> { AlexKarm };
+            var GOLDCustomers = new List<Customer>() { customerGOLD };
+
+            order = new WorkOrder { OrderCar = VwPassat5, OrderCustomer = AlexKarm, ChosenServiceList = new List<IOperation> { operationsList[0], operationsList[2], operationsList[4] } };
+            orderIncorrectParts = new WorkOrder { OrderCar = VwPassat5IncorrectParts, OrderCustomer = AlexKarm, ChosenServiceList = new List<IOperation> { operationsList[0], operationsList[2], operationsList[4] } };
+            orderIncorrectChosenOperations = new WorkOrder { OrderCar = VwPassat5, OrderCustomer = AlexKarm, ChosenServiceList = new List<IOperation> { operationsList[0], operationsList[2], operationsList[3] } };
+        
+            var discount = new StubDiscount();
+            var discountDefault = new DefaultDiscount();
+
+            carService = new CarRepairService { Name = "BestCar Service", Operations = operationsList, Discount = discount };
+            carServiceDefDiscountVIPCustomers = new CarRepairService { Name = "BestCar Service", Operations = operationsList, Discount = discount, VIPCustomers = VIPcutomers };
         }
 
         class StubDiscount : IDiscount
@@ -26,35 +75,6 @@ namespace CarServiceLibrary_Karm.Test
         [Test]
         public void GetOrderPrice_CorrectListProvided_CorrectTotalReturned()
         {
-            // Arrange
-            var VwPassat5Parts = new List<CarPart>()
-            {
-                new CarPart { Name = "VW ADR 1.8P", Category = "Engine", Type = "Petrol" },
-                new CarPart { Name = "18565R15", Category = "Wheels", Type = "Steel" },
-                new CarPart { Name = "Red Cherry", Category = "Body", Type = "Sedan" },
-                new CarPart { Name = "MKPP 5", Category = "Transmission", Type = "Mechanical" }
-            };
-
-            var operationsList = new List<IOperation>()
-            {
-                new Operation() { Description = "Oil change in a petrol engine", Price = 70, OperationCategory = "Engine", OperationType = "Petrol" },
-                new Operation() { Description = "Disc polishing", Price = 10, OperationCategory = "Wheels", OperationType = "Steel" },
-                new Operation() { Description = "Painting the whole car body", Price = 500, OperationCategory = "Body", OperationType = "Sedan" },
-                new Operation() { Description = "Transmission repair", Price = 120, OperationCategory = "Transmission", OperationType = "Machine" },
-                new Operation() { Description = "Transmission repair", Price = 100, OperationCategory = "Transmission", OperationType = "Mechanical" }
-            };
-            var VwPassat5 = new Car { Model = "Volkswagen Passat B5", VIN = "MG245110H901", Parts = VwPassat5Parts };
-
-            var AlexKarm = new Customer { Name = "Alexey", SurName = "Karmilchyk" };
-
-            var order = new WorkOrder { OrderCar = VwPassat5, OrderCustomer = AlexKarm, ChosenServiceList = new List<IOperation> { operationsList[0], operationsList[2], operationsList[4] } };
-
-            var discount = new StubDiscount();
-
-            
-
-            var carService = new CarRepairService { Name = "BestCar Service", Operations = operationsList, Discount = discount };
-
             // Act
             var price = carService.GetOrderPrice(order);
 
@@ -65,35 +85,8 @@ namespace CarServiceLibrary_Karm.Test
         [Test]
         public void GetOrderPrice_IncorrectListProvided_CorrectTotalReturned_CarParts()
         {
-            // Arrange
-            var VwPassat5Parts = new List<CarPart>()
-            {
-                new CarPart { Name = "VW ADR 1.8P", Category = "Engine", Type = "Diesel" },
-                new CarPart { Name = "18565R15", Category = "Wheels", Type = "Steel" },
-                new CarPart { Name = "Red Cherry", Category = "Body", Type = "Sedan" },
-                new CarPart { Name = "MKPP 5", Category = "Transmission", Type = "Mechanical" }
-            };
-
-            var operationsList = new List<IOperation>()
-            {
-                new Operation() { Description = "Oil change in a petrol engine", Price = 70, OperationCategory = "Engine", OperationType = "Petrol" },
-                new Operation() { Description = "Disc polishing", Price = 10, OperationCategory = "Wheels", OperationType = "Steel" },
-                new Operation() { Description = "Painting the whole car body", Price = 500, OperationCategory = "Body", OperationType = "Sedan" },
-                new Operation() { Description = "Transmission repair", Price = 120, OperationCategory = "Transmission", OperationType = "Machine" },
-                new Operation() { Description = "Transmission repair", Price = 100, OperationCategory = "Transmission", OperationType = "Mechanical" }
-            };
-            var VwPassat5 = new Car { Model = "Volkswagen Passat B5", VIN = "MG245110H901", Parts = VwPassat5Parts };
-
-            var AlexKarm = new Customer { Name = "Alexey", SurName = "Karmilchyk" };
-
-            var order = new WorkOrder { OrderCar = VwPassat5, OrderCustomer = AlexKarm, ChosenServiceList = new List<IOperation> { operationsList[0], operationsList[2], operationsList[4] } };
-           
-            var discount = new StubDiscount();
-
-            var carService = new CarRepairService { Name = "BestCar Service", Operations = operationsList, Discount = discount };
-
             // Act
-            var price = carService.GetOrderPrice(order);
+            var price = carService.GetOrderPrice(orderIncorrectParts);
 
             // Assert
             Assert.AreEqual(0m, price);
@@ -102,84 +95,25 @@ namespace CarServiceLibrary_Karm.Test
         [Test]
         public void GetOrderPrice_IncorrectListProvided_CorrectTotalReturned_ChosenOperations()
         {
-            // Arrange
-            var VwPassat5Parts = new List<CarPart>()
-            {
-                new CarPart { Name = "VW ADR 1.8P", Category = "Engine", Type = "Diesel" },
-                new CarPart { Name = "18565R15", Category = "Wheels", Type = "Steel" },
-                new CarPart { Name = "Red Cherry", Category = "Body", Type = "Sedan" },
-                new CarPart { Name = "MKPP 5", Category = "Transmission", Type = "Mechanical" }
-            };
-
-            var operationsList = new List<IOperation>()
-            {
-                new Operation() { Description = "Oil change in a petrol engine", Price = 70, OperationCategory = "Engine", OperationType = "Petrol" },
-                new Operation() { Description = "Disc polishing", Price = 10, OperationCategory = "Wheels", OperationType = "Steel" },
-                new Operation() { Description = "Painting the whole car body", Price = 500, OperationCategory = "Body", OperationType = "Sedan" },
-                new Operation() { Description = "Transmission repair", Price = 120, OperationCategory = "Transmission", OperationType = "Machine" },
-                new Operation() { Description = "Transmission repair", Price = 100, OperationCategory = "Transmission", OperationType = "Mechanical" }
-            };
-            var VwPassat5 = new Car { Model = "Volkswagen Passat B5", VIN = "MG245110H901", Parts = VwPassat5Parts };
-
-            var AlexKarm = new Customer { Name = "Alexey", SurName = "Karmilchyk" };
-
-            var order = new WorkOrder { OrderCar = VwPassat5, OrderCustomer = AlexKarm, ChosenServiceList = new List<IOperation> { operationsList[0], operationsList[2], operationsList[3] } };
-
-            var discount = new StubDiscount();
-
-            var carService = new CarRepairService { Name = "BestCar Service", Operations = operationsList, Discount = discount };
-
             // Act
-            var price = carService.GetOrderPrice(order);
+            var price = carService.GetOrderPrice(orderIncorrectChosenOperations);
 
             // Assert
             Assert.AreEqual(0m, price);
         }
 
-
         [Test]
         public void GetOrderPrice_CorrectListProvided_CorrectTotalReturned_WithDefaultDiscount()
         {
-            // Arrange
-            var VwPassat5Parts = new List<CarPart>()
-            {
-                new CarPart { Name = "VW ADR 1.8P", Category = "Engine", Type = "Petrol" },
-                new CarPart { Name = "18565R15", Category = "Wheels", Type = "Steel" },
-                new CarPart { Name = "Red Cherry", Category = "Body", Type = "Sedan" },
-                new CarPart { Name = "MKPP 5", Category = "Transmission", Type = "Mechanical" }
-            };
-
-            var operationsList = new List<IOperation>()
-            {
-                new Operation() { Description = "Oil change in a petrol engine", Price = 70, OperationCategory = "Engine", OperationType = "Petrol" },
-                new Operation() { Description = "Disc polishing", Price = 10, OperationCategory = "Wheels", OperationType = "Steel" },
-                new Operation() { Description = "Painting the whole car body", Price = 500, OperationCategory = "Body", OperationType = "Sedan" },
-                new Operation() { Description = "Transmission repair", Price = 120, OperationCategory = "Transmission", OperationType = "Machine" },
-                new Operation() { Description = "Transmission repair", Price = 100, OperationCategory = "Transmission", OperationType = "Mechanical" }
-            };
-
-            var VwPassat5 = new Car { Model = "Volkswagen Passat B5", VIN = "MG245110H901", Parts = VwPassat5Parts };
-
-            var AlexKarm = new Customer { Name = "Alexey", SurName = "Karmilchyk", DiscountStatus = "GOLD"};
-
-            var order = new WorkOrder { OrderCar = VwPassat5, OrderCustomer = AlexKarm, ChosenServiceList = new List<IOperation> { operationsList[0], operationsList[2], operationsList[4] } };
-
-            var VIPcutomers = new List<Customer> { AlexKarm };
-
-            var discount = new DefaultDiscount();
-
-            var carService = new CarRepairService { Name = "BestCar Service", Operations = operationsList, Discount = discount, VIPCustomers = VIPcutomers };
-
             // Act
-            var price = carService.GetOrderPrice(order);
+            var price = carServiceDefDiscountVIPCustomers.GetOrderPrice(order);
 
             // Assert
             Assert.AreEqual(569.5m, price);
         }
 
-        
         [Test]
-        public void GetTotal_CorrectListProvided_CorrectTotalReturned_Mock()
+        public void GetOrderPrice_CorrectListProvided_CorrectTotalReturned_Mock()
         {
             // Arrange
             var VwPassat5Parts = new List<CarPart>()
@@ -232,6 +166,8 @@ namespace CarServiceLibrary_Karm.Test
             Mock.Verify(d => d.GetDiscount(It.IsAny<decimal>(), It.IsAny<Customer>(), It.IsAny<List<Customer>>()), Times.Exactly(3));
         }
 
+        [Test]
+        public void 
 
     }
 }

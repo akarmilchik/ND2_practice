@@ -9,7 +9,7 @@ namespace CarServiceLibrary_Karm
 
         public string VIN { get; set; }
 
-        public List<CarPart> Parts;
+        public List<CarPart> Parts { get; set; }
             
     }
 }

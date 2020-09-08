@@ -9,5 +9,7 @@ namespace CarServiceLibrary_Karm.Interfaces
         string Model { get; set; }
 
         string VIN { get; set; }
+
+        List<CarPart> Parts { get; set; }
     }
 }
