@@ -1,0 +1,21 @@
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+<h1>@localizer["Tickets"]</h1>
+
+<div class="container-fluid">
+    <div class="row row-cols-2">
+        @foreach (var ticket in @Model.Tickets)
+        {
+            <div class="col-sm-3">
+                <div class="card text-center">
+                    <img src="~/img/ticket.jpg" class="card-img-top img-fluid" />
+                    <div class="card-body">
+                        <h4><strong>@localizer["Seller:"] @ticket.Seller.FirstName @ticket.Seller.LastName</strong></h4>
+                        <h4>$@ticket.Price</h4>
+                        <p><strong>@ticket.Status</strong></p>
+                        @Html.ActionLink(localizer["Buy"].Value, "Buy", "Store", new { id = @ticket.Id }, new { @class = "btn btn-primary" })
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
