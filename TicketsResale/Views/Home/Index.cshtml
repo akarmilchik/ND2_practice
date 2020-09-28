@@ -1,0 +1,14 @@
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+
+<div class="text-center">
+    <h1 class="display-4">@localizer["Welcome"]</h1>
+    <p>@localizer["You come"]</p>
+</div>
+
+@section LanguageBlock{
+        <div class="btn-group" role="group" aria-label="Basic example">
+            @Html.ActionLink(localizer["EN"].Value,"SetLanguage", "Language", new { locale = "en-US" }, new { @class = "btn btn-dark", @type = "button" })
+            @Html.ActionLink(localizer["RU"].Value,"SetLanguage", "Language", new { locale = "ru-RU" }, new { @class = "btn btn-dark", @type = "button" })
+            @Html.ActionLink(localizer["BY"].Value,"SetLanguage", "Language", new { locale = "be-BY" }, new { @class = "btn btn-dark", @type = "button" })
+        </div>
+}

@@ -1,0 +1,31 @@
+﻿@model TicketsResale.Models.EventTickets
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+<div class="card">
+    <img src="~/img/@Model.eventTickets.Keys.ElementAt(0).Banner" alt="@Model.eventTickets.Keys.ElementAt(0).Name" class="card-img-top img-fluid" />
+    <div class="card-body">
+        <h4><strong>@Model.eventTickets.Keys.ElementAt(0).Name</strong></h4>
+        <h4><strong>@Model.eventTickets.Keys.ElementAt(0).Venue.City.Name</strong></h4>
+        <h4>@localizer["Venue:"] @Model.eventTickets.Keys.ElementAt(0).Venue.Name</h4>
+        <p><strong>@Model.eventTickets.Keys.ElementAt(0).Date.Date.ToShortDateString()</strong></p>
+        <p class="text-justify">@Html.Raw(@Model.eventTickets.Keys.ElementAt(0).Description)</p>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row row-cols-2">
+            @foreach (var ticket in @Model.eventTickets.Values.ElementAt(0))
+            {
+                <div class="col-sm-3">
+                    <div class="card text-center">
+                        <img src="~/img/ticket.jpg" class="card-img-top img-fluid" />
+                        <div class="card-body">
+                            <h4><strong>@localizer["Seller:"] @ticket.Seller.FirstName @ticket.Seller.LastName</strong></h4>
+                            <h4>$@ticket.Price</h4>
+                            <p><strong>@ticket.Status</strong></p>
+                            @Html.ActionLink(localizer["Buy"].Value, "Buy", "Tickets", new { id = @ticket.Id }, new { @class = "btn btn-primary" })
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

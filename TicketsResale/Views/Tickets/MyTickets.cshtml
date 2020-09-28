@@ -1,0 +1,39 @@
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+<header>
+    <div>
+        <h1>@localizer["My tickets"]</h1>
+    </div>
+    <ul class="nav nav-tabs justify-content-center">
+        <li class="nav-item bg-dark text-light">
+            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-status="selling" asp-route-userName="@User.Identity.Name">@localizer["Selling"]</a>
+        </li>
+        <li class="nav-item bg-dark text-light">
+            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-status="waiting" asp-route-userName="@User.Identity.Name">@localizer["Waiting Confirmation"]</a>
+        </li>
+        <li class="nav-item bg-dark text-light">
+            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-status="sold" asp-route-userName="@User.Identity.Name">@localizer["Sold"]</a>
+        </li>
+    </ul>
+</header>
+<p></p>
+<div class="container-fluid">
+    <div class="row row-cols-2">
+        @foreach (var ticket in Model.Tickets)
+        {
+            <div class="col-sm-3">
+                <div class="card text-center">
+                    <img src="~/img/ticket.jpg" alt="@ticket.Event.Name" class="card-img-top img-fluid" />
+                    <div class="card-body">
+                        <h4><strong>@ticket.Event.Name</strong></h4>
+                        <p><strong>@ticket.Event.Date.Date.ToShortDateString()</strong></p>
+                        <h4>$@ticket.Price</h4>
+                        <p><strong>@localizer["Seller:"] @ticket.Seller.FirstName @ticket.Seller.LastName</strong></p>
+
+                        @Html.ActionLink(localizer["Buy"].Value, "Buy", "Store", new { id = ticket.Id }, new { @class = "btn btn-primary" })
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
