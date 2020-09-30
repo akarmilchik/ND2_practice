@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using System.Net;
 using TicketsResale.Business;
+using TicketsResale.Business.Models;
 using TicketsResale.Models;
 
 namespace TicketsResale.Controllers
@@ -39,8 +40,8 @@ namespace TicketsResale.Controllers
         }
 
 
-        [Authorize(Roles = "Administrator, User")]
-        public IActionResult MyTickets(string status, string userName)
+        [Authorize]
+        public IActionResult MyTickets(TicketStatuses status, string userName)
         {
             ViewData["Title"] = localizer["My tickets"];
 

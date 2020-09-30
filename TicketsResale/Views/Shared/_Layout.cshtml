@@ -51,7 +51,11 @@
                     &copy; 2020 - A.Karmilchik - TicketsResale - <a asp-area="" asp-controller="Home" asp-action="Privacy">@localizer["Privacy"]</a>
                 </div>
                 <div class="col-lg-6">
-                    @RenderSection("LanguageBlock", required: false)
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        @Html.ActionLink(localizer["EN"].Value, "SetLanguage", "Language", new { locale = "en-US" }, new { @class = "btn btn-dark", @type = "button", @returnUrl = @ViewData["ReturnUrl"] } )
+                        @Html.ActionLink(localizer["RU"].Value, "SetLanguage", "Language", new { locale = "ru-RU" }, new { @class = "btn btn-dark", @type = "button", @returnUrl = @ViewData["ReturnUrl"] })
+                        @Html.ActionLink(localizer["BY"].Value, "SetLanguage", "Language", new { locale = "be-BY" }, new { @class = "btn btn-dark", @type = "button", @returnUrl = @ViewData["ReturnUrl"] })
+                    </div>
                 </div>
             </div>
         </div>    

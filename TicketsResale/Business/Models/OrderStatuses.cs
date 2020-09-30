@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 
 namespace TicketsResale.Business.Models
 {
-    public class OrderStatus
+    public enum OrderStatuses
     {
-        public int Id { get; set; }
-
-        public string Name { get; set; }
-
+        waiting,
+        confirmed,
+        rejected
     }
 }

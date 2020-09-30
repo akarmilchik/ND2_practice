@@ -17,7 +17,7 @@ namespace TicketsResale.Controllers
             this.localizer = localizer;
         }
 
-        [Authorize(Roles = "Administrator, User")]
+        [Authorize]
         public IActionResult Index()
         {
             ViewData["Title"] = localizer["My orders"];

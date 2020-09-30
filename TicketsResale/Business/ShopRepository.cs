@@ -29,18 +29,6 @@ namespace TicketsResale.Business
         {
             this.Localizer = localizer;
 
-            List<OrderStatus> orderStatus = new List<OrderStatus> {
-                new OrderStatus{ Id = 0, Name = "waiting" },
-                new OrderStatus{ Id = 1, Name = "confirmed" },
-                new OrderStatus{ Id = 2, Name = "rejected" } 
-            };
-
-            List<TicketStatus> ticketStatus = new List<TicketStatus> {
-                new TicketStatus{ Id = 0, Name = "selling" },
-                new TicketStatus{ Id = 1, Name = "waiting" },
-                new TicketStatus{ Id = 2, Name = "sold" }
-            };
-
             Users = new List<User>
                 {
                     new User { Id = 0, FirstName = Localizer["Alexey"], LastName = Localizer["Robinson"], Address = Localizer["adrUser0"], Localization = "rus", PhoneNumber = "228228", UserName = "admin", Password = "admin", Role = "Administrator" },
@@ -90,47 +78,47 @@ namespace TicketsResale.Business
 
             Tickets = new List<Ticket>
                 {
-                        new Ticket { Id = 0, Event = Events[0], Price = 15, Seller = Users[0], Status = ticketStatus[0].Name},
-                        new Ticket { Id = 1, Event = Events[0], Price = 20, Seller = Users[0], Status = ticketStatus[1].Name},
-                        new Ticket { Id = 2, Event = Events[1], Price = 35, Seller = Users[0], Status = ticketStatus[2].Name},
-                        new Ticket { Id = 3, Event = Events[2], Price = 100, Seller = Users[1], Status = ticketStatus[0].Name},
-                        new Ticket { Id = 4, Event = Events[2], Price = 105, Seller = Users[1], Status = ticketStatus[2].Name},
-                        new Ticket { Id = 5, Event = Events[2], Price = 170, Seller = Users[1], Status = ticketStatus[2].Name},
-                        new Ticket { Id = 6, Event = Events[3], Price = 10, Seller = Users[0], Status = ticketStatus[0].Name},
-                        new Ticket { Id = 7, Event = Events[3], Price = 6, Seller = Users[0], Status = ticketStatus[1].Name},
-                        new Ticket { Id = 8, Event = Events[4], Price = 200, Seller = Users[2], Status = ticketStatus[0].Name},
-                        new Ticket { Id = 9, Event = Events[4], Price = 240, Seller = Users[2], Status = ticketStatus[1].Name},
-                        new Ticket { Id = 10, Event = Events[4], Price = 260, Seller = Users[2], Status = ticketStatus[1].Name},
-                        new Ticket { Id = 11, Event = Events[4], Price = 210, Seller = Users[2], Status = ticketStatus[2].Name},
-                        new Ticket { Id = 12, Event = Events[5], Price = 70, Seller = Users[2], Status = ticketStatus[0].Name},
-                        new Ticket { Id = 13, Event = Events[5], Price = 90, Seller = Users[2], Status = ticketStatus[1].Name},
-                        new Ticket { Id = 14, Event = Events[5], Price = 150, Seller = Users[2], Status = ticketStatus[0].Name},
-                        new Ticket { Id = 15, Event = Events[5], Price = 200, Seller = Users[2], Status = ticketStatus[2].Name},
-                        new Ticket { Id = 16, Event = Events[6], Price = 800, Seller = Users[2], Status = ticketStatus[1].Name},
-                        new Ticket { Id = 17, Event = Events[6], Price = 750, Seller = Users[1], Status = ticketStatus[0].Name},
-                        new Ticket { Id = 18, Event = Events[6], Price = 780, Seller = Users[2], Status = ticketStatus[1].Name},
-                        new Ticket { Id = 19, Event = Events[7], Price = 130, Seller = Users[2], Status = ticketStatus[1].Name},
-                        new Ticket { Id = 20, Event = Events[7], Price = 200, Seller = Users[2], Status = ticketStatus[0].Name},
-                        new Ticket { Id = 21, Event = Events[8], Price = 80, Seller = Users[2], Status = ticketStatus[0].Name},
-                        new Ticket { Id = 22, Event = Events[9], Price = 1500, Seller = Users[2], Status = ticketStatus[2].Name},
+                        new Ticket { Id = 0, Event = Events[0], Price = 15, Seller = Users[0], Status = TicketStatuses.selling},
+                        new Ticket { Id = 1, Event = Events[0], Price = 20, Seller = Users[0], Status = TicketStatuses.sold},
+                        new Ticket { Id = 2, Event = Events[1], Price = 35, Seller = Users[0], Status = TicketStatuses.waiting},
+                        new Ticket { Id = 3, Event = Events[2], Price = 100, Seller = Users[1], Status = TicketStatuses.selling},
+                        new Ticket { Id = 4, Event = Events[2], Price = 105, Seller = Users[1], Status = TicketStatuses.waiting},
+                        new Ticket { Id = 5, Event = Events[2], Price = 170, Seller = Users[1], Status = TicketStatuses.waiting},
+                        new Ticket { Id = 6, Event = Events[3], Price = 10, Seller = Users[0], Status = TicketStatuses.selling},
+                        new Ticket { Id = 7, Event = Events[3], Price = 6, Seller = Users[0], Status = TicketStatuses.sold},
+                        new Ticket { Id = 8, Event = Events[4], Price = 200, Seller = Users[2], Status = TicketStatuses.selling},
+                        new Ticket { Id = 9, Event = Events[4], Price = 240, Seller = Users[2], Status = TicketStatuses.sold},
+                        new Ticket { Id = 10, Event = Events[4], Price = 260, Seller = Users[2], Status = TicketStatuses.sold},
+                        new Ticket { Id = 11, Event = Events[4], Price = 210, Seller = Users[2], Status = TicketStatuses.waiting},
+                        new Ticket { Id = 12, Event = Events[5], Price = 70, Seller = Users[2], Status = TicketStatuses.selling},
+                        new Ticket { Id = 13, Event = Events[5], Price = 90, Seller = Users[2], Status = TicketStatuses.sold},
+                        new Ticket { Id = 14, Event = Events[5], Price = 150, Seller = Users[2], Status = TicketStatuses.selling},
+                        new Ticket { Id = 15, Event = Events[5], Price = 200, Seller = Users[2], Status = TicketStatuses.waiting},
+                        new Ticket { Id = 16, Event = Events[6], Price = 800, Seller = Users[2], Status = TicketStatuses.sold},
+                        new Ticket { Id = 17, Event = Events[6], Price = 750, Seller = Users[1], Status = TicketStatuses.selling},
+                        new Ticket { Id = 18, Event = Events[6], Price = 780, Seller = Users[2], Status = TicketStatuses.sold},
+                        new Ticket { Id = 19, Event = Events[7], Price = 130, Seller = Users[2], Status = TicketStatuses.sold},
+                        new Ticket { Id = 20, Event = Events[7], Price = 200, Seller = Users[2], Status = TicketStatuses.selling},
+                        new Ticket { Id = 21, Event = Events[8], Price = 80, Seller = Users[2], Status = TicketStatuses.selling},
+                        new Ticket { Id = 22, Event = Events[9], Price = 1500, Seller = Users[2], Status = TicketStatuses.waiting},
                 };
 
             Orders = new List<Order>
                 {
-                        new Order { Id = 0, Buyer = Users[0], Status = orderStatus[0].Name, Ticket = Tickets[0], TrackNumber = "SN53245AB21"},
-                        new Order { Id = 1, Buyer = Users[1], Status = orderStatus[1].Name, Ticket = Tickets[2], TrackNumber = "SN34535AB98"},
-                        new Order { Id = 2,  Buyer = Users[2], Status = orderStatus[1].Name, Ticket = Tickets[6], TrackNumber = "SN18175AB74"},
-                        new Order { Id = 3,  Buyer = Users[1], Status = orderStatus[2].Name, Ticket = Tickets[9], TrackNumber = "SN77756AB13"},
-                        new Order { Id = 4,  Buyer = Users[1], Status = orderStatus[0].Name, Ticket = Tickets[12], TrackNumber = "SN22467AB21"},
-                        new Order { Id = 5, Buyer = Users[0], Status = orderStatus[2].Name, Ticket = Tickets[15], TrackNumber = "SN34563AB67"},
-                        new Order { Id = 6, Buyer = Users[1], Status = orderStatus[1].Name, Ticket = Tickets[18], TrackNumber = "SN34442AB67"},
-                        new Order { Id = 7, Buyer = Users[0], Status = orderStatus[2].Name, Ticket = Tickets[20], TrackNumber = "SN53245AB76"},
-                        new Order { Id = 8, Buyer = Users[2], Status = orderStatus[0].Name, Ticket = Tickets[4], TrackNumber = "SN98762AB21"},
-                        new Order { Id = 9,  Buyer = Users[0], Status = orderStatus[1].Name, Ticket = Tickets[22], TrackNumber = "SN23421AB33"},
+                        new Order { Id = 0, Buyer = Users[0], Status = OrderStatuses.confirmed, Ticket = Tickets[0], TrackNumber = "SN53245AB21"},
+                        new Order { Id = 1, Buyer = Users[1], Status = OrderStatuses.rejected, Ticket = Tickets[2], TrackNumber = "SN34535AB98"},
+                        new Order { Id = 2,  Buyer = Users[2], Status = OrderStatuses.rejected, Ticket = Tickets[6], TrackNumber = "SN18175AB74"},
+                        new Order { Id = 3,  Buyer = Users[1], Status = OrderStatuses.waiting, Ticket = Tickets[9], TrackNumber = "SN77756AB13"},
+                        new Order { Id = 4,  Buyer = Users[1], Status = OrderStatuses.confirmed, Ticket = Tickets[12], TrackNumber = "SN22467AB21"},
+                        new Order { Id = 5, Buyer = Users[0], Status = OrderStatuses.waiting, Ticket = Tickets[15], TrackNumber = "SN34563AB67"},
+                        new Order { Id = 6, Buyer = Users[1], Status = OrderStatuses.rejected, Ticket = Tickets[18], TrackNumber = "SN34442AB67"},
+                        new Order { Id = 7, Buyer = Users[0], Status = OrderStatuses.waiting, Ticket = Tickets[20], TrackNumber = "SN53245AB76"},
+                        new Order { Id = 8, Buyer = Users[2], Status = OrderStatuses.confirmed, Ticket = Tickets[4], TrackNumber = "SN98762AB21"},
+                        new Order { Id = 9,  Buyer = Users[0], Status = OrderStatuses.rejected, Ticket = Tickets[22], TrackNumber = "SN23421AB33"},
                 };
         }
 
-        public Ticket[] GetTickets(string status, string userName)
+        public Ticket[] GetTickets(TicketStatuses status, string userName)
         {
             var chosenTickets = new List<Ticket>();
             for (int i = 0; i < Tickets.Count; i++)

@@ -30,7 +30,7 @@ namespace TicketsResale.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Administrator, User")]
+        [Authorize]
         public IActionResult UserInfo(string userName)
         {
             ViewData["Title"] = localizer["User info"];
