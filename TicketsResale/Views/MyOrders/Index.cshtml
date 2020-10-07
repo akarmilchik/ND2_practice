@@ -1,0 +1,29 @@
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+<h1>@localizer["My orders"]</h1>
+
+<div class="container-fluid">
+    <div class="row">
+        @foreach (var order in Model.Orders)
+        {
+            <div class="col-sm-6">
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row no-gutters">
+                        <div class="col-md-2">
+                            <img src="~/img/order.png" class="card-img" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">@localizer["Order"] №@order.TrackNumber</h5>
+                                <h5 class="card-text">@order.Ticket.Event.Name</h5>
+                                <p class="card-text"><strong>$@order.Ticket.Price</strong></p>
+                                <p class="card-text"><small class="text-muted">@localizer["Status:"] @order.Status</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+    <br>
+</div>

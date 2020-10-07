@@ -1,0 +1,32 @@
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+<h1>@localizer["User info"]</h1>
+
+<div class="container">
+    <table class="table">
+        <thead>
+        </thead>
+        <tbody>
+                <tr>
+                    <td>@localizer["First name:"]</td>
+                    <td><strong>@Model.User.FirstName</strong></td>
+                </tr>
+                <tr>
+                    <td>@localizer["Last name:"]</td>
+                    <td><strong>@Model.User.LastName</strong></td>
+                </tr>
+                <tr>
+                    <td>@localizer["Phone number:"]</td>
+                    <td><strong>@Model.User.PhoneNumber</strong></td>
+                </tr>
+                <tr>
+                    <td>@localizer["Role:"]</td>
+                    <td><strong>@Model.User.Role</strong></td>
+                </tr>
+                <tr>
+                    <td>@localizer["Address:"]</td>
+                    <td><strong>@Model.User.Address</strong></td>
+                </tr>
+        </tbody>
+    </table>
+
+</div>
