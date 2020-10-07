@@ -123,7 +123,7 @@
   <data name="Privacy" xml:space="preserve">
     <value>Политика конфиденциальности</value>
   </data>
-  <data name="User info" xml:space="preserve">
+  <data name="UserInfo" xml:space="preserve">
     <value>Информация о пользователе</value>
   </data>
 </root>

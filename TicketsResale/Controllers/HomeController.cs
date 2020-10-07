@@ -35,7 +35,7 @@ namespace TicketsResale.Controllers
         [Authorize]
         public IActionResult UserInfo(string userName)
         {
-            ViewData["Title"] = localizer["User info"];
+            ViewData["Title"] = localizer["UserInfo"];
 
             var userObj = shopRepository.GetUserByName(userName);
 
