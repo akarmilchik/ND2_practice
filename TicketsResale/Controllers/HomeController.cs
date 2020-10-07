@@ -27,6 +27,8 @@ namespace TicketsResale.Controllers
         {
             ViewData["Title"] = localizer["homepagetitle"];
 
+
+
             return View();
         }
 
