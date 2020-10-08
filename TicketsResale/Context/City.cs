@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TicketsResale.Business.Models
+namespace TicketsResale.Context
 {
     public class City
     {

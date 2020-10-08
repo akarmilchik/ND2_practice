@@ -1,4 +1,4 @@
-﻿namespace TicketsResale.Business.Models
+﻿namespace TicketsResale.Context
 {
     public class Venue
     {

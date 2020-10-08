@@ -2,10 +2,12 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TicketsResale.Business;
+using TicketsResale.Context;
 using TicketsResale.Models;
 
 namespace TicketsResale
@@ -40,6 +42,10 @@ namespace TicketsResale
             services.AddSingleton<ShopRepository>();
             services.AddScoped<EventTickets>();
             services.AddScoped<UserManager>();
+
+            services.AddMvc();
+            services.AddDbContext<ApplicationDbContext>(item => item.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

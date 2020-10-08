@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace TicketsResale.Business.Models
+namespace TicketsResale.Context
 {
     public class Event
     {
