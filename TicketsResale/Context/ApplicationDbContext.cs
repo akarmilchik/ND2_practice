@@ -25,18 +25,18 @@ namespace TicketsResale.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<City>().HasData(
-                    new City { Id = 0, Name = "Grodno" },
-                    new City { Id = 1, Name = "Minsk" },
-                    new City { Id = 2, Name = "Barselona" },
-                    new City { Id = 3, Name = "NewYork" },
-                    new City { Id = 4, Name = "Tokyo" },
-                    new City { Id = 5, Name = "Dubai" }
+                    new City { Id = 1, Name = "Grodno" },
+                    new City { Id = 2, Name = "Minsk" },
+                    new City { Id = 3, Name = "Barselona" },
+                    new City { Id = 4, Name = "NewYork" },
+                    new City { Id = 5, Name = "Tokyo" },
+                    new City { Id = 6, Name = "Dubai" }
                 );
 
             modelBuilder.Entity<User>().HasData(
-                    new User { Id = 0, FirstName = "Alexey", LastName = "Robinson", Address = "adrUser0", Localization = "rus", PhoneNumber = "228228", UserName = "admin", Password = "admin", Role = "Administrator" },
-                    new User { Id = 1, FirstName = "Jominez", LastName = "Maxwell", Address = "adrUser1", Localization = "spa", PhoneNumber = "345124", UserName = "user", Password = "user", Role = "User" },
-                    new User { Id = 2, FirstName = "Alibaba", LastName = "Bestseller", Address = "adrUser2", Localization = "eng", PhoneNumber = "777777", UserName = "seller", Password = "seller", Role = "User" }
+                    new User { Id = 1, FirstName = "Alexey", LastName = "Robinson", Address = "adrUser0", Localization = "rus", PhoneNumber = "228228", UserName = "admin", Password = "admin", Role = "Administrator" },
+                    new User { Id = 2, FirstName = "Jominez", LastName = "Maxwell", Address = "adrUser1", Localization = "spa", PhoneNumber = "345124", UserName = "user", Password = "user", Role = "User" },
+                    new User { Id = 3, FirstName = "Alibaba", LastName = "Bestseller", Address = "adrUser2", Localization = "eng", PhoneNumber = "777777", UserName = "seller", Password = "seller", Role = "User" }
                );
             /*
             modelBuilder.Entity<Venue>().HasData(
