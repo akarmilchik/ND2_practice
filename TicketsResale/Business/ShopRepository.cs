@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TicketsResale.Business.Models;
-using TicketsResale.Context;
 using TicketsResale.Models;
 
 namespace TicketsResale.Business

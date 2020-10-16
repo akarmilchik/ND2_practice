@@ -1,18 +1,16 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using TicketsResale.Business.Models;
-using TicketsResale.Context;
 
 namespace TicketsResale.Context
 {
-    public class ApplicationDbContext : DbContext
+    public class DataSeeder
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base (options)
+        private readonly StoreContext context;
+        public DataSeeder(StoreContext context)
         {
-            Database.EnsureCreated();
+            this.context = context;
         }
 
         private static readonly List<City> Cities = new List<City>
@@ -113,7 +111,8 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
             modelBuilder.Entity<User>().HasData(Users);
             modelBuilder.Entity<Venue>().HasData(Venues);
             modelBuilder.Entity<Event>().HasData(Events);
-            modelBuilder.Entity<Event>().OwnsOne(l => l.Venue);
+
+            //modelBuilder.Entity<Event>().HasKey(ev => new { ev.Venue });
 
             modelBuilder.Entity<Ticket>().HasData(Tickets);
             modelBuilder.Entity<Order>().HasData(Orders);
