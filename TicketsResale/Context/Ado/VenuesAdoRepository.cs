@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TicketsResale.Business.Models
+namespace TicketsResale.Context.Ado
 {
-    public class Cart
+    public class VenuesAdoRepository
     {
     }
 }

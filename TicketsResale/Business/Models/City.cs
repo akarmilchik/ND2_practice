@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using TicketsResale.Context;
 
 namespace TicketsResale.Business.Models
 {
-    public class City
+    public class City : IEntity
     {
         public int Id { get; set; }
 

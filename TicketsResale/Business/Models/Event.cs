@@ -1,14 +1,17 @@
 ﻿using System;
+using TicketsResale.Context;
 
 namespace TicketsResale.Business.Models
 {
-    public class Event
+    public class Event : IEntity
     {
         public int Id { get; set; }
 
         public string Name { get; set; }
 
         public DateTime Date { get; set; }
+
+        public int VenueId { get; set; }
 
         public Venue Venue { get; set; }
 

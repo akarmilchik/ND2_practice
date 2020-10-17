@@ -1,6 +1,8 @@
-﻿namespace TicketsResale.Business.Models
+﻿using TicketsResale.Context;
+
+namespace TicketsResale.Business.Models
 {
-    public class Venue
+    public class Venue : IEntity
     {
         public int Id { get; set; }
 
@@ -9,6 +11,8 @@
         public string Address { get; set; }
 
         public City City { get; set; }
+
+        public int CityId { get; set; }
 
     }
 }
