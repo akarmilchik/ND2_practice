@@ -1,59 +1,68 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using TicketsResale.Business.Models;
 
 namespace TicketsResale.Context.Ado
 {
-    public class UsersAdoRepository
+    public class UsersAdoRepository : BaseAdoRepository<User>
     {
 
-        public TicketsAdoRepository(IOptions<AdoOptions> options) : base(options)
+        public UsersAdoRepository(IOptions<AdoOptions> options) : base(options)
         {
 
         }
 
 
-        public override async Task<IEnumerable<Ticket>> GetAll()
+        public override async Task<IEnumerable<User>> GetAll()
         {
-            const string query = "SELECT Id, EventId, SellerId, Price, Status FROM dbo.Tickets";
+            const string query = "SELECT Id, FirstName, LastName, Localization, Address, PhoneNumber, UserName, Password, Role FROM dbo.Users";
             await connection.OpenAsync();
             var reader = await ExecuteQueryAsync(query);
 
-            var categories = new List<Ticket>();
+            var categories = new List<User>();
 
             if (reader.HasRows)
                 while (await reader.ReadAsync())
-                    categories.Add(new Ticket
+                    categories.Add(new User
                     {
                         Id = reader.GetInt32(0),
-                        EventId = reader.GetInt32(1),
-                        SellerId = reader.GetInt32(2),
-                        Price = reader.GetDecimal(3),
-                        Status = reader.GetString(4),
+                        FirstName = reader.GetString(1),
+                        LastName = reader.GetString(2),
+                        Localization = reader.GetString(3),
+                        Address = reader.GetString(4),
+                        PhoneNumber = reader.GetString(5),
+                        UserName = reader.GetString(6),
+                        Password = reader.GetString(7),
+                        Role = reader.GetString(8)
                     });
             await reader.CloseAsync();
             await connection.CloseAsync();
             return categories;
         }
 
-        public override async Task<Ticket> Get(int id)
+        public override async Task<User> Get(int id)
         {
-            const string query = "SELECT Id, EventId, SellerId, Price, Status FROM dbo.Tickets WHERE Id = @id";
+            const string query = "SELECT Id, FirstName, LastName, Localization, Address, PhoneNumber, UserName, Password, Role FROM dbo.Users WHERE Id = @id";
             await connection.OpenAsync();
             var reader = await ExecuteQueryAsync(query, new SqlParameter("@id", id));
 
-            Ticket result = null;
+            User result = null;
             if (reader.HasRows)
             {
                 await reader.ReadAsync();
-                result = new Ticket
+                result = new User
                 {
                     Id = reader.GetInt32(0),
-                    EventId = reader.GetInt32(1),
-                    SellerId = reader.GetInt32(2),
-                    Price = reader.GetDecimal(3),
-                    Status = reader.GetString(4),
+                    FirstName = reader.GetString(1),
+                    LastName = reader.GetString(2),
+                    Localization = reader.GetString(3),
+                    Address = reader.GetString(4),
+                    PhoneNumber = reader.GetString(5),
+                    UserName = reader.GetString(6),
+                    Password = reader.GetString(7),
+                    Role = reader.GetString(8)
                 };
             }
 
@@ -62,38 +71,48 @@ namespace TicketsResale.Context.Ado
             return result;
         }
 
-        public override async Task<int> Add(Ticket item)
+        public override async Task<int> Add(User item)
         {
             const string query =
-                "INSERT INTO dbo.Tickets(EventId, SellerId, Price, Status) OUTPUT Inserted.Id VALUES(@eventId, @sellerId, @price, @status)";
+                "INSERT INTO dbo.Users(FirstName, LastName, Localization, Address, PhoneNumber, UserName, Password, Role) " +
+                "OUTPUT Inserted.Id VALUES(@firstName, @lastName, @localization, @address, @phoneNumber, @userName, @password, @role)";
             await connection.OpenAsync();
             var result = await ExecuteScalarAsync(query,
-                new SqlParameter("@eventId", item.EventId),
-                new SqlParameter("@sellerId", item.SellerId),
-                new SqlParameter("@price", item.Price),
-                new SqlParameter("@status", item.Status)
+                new SqlParameter("@firstName", item.FirstName),
+                new SqlParameter("@lastName", item.LastName),
+                new SqlParameter("@localization", item.Localization),
+                new SqlParameter("@address", item.Address),
+                new SqlParameter("@phoneNumber", item.PhoneNumber),
+                new SqlParameter("@userName", item.UserName),
+                new SqlParameter("@password", item.Password),
+                new SqlParameter("@role", item.Role)
             );
             await connection.CloseAsync();
             return (int)result;
         }
 
-        public override async Task Update(Ticket item)
+        public override async Task Update(User item)
         {
             const string query =
-                "UPDATE dbo.Tickets SET EventId = @eventId, SellerId = @sellerId, Price = @price, Status = @status  WHERE Id = @id";
+                "UPDATE dbo.Users SET FirstName = @firstName, LastName = @lastName, Localization = @localization, Address = @address, " +
+                "PhoneNumber = @phoneNumber, UserName = @userName, Password = @password, Role = @role,  WHERE Id = @id";
             await connection.OpenAsync();
             await ExecuteCommandAsync(query,
-                new SqlParameter("@eventId", item.EventId),
-                new SqlParameter("@sellerId", item.SellerId),
-                new SqlParameter("@price", item.Price),
-                new SqlParameter("@status", item.Status),
-                new SqlParameter("@id", item.Id));
+                new SqlParameter("@firstName", item.FirstName),
+                new SqlParameter("@lastName", item.LastName),
+                new SqlParameter("@localization", item.Localization),
+                new SqlParameter("@address", item.Address),
+                new SqlParameter("@phoneNumber", item.PhoneNumber),
+                new SqlParameter("@userName", item.UserName),
+                new SqlParameter("@password", item.Password),
+                new SqlParameter("@role", item.Role)
+                );
             await connection.CloseAsync();
         }
 
         public override async Task Delete(int id)
         {
-            const string query = "DELETE FROM dbo.Tickets WHERE Id = @id";
+            const string query = "DELETE FROM dbo.Users WHERE Id = @id";
             await connection.OpenAsync();
             await ExecuteCommandAsync(query, new SqlParameter("@id", id));
             await connection.CloseAsync();

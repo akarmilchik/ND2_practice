@@ -14,7 +14,6 @@ namespace TicketsResale.Context.Ado
 
         }
 
-
         public override async Task<IEnumerable<Event>> GetAll()
         {
             const string query = "SELECT Id, Name, Date, VenueId, Banner, Description FROM dbo.Events";
