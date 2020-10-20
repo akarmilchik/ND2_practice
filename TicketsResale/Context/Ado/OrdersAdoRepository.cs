@@ -28,7 +28,7 @@ namespace TicketsResale.Context.Ado
                     {
                         Id = reader.GetInt32(0),
                         TicketId = reader.GetInt32(1),
-                        Status = reader.GetString(2),
+                        Status = reader.GetByte(2),
                         BuyerId = reader.GetInt32(3),
                         TrackNumber = reader.GetString(4)
                     });
@@ -51,7 +51,7 @@ namespace TicketsResale.Context.Ado
                 {
                     Id = reader.GetInt32(0),
                     TicketId = reader.GetInt32(1),
-                    Status = reader.GetString(2),
+                    Status = reader.GetByte(2),
                     BuyerId = reader.GetInt32(3),
                     TrackNumber = reader.GetString(4)
                 };

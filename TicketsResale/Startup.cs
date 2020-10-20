@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TicketsResale.Business;
 using TicketsResale.Context;
+using TicketsResale.Context.Ado;
 using TicketsResale.Models;
 
 namespace TicketsResale
@@ -25,7 +26,9 @@ namespace TicketsResale
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix).AddDataAnnotationsLocalization();
-            
+
+            services.Configure<AdoOptions>(Configuration.GetSection(nameof(AdoOptions)));
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(opts =>
                 {
@@ -43,8 +46,17 @@ namespace TicketsResale
             services.AddScoped<EventTickets>();
             services.AddScoped<UserManager>();
 
+            services.AddScoped<ITicketsService, TicketsService>();
+            services.AddScoped<ITicketsCartService, TicketsCartService>();
+
+            services.AddDbContext<StoreContext>(o =>
+            {
+                o.UseSqlServer(Configuration.GetConnectionString("StoreConnection")).EnableSensitiveDataLogging();
+            });
+
+
+
             services.AddMvc();
-            services.AddDbContext<ApplicationDbContext>(item => item.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
         }
 

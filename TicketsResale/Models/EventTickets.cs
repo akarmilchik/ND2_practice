@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TicketsResale.Business.Models;
 using TicketsResale.Context;
 
 namespace TicketsResale.Models

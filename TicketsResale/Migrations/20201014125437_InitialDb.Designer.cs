@@ -9,7 +9,7 @@ using TicketsResale.Context;
 
 namespace TicketsResale.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(DataSeeder))]
     [Migration("20201014125437_InitialDb")]
     partial class InitialDb
     {

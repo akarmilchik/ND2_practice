@@ -30,7 +30,7 @@ namespace TicketsResale.Context.Ado
                         EventId = reader.GetInt32(1),
                         SellerId = reader.GetInt32(2),
                         Price = reader.GetDecimal(3),
-                        Status = reader.GetString(4),
+                        Status = reader.GetByte(4),
                     });
             await reader.CloseAsync();
             await connection.CloseAsync();
@@ -53,7 +53,7 @@ namespace TicketsResale.Context.Ado
                     EventId = reader.GetInt32(1),
                     SellerId = reader.GetInt32(2),
                     Price = reader.GetDecimal(3),
-                    Status = reader.GetString(4),
+                    Status = reader.GetByte(4),
                 };
             }
 

@@ -8,8 +8,8 @@ using TicketsResale.Context;
 
 namespace TicketsResale.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(DataSeeder))]
+    partial class DataSeederModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

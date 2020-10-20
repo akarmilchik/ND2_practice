@@ -7,7 +7,7 @@ namespace TicketsResale.Business.Models
 {
     public enum TicketStatuses : byte
     {
-        selling,
+        selling = 1,
         waiting,
         sold
     }

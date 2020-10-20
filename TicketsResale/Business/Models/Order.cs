@@ -10,7 +10,7 @@ namespace TicketsResale.Business.Models
 
         public Ticket Ticket { get; set; }
 
-        public OrderStatuses Status { get; set; }
+        public byte Status { get; set; }
 
         public int BuyerId { get; set; }
 

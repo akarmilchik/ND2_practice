@@ -1,4 +1,4 @@
-﻿using TicketsResale.Context;
+﻿using TicketsResale.Business.Models;
 
 namespace TicketsResale.Models
 {

@@ -8,7 +8,7 @@ using TicketsResale.Models;
 namespace TicketsResale.Business
 {
     public sealed class ShopRepository
-    {
+    {/*
         private List<User> Users;
 
         private List<City> Cities;
@@ -206,6 +206,6 @@ namespace TicketsResale.Business
         public Order GetOrderById(int id)
         {
             return Orders.FirstOrDefault(p => p.Id == id);
-        }
+        }*/
     }
 }

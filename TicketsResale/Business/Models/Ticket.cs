@@ -16,6 +16,6 @@ namespace TicketsResale.Business.Models
 
         public User Seller { get; set; }
 
-        public TicketStatuses Status { get; set; }
+        public byte Status { get; set; }
     }
 }

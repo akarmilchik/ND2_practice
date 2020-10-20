@@ -22,6 +22,9 @@ namespace TicketsResale.Context
 
         public DbSet<Venue> Venues { get; set; }
 
+        public DbSet<TicketsCart> TicketsCarts { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<City>().ToTable("Cities");
@@ -30,8 +33,14 @@ namespace TicketsResale.Context
             modelBuilder.Entity<Ticket>().ToTable("Tickets");
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<Venue>().ToTable("Venues");
+            modelBuilder.Entity<CartItem>().ToTable("CartItems");
+            modelBuilder.Entity<TicketsCart>().ToTable("TicketsCarts");
 
-            modelBuilder.Entity<CartItem>().HasKey(ci => new { ci.CartId, ci.ProductId });
+            modelBuilder.Entity<CartItem>().HasKey(ci => new { ci.TicketsCartId, ci.TicketId });
+            modelBuilder.Entity<Event>().HasKey(ev => new { ev.VenueId });
+            modelBuilder.Entity<Order>().HasKey(ord => new { ord.TicketId, ord.BuyerId });
+            modelBuilder.Entity<Ticket>().HasKey(t => new { t.EventId, t.SellerId });
+            modelBuilder.Entity<Venue>().HasKey(v => new { v.CityId });
         }
     }
     
