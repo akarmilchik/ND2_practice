@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TicketsResale.Business.Models;
 using TicketsResale.Context;
@@ -17,10 +15,9 @@ namespace TicketsResale.Models.Service
             this.context = context;
         }
 
-
-        public IEnumerable<User> GetUsers()
+        public async Task<IEnumerable<User>> GetUsers()
         {
-            return context.Users.ToList();
+            return await context.Users.ToListAsync();
         }
 
 

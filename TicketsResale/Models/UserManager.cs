@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TicketsResale.Business;
 using TicketsResale.Business.Models;
 using TicketsResale.Models.Service;
@@ -17,13 +18,12 @@ namespace TicketsResale.Models
         {
             this.localizer = localizer;
             this.usersService = usersService;
-            userStore =  this.usersService.GetUsers().ToList();
         }
 
 
-        public bool ValidatePassword(string userName, string password)
+        public async Task<bool> ValidatePassword(string userName, string password)
         {
-            userStore = usersService.GetUsers().ToList();
+            userStore = (await usersService.GetUsers()).ToList();
             var user = userStore.SingleOrDefault(u => u.UserName.Equals(userName));
 
             if (user != null)
@@ -35,10 +35,20 @@ namespace TicketsResale.Models
         }
 
 
-        public User GetUser(string userName) => userStore
-    .SingleOrDefault(u => u.UserName.ToLower().Equals(userName.ToLower()));
+        public async Task<User> GetUser(string userName)
+        {
+            userStore = (await usersService.GetUsers()).ToList();
+            var user = userStore.SingleOrDefault(u => u.UserName.ToLower().Equals(userName.ToLower()));
+            return user;
+        }
 
-        public string GetRole(string userName) => userStore.SingleOrDefault(u => u.UserName.Equals(userName))?.Role;
+        public async Task<string> GetRole(string userName)
+        {
+            userStore = (await usersService.GetUsers()).ToList();
+            var role = userStore.SingleOrDefault(u => u.UserName.Equals(userName))?.Role;
+
+            return role;
+        }
 
     }
 

@@ -44,16 +44,20 @@ namespace TicketsResale.Controllers
         {
             try
             {
-                if (!userManager.ValidatePassword(model.UserName, model.Password))
+                var res = await userManager.ValidatePassword(model.UserName, model.Password);
+
+                if (!res)
                 {
                     ModelState.AddModelError(nameof(model.Password), localizer["Wrong password"]);
                     return View();
                 }
 
+                var role = await userManager.GetRole(model.UserName);
+
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, model.UserName),
-                    new Claim(ClaimTypes.Role, userManager.GetRole(model.UserName))
+                    new Claim(ClaimTypes.Role, role)
                 };
 
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
