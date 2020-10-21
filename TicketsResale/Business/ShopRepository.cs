@@ -129,7 +129,7 @@ namespace TicketsResale.Business
 
             return chosenTickets.ToArray();
         }
-
+        
         public EventTickets GetEventWithTickets(int eventId)
         {
             var chosenEvent = Events.Where(e => e.Id == eventId).Select(e => e).FirstOrDefault();

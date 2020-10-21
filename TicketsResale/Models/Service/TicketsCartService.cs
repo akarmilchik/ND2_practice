@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using TicketsResale.Business.Models;
 using TicketsResale.Context;
 
-namespace TicketsResale.Models
+namespace TicketsResale.Models.Service
 {
     public class TicketsCartService : ITicketsCartService
     {

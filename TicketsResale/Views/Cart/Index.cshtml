@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CartViewModel>
+﻿@model IEnumerable<TicketsCartViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -10,7 +10,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ProductName)
+                @Html.DisplayNameFor(model => model.TicketName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Count)
@@ -24,17 +24,17 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ProductName)
+                        @Html.DisplayFor(modelItem => item.TicketName)
                     </td>
                     <td>
                         <form method="post" asp-action="ChangeCount" class="form-inline">
-                            <input hidden name="id" value="@item.ProductId" />
+                            <input hidden name="id" value="@item.TicketId" />
                             <input hidden name="count" value="@(item.Count - 1)" />
                             <button type="submit" class="btn btn-light">-</button>
                         </form>
                         @Html.DisplayFor(modelItem => item.Count)
                         <form method="post" asp-action="ChangeCount" class="form-inline">
-                            <input hidden name="id" value="@item.ProductId" />
+                            <input hidden name="id" value="@item.TicketId" />
                             <input hidden name="count" value="@(item.Count + 1)" />
                             <button type="submit" class="btn btn-light">+</button>
                         </form>
@@ -45,6 +45,6 @@
         else
         {
         <td colspan="2">Cart is empty</td>
-    }
-        </tbody>
-    </table>
+        }
+    </tbody>
+</table>

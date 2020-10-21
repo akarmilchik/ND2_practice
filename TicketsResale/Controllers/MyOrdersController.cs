@@ -2,28 +2,32 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Localization;
+using System.Linq;
+using System.Threading.Tasks;
 using TicketsResale.Business;
 using TicketsResale.Models;
+using TicketsResale.Models.Service;
 
 namespace TicketsResale.Controllers
 {
     public class MyOrdersController : Controller
     {
         private readonly IStringLocalizer<HomeController> localizer;
-        private readonly ShopRepository shopRepository;
-        public MyOrdersController(ShopRepository shopRepository, IStringLocalizer<HomeController> localizer)
+        private readonly IOrdersService ordersService;
+
+        public MyOrdersController(IOrdersService ordersService, IStringLocalizer<HomeController> localizer)
         {
-            this.shopRepository = shopRepository;
+            this.ordersService = ordersService;
             this.localizer = localizer;
         }
 
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             ViewData["Title"] = localizer["My orders"];
             var model = new ShopViewModel
             {
-                Orders = shopRepository.GetOrders()
+                Orders = (await ordersService.GetOrders()).ToArray()
             };
 
             return View(model);

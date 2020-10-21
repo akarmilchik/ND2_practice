@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using TicketsResale.Business.Models;
 
-namespace TicketsResale.Models
+namespace TicketsResale.Models.Service
 {
     public interface ITicketsCartService
     {

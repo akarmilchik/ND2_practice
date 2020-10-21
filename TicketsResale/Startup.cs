@@ -10,6 +10,7 @@ using TicketsResale.Business;
 using TicketsResale.Context;
 using TicketsResale.Context.Ado;
 using TicketsResale.Models;
+using TicketsResale.Models.Service;
 
 namespace TicketsResale
 {

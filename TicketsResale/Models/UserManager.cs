@@ -4,25 +4,26 @@ using System.Collections.Generic;
 using System.Linq;
 using TicketsResale.Business;
 using TicketsResale.Business.Models;
+using TicketsResale.Models.Service;
 
 namespace TicketsResale.Models
 {
     public class UserManager
     {
         private readonly IStringLocalizer<UserManager> localizer;
-        private readonly ShopRepository shopRepository;
+        private readonly IUsersService usersService;
         private List<User> userStore;
-        public UserManager(IStringLocalizer<UserManager> localizer, ShopRepository shopRepository)
+        public UserManager(IStringLocalizer<UserManager> localizer, IUsersService usersService)
         {
             this.localizer = localizer;
-            this.shopRepository = shopRepository;
-            userStore = shopRepository.GetUsersList();
+            this.usersService = usersService;
+            userStore =  this.usersService.GetUsers().ToList();
         }
 
 
         public bool ValidatePassword(string userName, string password)
         {
-            userStore = shopRepository.GetUsersList();
+            userStore = usersService.GetUsers().ToList();
             var user = userStore.SingleOrDefault(u => u.UserName.Equals(userName));
 
             if (user != null)

@@ -3,45 +3,41 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using TicketsResale.Business;
 using TicketsResale.Models;
+using TicketsResale.Models.Service;
 
 namespace TicketsResale.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ShopRepository shopRepository;
-        private readonly ILogger<HomeController> _logger;
         private readonly IStringLocalizer<HomeController> localizer;
-        private readonly UserManager userManager;
+        private readonly IUsersService usersService;
 
-        public HomeController(ILogger<HomeController> logger, IStringLocalizer<HomeController> localizer, ShopRepository shopRepository, UserManager userManager)
+
+        public HomeController(IStringLocalizer<HomeController> localizer, IUsersService usersService)
         {
-            this.shopRepository = shopRepository;
-            _logger = logger;
+            this.usersService = usersService;
             this.localizer = localizer;
-            this.userManager = userManager;
+
         }
 
         public IActionResult Index()
         {
             ViewData["Title"] = localizer["homepagetitle"];
 
-
-
             return View();
         }
 
         [Authorize]
-        public IActionResult UserInfo(string userName)
+        public async Task<IActionResult> UserInfo(string userName)
         {
             ViewData["Title"] = localizer["UserInfo"];
 
-            var userObj = shopRepository.GetUserByName(userName);
-
             var model = new ShopViewModel
             {
-                User = userObj
+                User = await usersService.GetUserByName(userName)
             };
 
             return View(model);
