@@ -1,4 +1,6 @@
-﻿using TicketsResale.Context;
+﻿using System.Collections;
+using System.Collections.Generic;
+using TicketsResale.Context;
 
 namespace TicketsResale.Business.Models
 {

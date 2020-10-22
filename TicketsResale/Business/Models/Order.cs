@@ -1,4 +1,5 @@
-﻿using TicketsResale.Context;
+﻿using System.Collections.Generic;
+using TicketsResale.Context;
 
 namespace TicketsResale.Business.Models
 {
@@ -8,7 +9,7 @@ namespace TicketsResale.Business.Models
 
         public int TicketId { get; set; }
 
-        public Ticket Ticket { get; set; }
+        public Ticket Ticket{ get; set; }
 
         public byte Status { get; set; }
 

@@ -16,6 +16,8 @@ namespace TicketsResale.Business.Models
 
         public User Seller { get; set; }
 
+        public Order Order { get; set; }
+
         public byte Status { get; set; }
     }
 }

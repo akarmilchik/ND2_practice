@@ -28,7 +28,7 @@ namespace TicketsResale
         {
             services.AddControllersWithViews().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix).AddDataAnnotationsLocalization();
 
-            services.Configure<AdoOptions>(Configuration.GetSection(nameof(AdoOptions)));
+            //services.Configure<AdoOptions>(Configuration.GetSection(nameof(AdoOptions)));
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(opts =>
@@ -43,12 +43,17 @@ namespace TicketsResale
                 opts.ResourcesPath = "Resources";
             });
 
-            services.AddSingleton<ShopRepository>();
-            services.AddScoped<EventTickets>();
-            services.AddScoped<UserManager>();
-
+           // services.AddSingleton<ShopRepository>();
+            
             services.AddScoped<ITicketsService, TicketsService>();
             services.AddScoped<ITicketsCartService, TicketsCartService>();
+            services.AddScoped<IEventsService, EventsService>();
+            services.AddScoped<IOrdersService, OrdersService>();
+            services.AddScoped<IUsersService, UsersService>();
+
+
+            services.AddScoped<EventTickets>();
+            services.AddScoped<UserManager>();
 
             services.AddDbContext<StoreContext>(o =>
             {

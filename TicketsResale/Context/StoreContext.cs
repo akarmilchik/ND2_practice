@@ -1,8 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TicketsResale.Business.Models;
 
 namespace TicketsResale.Context
@@ -37,10 +33,12 @@ namespace TicketsResale.Context
             modelBuilder.Entity<TicketsCart>().ToTable("TicketsCarts");
 
             modelBuilder.Entity<CartItem>().HasKey(ci => new { ci.TicketsCartId, ci.TicketId });
-            modelBuilder.Entity<Event>().HasKey(ev => new { ev.VenueId });
-            modelBuilder.Entity<Order>().HasKey(ord => new { ord.TicketId, ord.BuyerId });
-            modelBuilder.Entity<Ticket>().HasKey(t => new { t.EventId, t.SellerId });
-            modelBuilder.Entity<Venue>().HasKey(v => new { v.CityId });
+            modelBuilder.Entity<Event>().HasKey(ev => ev.VenueId );
+            modelBuilder.Entity<Order>().HasKey(o => o.TicketId);    
+            modelBuilder.Entity<Order>().HasKey(o => o.BuyerId);
+            modelBuilder.Entity<Ticket>().HasKey(t => t.EventId);
+            modelBuilder.Entity<Ticket>().HasKey(t => t.SellerId);
+            modelBuilder.Entity<Venue>().HasKey(v => v.CityId );
         }
     }
     

@@ -1,4 +1,5 @@
-﻿using TicketsResale.Context;
+﻿using System.Collections.Generic;
+using TicketsResale.Context;
 
 namespace TicketsResale.Business.Models
 {
@@ -13,6 +14,5 @@ namespace TicketsResale.Business.Models
         public City City { get; set; }
 
         public int CityId { get; set; }
-
     }
 }
