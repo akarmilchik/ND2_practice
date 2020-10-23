@@ -24,7 +24,7 @@ namespace TicketsResale.Context
             new City { Id = 5, Name = "Tokyo" },
             new City { Id = 6, Name = "Dubai" }
         };
-
+        
         private static readonly List<User> Users = new List<User>
         {
             new User { Id = 1, FirstName = "Alexey", LastName = "Robinson", Address = "15, Kosmonavtov Av., Grodno, BLR", Localization = "rus", PhoneNumber = "228228", UserName = "admin", Password = "admin", Role = "Administrator" },
@@ -114,12 +114,12 @@ namespace TicketsResale.Context
             {
                 await context.Cities.AddRangeAsync(Cities);
             }
-
+/*
             if (!context.Users.Any())
             {
                 await context.Users.AddRangeAsync(Users);
             }
-
+*/
             if (!context.Venues.Any())
             {
                 await context.Venues.AddRangeAsync(Venues);

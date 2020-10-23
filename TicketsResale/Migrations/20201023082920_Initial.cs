@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TicketsResale.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,6 +18,18 @@ namespace TicketsResale.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cities", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TicketsCarts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TicketsCarts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -48,7 +60,7 @@ namespace TicketsResale.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
                     Address = table.Column<string>(nullable: true),
-                    CityId = table.Column<int>(nullable: true)
+                    CityId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -58,7 +70,7 @@ namespace TicketsResale.Migrations
                         column: x => x.CityId,
                         principalTable: "Cities",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,7 +81,7 @@ namespace TicketsResale.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
                     Date = table.Column<DateTime>(nullable: false),
-                    VenueId = table.Column<int>(nullable: true),
+                    VenueId = table.Column<int>(nullable: false),
                     Banner = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true)
                 },
@@ -81,7 +93,7 @@ namespace TicketsResale.Migrations
                         column: x => x.VenueId,
                         principalTable: "Venues",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -90,9 +102,9 @@ namespace TicketsResale.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EventId = table.Column<int>(nullable: true),
+                    EventId = table.Column<int>(nullable: false),
                     Price = table.Column<decimal>(nullable: false),
-                    SellerId = table.Column<int>(nullable: true),
+                    SellerId = table.Column<int>(nullable: false),
                     Status = table.Column<byte>(nullable: false)
                 },
                 constraints: table =>
@@ -103,13 +115,38 @@ namespace TicketsResale.Migrations
                         column: x => x.EventId,
                         principalTable: "Events",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Tickets_Users_SellerId",
                         column: x => x.SellerId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CartItems",
+                columns: table => new
+                {
+                    TicketId = table.Column<int>(nullable: false),
+                    TicketsCartId = table.Column<int>(nullable: false),
+                    Count = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CartItems", x => new { x.TicketsCartId, x.TicketId });
+                    table.ForeignKey(
+                        name: "FK_CartItems_Tickets_TicketId",
+                        column: x => x.TicketId,
+                        principalTable: "Tickets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CartItems_TicketsCarts_TicketsCartId",
+                        column: x => x.TicketsCartId,
+                        principalTable: "TicketsCarts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -118,9 +155,9 @@ namespace TicketsResale.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TicketId = table.Column<int>(nullable: true),
-                    Status = table.Column<int>(nullable: false),
-                    BuyerId = table.Column<int>(nullable: true),
+                    TicketId = table.Column<int>(nullable: false),
+                    Status = table.Column<byte>(nullable: false),
+                    BuyerId = table.Column<int>(nullable: false),
                     TrackNumber = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -130,15 +167,18 @@ namespace TicketsResale.Migrations
                         name: "FK_Orders_Users_BuyerId",
                         column: x => x.BuyerId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Orders_Tickets_TicketId",
                         column: x => x.TicketId,
                         principalTable: "Tickets",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartItems_TicketId",
+                table: "CartItems",
+                column: "TicketId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Events_VenueId",
@@ -174,7 +214,13 @@ namespace TicketsResale.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "CartItems");
+
+            migrationBuilder.DropTable(
                 name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "TicketsCarts");
 
             migrationBuilder.DropTable(
                 name: "Tickets");

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using TicketsResale.Context;
 
 namespace TicketsResale.Business.Models

@@ -1,4 +1,5 @@
-﻿using TicketsResale.Context;
+﻿using System.Collections.Generic;
+using TicketsResale.Context;
 
 namespace TicketsResale.Business.Models
 {
@@ -14,9 +15,9 @@ namespace TicketsResale.Business.Models
 
         public int SellerId { get; set; }
 
-        public User Seller { get; set; }
+        public ICollection<Order> Orders { get; set; }
 
-        public Order Order { get; set; }
+        public User Seller { get; set; }
 
         public byte Status { get; set; }
     }

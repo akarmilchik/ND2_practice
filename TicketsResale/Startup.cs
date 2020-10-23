@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TicketsResale.Business;
 using TicketsResale.Context;
 using TicketsResale.Context.Ado;
 using TicketsResale.Models;
@@ -28,7 +28,9 @@ namespace TicketsResale
         {
             services.AddControllersWithViews().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix).AddDataAnnotationsLocalization();
 
-            //services.Configure<AdoOptions>(Configuration.GetSection(nameof(AdoOptions)));
+           // services.AddMvc().AddFluentValidation(f => f.RegisterValidatorsFromAssemblyContaining<Startup>());
+
+            services.Configure<AdoOptions>(Configuration.GetSection(nameof(AdoOptions)));
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(opts =>
@@ -43,7 +45,7 @@ namespace TicketsResale
                 opts.ResourcesPath = "Resources";
             });
 
-           // services.AddSingleton<ShopRepository>();
+            //services.AddSingleton<DataSeeder>();
             
             services.AddScoped<ITicketsService, TicketsService>();
             services.AddScoped<ITicketsCartService, TicketsCartService>();
@@ -60,9 +62,7 @@ namespace TicketsResale
                 o.UseSqlServer(Configuration.GetConnectionString("StoreConnection")).EnableSensitiveDataLogging();
             });
 
-
-
-            services.AddMvc();
+            services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<StoreContext>();
 
         }
 
@@ -98,8 +98,11 @@ namespace TicketsResale
             
             app.UseAuthorization();
 
+            app.UseMiddleware<CartIdHandler>();
+
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

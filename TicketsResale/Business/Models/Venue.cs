@@ -11,8 +11,10 @@ namespace TicketsResale.Business.Models
 
         public string Address { get; set; }
 
+        public int CityId { get; set; }
+
         public City City { get; set; }
 
-        public int CityId { get; set; }
+
     }
 }

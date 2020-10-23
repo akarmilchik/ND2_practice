@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
 using TicketsResale.Models;
@@ -6,6 +7,7 @@ using TicketsResale.Models.Service;
 
 namespace TicketsResale.Controllers
 {
+    [Authorize]
     public class CartController : Controller
     {
         private const string CartCookieName = "TicketsResale.TicketsCartId";

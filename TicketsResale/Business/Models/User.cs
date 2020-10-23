@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TicketsResale.Context;
 
 namespace TicketsResale.Business.Models
@@ -19,6 +18,8 @@ namespace TicketsResale.Business.Models
         public string PhoneNumber { get; set; }
 
         public string UserName { get; set; }
+
+        public ICollection<Order> Orders { get; set; }
 
         public string Password { get; set; }
 

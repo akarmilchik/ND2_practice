@@ -9,19 +9,37 @@ using TicketsResale.Context;
 
 namespace TicketsResale.Migrations
 {
-    [DbContext(typeof(DataSeeder))]
-    [Migration("20201008061903_InitialCreate")]
-    partial class InitialCreate
+    [DbContext(typeof(StoreContext))]
+    [Migration("20201023082920_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.8")
+                .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("TicketsResale.Context.City", b =>
+            modelBuilder.Entity("TicketsResale.Business.Models.CartItem", b =>
+                {
+                    b.Property<int>("TicketsCartId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TicketId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.HasKey("TicketsCartId", "TicketId");
+
+                    b.HasIndex("TicketId");
+
+                    b.ToTable("CartItems");
+                });
+
+            modelBuilder.Entity("TicketsResale.Business.Models.City", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -36,7 +54,7 @@ namespace TicketsResale.Migrations
                     b.ToTable("Cities");
                 });
 
-            modelBuilder.Entity("TicketsResale.Context.Event", b =>
+            modelBuilder.Entity("TicketsResale.Business.Models.Event", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,7 +73,7 @@ namespace TicketsResale.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("VenueId")
+                    b.Property<int>("VenueId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -65,20 +83,20 @@ namespace TicketsResale.Migrations
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("TicketsResale.Context.Order", b =>
+            modelBuilder.Entity("TicketsResale.Business.Models.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BuyerId")
+                    b.Property<int>("BuyerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<byte>("Status")
+                        .HasColumnType("tinyint");
 
-                    b.Property<int?>("TicketId")
+                    b.Property<int>("TicketId")
                         .HasColumnType("int");
 
                     b.Property<string>("TrackNumber")
@@ -93,20 +111,20 @@ namespace TicketsResale.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("TicketsResale.Context.Ticket", b =>
+            modelBuilder.Entity("TicketsResale.Business.Models.Ticket", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("EventId")
+                    b.Property<int>("EventId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("SellerId")
+                    b.Property<int>("SellerId")
                         .HasColumnType("int");
 
                     b.Property<byte>("Status")
@@ -121,7 +139,19 @@ namespace TicketsResale.Migrations
                     b.ToTable("Tickets");
                 });
 
-            modelBuilder.Entity("TicketsResale.Context.User", b =>
+            modelBuilder.Entity("TicketsResale.Business.Models.TicketsCart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TicketsCarts");
+                });
+
+            modelBuilder.Entity("TicketsResale.Business.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -157,7 +187,7 @@ namespace TicketsResale.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("TicketsResale.Context.Venue", b =>
+            modelBuilder.Entity("TicketsResale.Business.Models.Venue", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -167,7 +197,7 @@ namespace TicketsResale.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CityId")
+                    b.Property<int>("CityId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -180,40 +210,67 @@ namespace TicketsResale.Migrations
                     b.ToTable("Venues");
                 });
 
-            modelBuilder.Entity("TicketsResale.Context.Event", b =>
+            modelBuilder.Entity("TicketsResale.Business.Models.CartItem", b =>
                 {
-                    b.HasOne("TicketsResale.Context.Venue", "Venue")
+                    b.HasOne("TicketsResale.Business.Models.Ticket", "Ticket")
                         .WithMany()
-                        .HasForeignKey("VenueId");
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TicketsResale.Business.Models.TicketsCart", "TicketsCart")
+                        .WithMany("CartItems")
+                        .HasForeignKey("TicketsCartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("TicketsResale.Context.Order", b =>
+            modelBuilder.Entity("TicketsResale.Business.Models.Event", b =>
                 {
-                    b.HasOne("TicketsResale.Context.User", "Buyer")
+                    b.HasOne("TicketsResale.Business.Models.Venue", "Venue")
                         .WithMany()
-                        .HasForeignKey("BuyerId");
-
-                    b.HasOne("TicketsResale.Context.Ticket", "Ticket")
-                        .WithMany()
-                        .HasForeignKey("TicketId");
+                        .HasForeignKey("VenueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("TicketsResale.Context.Ticket", b =>
+            modelBuilder.Entity("TicketsResale.Business.Models.Order", b =>
                 {
-                    b.HasOne("TicketsResale.Context.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId");
+                    b.HasOne("TicketsResale.Business.Models.User", "Buyer")
+                        .WithMany("Orders")
+                        .HasForeignKey("BuyerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
-                    b.HasOne("TicketsResale.Context.User", "Seller")
-                        .WithMany()
-                        .HasForeignKey("SellerId");
+                    b.HasOne("TicketsResale.Business.Models.Ticket", "Ticket")
+                        .WithMany("Orders")
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("TicketsResale.Context.Venue", b =>
+            modelBuilder.Entity("TicketsResale.Business.Models.Ticket", b =>
                 {
-                    b.HasOne("TicketsResale.Context.City", "City")
+                    b.HasOne("TicketsResale.Business.Models.Event", "Event")
                         .WithMany()
-                        .HasForeignKey("CityId");
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TicketsResale.Business.Models.User", "Seller")
+                        .WithMany()
+                        .HasForeignKey("SellerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TicketsResale.Business.Models.Venue", b =>
+                {
+                    b.HasOne("TicketsResale.Business.Models.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
