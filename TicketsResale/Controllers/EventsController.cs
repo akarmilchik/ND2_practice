@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Operations;
 using Microsoft.Extensions.Localization;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TicketsResale.Business;
@@ -15,7 +16,7 @@ namespace TicketsResale.Business.Models
 
         private readonly IStringLocalizer<EventsController> localizer;
 
-        public EventsController(EventsService eventsService, IStringLocalizer<EventsController> localizer)
+        public EventsController(IEventsService eventsService, IStringLocalizer<EventsController> localizer)
         {
             this.eventsService = eventsService;
             this.localizer = localizer;

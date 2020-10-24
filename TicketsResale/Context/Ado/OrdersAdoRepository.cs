@@ -16,7 +16,7 @@ namespace TicketsResale.Context.Ado
 
         public override async Task<IEnumerable<Order>> GetAll()
         {
-            const string query = "SELECT Id, TicketId, Status, BuyerId, TrackNumber FROM dbo.Orders";
+            const string query = "SELECT Id, TicketId, Status TrackNumber FROM dbo.Orders";
             await connection.OpenAsync();
             var reader = await ExecuteQueryAsync(query);
 
@@ -29,7 +29,7 @@ namespace TicketsResale.Context.Ado
                         Id = reader.GetInt32(0),
                         TicketId = reader.GetInt32(1),
                         Status = reader.GetByte(2),
-                        BuyerId = reader.GetInt32(3),
+                        //BuyerId = reader.GetInt32(3),
                         TrackNumber = reader.GetString(4)
                     });
             await reader.CloseAsync();
@@ -39,7 +39,7 @@ namespace TicketsResale.Context.Ado
 
         public override async Task<Order> Get(int id)
         {
-            const string query = "SELECT Id, TicketId, Status, BuyerId, TrackNumber FROM dbo.Orders WHERE Id = @id";
+            const string query = "SELECT Id, TicketId, Status, TrackNumber FROM dbo.Orders WHERE Id = @id";
             await connection.OpenAsync();
             var reader = await ExecuteQueryAsync(query, new SqlParameter("@id", id));
 
@@ -52,7 +52,7 @@ namespace TicketsResale.Context.Ado
                     Id = reader.GetInt32(0),
                     TicketId = reader.GetInt32(1),
                     Status = reader.GetByte(2),
-                    BuyerId = reader.GetInt32(3),
+                    //BuyerId = reader.GetInt32(3),
                     TrackNumber = reader.GetString(4)
                 };
             }
@@ -65,12 +65,12 @@ namespace TicketsResale.Context.Ado
         public override async Task<int> Add(Order item)
         {
             const string query =
-                "INSERT INTO dbo.Orders(TicketId, Status, BuyerId, TrackNumber) OUTPUT Inserted.Id VALUES(@ticketId, @status, @buyerId, @trackNumber)";
+                "INSERT INTO dbo.Orders(TicketId, Status,  TrackNumber) OUTPUT Inserted.Id VALUES(@ticketId, @status, @trackNumber)";
             await connection.OpenAsync();
             var result = await ExecuteScalarAsync(query,
                 new SqlParameter("@ticketId", item.TicketId),
                 new SqlParameter("@status", item.Status),
-                new SqlParameter("@buyerId", item.BuyerId),
+               // new SqlParameter("@buyerId", item.BuyerId),
                 new SqlParameter("@trackNumber", item.TrackNumber)
             );
             await connection.CloseAsync();
@@ -80,12 +80,12 @@ namespace TicketsResale.Context.Ado
         public override async Task Update(Order item)
         {
             const string query =
-                "UPDATE dbo.Orders SET TicketId = @ticketId, Status = @status, BuyerId = @buyerId, TrackNumber = @trackNumber  WHERE Id = @id";
+                "UPDATE dbo.Orders SET TicketId = @ticketId, Status = @status, TrackNumber = @trackNumber  WHERE Id = @id";
             await connection.OpenAsync();
             await ExecuteCommandAsync(query,
                 new SqlParameter("@ticketId", item.TicketId),
                 new SqlParameter("@status", item.Status),
-                new SqlParameter("@buyerId", item.BuyerId),
+               // new SqlParameter("@buyerId", item.BuyerId),
                 new SqlParameter("@trackNumber", item.TrackNumber),
                 new SqlParameter("@id", item.Id));
             await connection.CloseAsync();

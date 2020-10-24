@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace TicketsResale.Business.Models
 {
-    public class StoreUser
+    public class StoreUser : IdentityUser
     {
+        public int TicketsCartId { get; set; }
+        public TicketsCart TicketsCart { get; set; }
+
     }
 }

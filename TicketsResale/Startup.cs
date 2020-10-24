@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,8 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using TicketsResale.Business.Models;
 using TicketsResale.Context;
-using TicketsResale.Context.Ado;
 using TicketsResale.Models;
 using TicketsResale.Models.Service;
 
@@ -28,9 +30,7 @@ namespace TicketsResale
         {
             services.AddControllersWithViews().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix).AddDataAnnotationsLocalization();
 
-           // services.AddMvc().AddFluentValidation(f => f.RegisterValidatorsFromAssemblyContaining<Startup>());
-
-            services.Configure<AdoOptions>(Configuration.GetSection(nameof(AdoOptions)));
+            //services.Configure<AdoOptions>(Configuration.GetSection(nameof(AdoOptions)));
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(opts =>
@@ -44,26 +44,55 @@ namespace TicketsResale
             {
                 opts.ResourcesPath = "Resources";
             });
-
-            //services.AddSingleton<DataSeeder>();
             
             services.AddScoped<ITicketsService, TicketsService>();
             services.AddScoped<ITicketsCartService, TicketsCartService>();
             services.AddScoped<IEventsService, EventsService>();
             services.AddScoped<IOrdersService, OrdersService>();
-            services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<CartIdHandler>();
 
 
             services.AddScoped<EventTickets>();
-            services.AddScoped<UserManager>();
+
+            var dataSource = Configuration.GetValue<string>("DataSource");
 
             services.AddDbContext<StoreContext>(o =>
             {
-                o.UseSqlServer(Configuration.GetConnectionString("StoreConnection")).EnableSensitiveDataLogging();
+                o.UseSqlServer(Configuration.GetConnectionString("StoreConnection"))
+                .EnableSensitiveDataLogging();
+            });
+                    
+           
+
+            services.AddDefaultIdentity<StoreUser>().AddEntityFrameworkStores<StoreContext>();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 4;
+                options.Password.RequiredUniqueChars = 1;
+
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = true;
             });
 
-            services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<StoreContext>();
-
+            services.Configure<AntiforgeryOptions>(opts =>
+            {
+                opts.FormFieldName = "TicketsStoreSecretInput";
+                opts.HeaderName = "X-CSRF-TOKEN";
+                opts.SuppressXFrameOptionsHeader = false;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

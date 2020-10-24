@@ -14,12 +14,12 @@ namespace TicketsResale.Models.Service
         {
             this.context = context;
         }
-
+        /*
         public async Task<IEnumerable<User>> GetUsers()
         {
             return await context.Users.ToListAsync();
         }
-
+        
 
         public async Task<User> GetUserById(int id)
         {
@@ -29,6 +29,6 @@ namespace TicketsResale.Models.Service
         public async Task<User> GetUserByName(string name)
         {
             return await context.Users.SingleOrDefaultAsync(u => u.UserName == name);
-        }
+        }*/
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -15,11 +17,13 @@ namespace TicketsResale.Controllers
     {
         private readonly IStringLocalizer<TicketsController> localizer;
         private readonly ITicketsService ticketsService;
+        private readonly ILogger<TicketsController> logger;
 
-        public TicketsController(ITicketsService ticketsService, IStringLocalizer<TicketsController> localizer)
+        public TicketsController(ITicketsService ticketsService, IStringLocalizer<TicketsController> localizer, ILogger<TicketsController> logger)
         { 
             this.localizer = localizer;
             this.ticketsService = ticketsService;
+            this.logger = logger;
         }
 
         public async Task<IActionResult> Index()
@@ -61,6 +65,20 @@ namespace TicketsResale.Controllers
             return View("Index", product);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(TicketCreateEditModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                logger.LogDebug(JsonConvert.SerializeObject(model));
+            }
+            else
+            {
+                return View("TicketCreateEdit", model);
+            }
+            return RedirectToAction("Index");
+        }
 
     }
 }

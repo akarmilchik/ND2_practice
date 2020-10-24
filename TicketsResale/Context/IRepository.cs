@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TicketsResale.Business.Models;
 
 namespace TicketsResale.Context
 {

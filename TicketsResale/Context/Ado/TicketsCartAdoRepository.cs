@@ -8,9 +8,9 @@ using TicketsResale.Business.Models;
 
 namespace TicketsResale.Context.Ado
 {
-    public class CartAdoRepository : BaseAdoRepository<TicketsCart>
+    public class TicketsCartAdoRepository : BaseAdoRepository<TicketsCart>
     {
-        public CartAdoRepository(IOptions<AdoOptions> options) : base(options)
+        public TicketsCartAdoRepository(IOptions<AdoOptions> options) : base(options)
         {
         }
 

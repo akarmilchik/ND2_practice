@@ -13,12 +13,12 @@ namespace TicketsResale.Controllers
     public class HomeController : Controller
     {
         private readonly IStringLocalizer<HomeController> localizer;
-        private readonly IUsersService usersService;
+        //private readonly IUsersService usersService;
 
 
-        public HomeController(IStringLocalizer<HomeController> localizer, IUsersService usersService)
+        public HomeController(IStringLocalizer<HomeController> localizer/*, IUsersService usersService*/)
         {
-            this.usersService = usersService;
+            //this.usersService = usersService;
             this.localizer = localizer;
 
         }
@@ -29,7 +29,7 @@ namespace TicketsResale.Controllers
 
             return View();
         }
-
+        /*
         [Authorize]
         public async Task<IActionResult> UserInfo(string userName)
         {
@@ -41,7 +41,7 @@ namespace TicketsResale.Controllers
             };
 
             return View(model);
-        }
+        }*/
 
         public IActionResult Privacy()
         {

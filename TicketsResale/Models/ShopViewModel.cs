@@ -10,6 +10,8 @@ namespace TicketsResale.Models
         
         public Order[] Orders { get; set; }
 
-        public User User { get; set; }
+        public City[] Cities { get; set; }
+
+        public Venue Venues { get; set; }
     }
 }

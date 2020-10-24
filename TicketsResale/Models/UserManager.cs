@@ -10,7 +10,7 @@ using TicketsResale.Models.Service;
 namespace TicketsResale.Models
 {
     public class UserManager
-    {
+    {/*
         private readonly IStringLocalizer<UserManager> localizer;
         private readonly IUsersService usersService;
         private List<User> userStore;
@@ -23,8 +23,8 @@ namespace TicketsResale.Models
 
         public async Task<bool> ValidatePassword(string userName, string password)
         {
-            userStore = (await usersService.GetUsers()).ToList();
-            var user = userStore.SingleOrDefault(u => u.UserName.Equals(userName));
+            //userStore = (await usersService.GetUsers()).ToList();
+            /*var user = userStore.SingleOrDefault(u => u.UserName.Equals(userName));
 
             if (user != null)
             {
@@ -34,7 +34,7 @@ namespace TicketsResale.Models
             throw new ArgumentException(localizer["User not found"]);
         }
 
-
+        /*
         public async Task<User> GetUser(string userName)
         {
             userStore = (await usersService.GetUsers()).ToList();
@@ -49,7 +49,7 @@ namespace TicketsResale.Models
 
             return role;
         }
-
+        */
     }
 
 

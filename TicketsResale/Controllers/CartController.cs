@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
+using TicketsResale.Context;
 using TicketsResale.Models;
 using TicketsResale.Models.Service;
 
@@ -22,7 +23,7 @@ namespace TicketsResale.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var cartId = await GetSetCartId();
+            var cartId = HttpContext.GetTicketsCartId();
             var cart = await ticketsCartService.FindCart(cartId);
             var items = cart.CartItems.Select(ci => new TicketsCartViewModel
             {
@@ -37,7 +38,7 @@ namespace TicketsResale.Controllers
         public async Task<IActionResult> Add(int id, int count)
         {
             var product = await ticketsService.GetTicketById(id);
-            await ticketsCartService.AddItemToCart(await GetSetCartId(), product, count);
+            await ticketsCartService.AddItemToCart(HttpContext.GetTicketsCartId(), product, count);
             return RedirectToAction("Index", "Store");
         }
 
@@ -45,7 +46,7 @@ namespace TicketsResale.Controllers
         public async Task<IActionResult> Remove(int id)
         {
             var product = await ticketsService.GetTicketById(id);
-            await ticketsCartService.RemoveItemFromCart(await GetSetCartId(), product);
+            await ticketsCartService.RemoveItemFromCart(HttpContext.GetTicketsCartId(), product);
             return RedirectToAction("Index");
         }
 
@@ -53,7 +54,7 @@ namespace TicketsResale.Controllers
         public async Task<IActionResult> ChangeCount(int id, int count)
         {
             var product = await ticketsService.GetTicketById(id);
-            var cartId = await GetSetCartId();
+            var cartId = HttpContext.GetTicketsCartId();
             if (count > 0)
                 await ticketsCartService.ChangeItemCount(cartId, product, count);
             else
@@ -65,18 +66,9 @@ namespace TicketsResale.Controllers
         [HttpPost]
         public async Task<IActionResult> ClearCart()
         {
-            await ticketsCartService.ClearCart(await GetSetCartId());
+            await ticketsCartService.ClearCart(HttpContext.GetTicketsCartId());
             return RedirectToAction("Index", "Store");
         }
 
-        private async Task<int> GetSetCartId()
-        {
-            if (HttpContext.Request.Cookies.ContainsKey(CartCookieName))
-                return int.Parse(HttpContext.Request.Cookies[CartCookieName]);
-
-            var id = await ticketsCartService.CreateCart();
-            HttpContext.Response.Cookies.Append(CartCookieName, id.ToString());
-            return id;
-        }
     }
 }

@@ -13,11 +13,11 @@ namespace TicketsResale.Business.Models
 
         public decimal Price { get; set; }
 
-        public int SellerId { get; set; }
+        //public int SellerId { get; set; }
 
         public ICollection<Order> Orders { get; set; }
 
-        public User Seller { get; set; }
+        //public User Seller { get; set; }
 
         public byte Status { get; set; }
     }

@@ -5,6 +5,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Context\Ado\**" />
+    <Compile Remove="Views\User\**" />
+    <Content Remove="Context\Ado\**" />
+    <Content Remove="Views\User\**" />
+    <EmbeddedResource Remove="Context\Ado\**" />
+    <EmbeddedResource Remove="Views\User\**" />
+    <None Remove="Context\Ado\**" />
+    <None Remove="Views\User\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Business\Models\User.cs" />
+    <Compile Remove="Context\IRepository.cs" />
+    <Compile Remove="Context\UnitOfWork.cs" />
+    <Compile Remove="Controllers\UserController.cs" />
     <Compile Remove="Migrations\20201023060704_Initial.cs" />
     <Compile Remove="Migrations\20201023060704_Initial.Designer.cs" />
     <Compile Remove="Migrations\20201023060748_Initial.cs" />
@@ -15,6 +30,15 @@
     <Compile Remove="Migrations\20201023075257_Initial.Designer.cs" />
     <Compile Remove="Migrations\20201023101135_Identity.cs" />
     <Compile Remove="Migrations\20201023101135_Identity.Designer.cs" />
+    <Compile Remove="Migrations\20201024094905_StoreUser.cs" />
+    <Compile Remove="Migrations\20201024094905_StoreUser.Designer.cs" />
+    <Compile Remove="Migrations\20201024095321_StoreUser.cs" />
+    <Compile Remove="Migrations\20201024095321_StoreUser.Designer.cs" />
+    <Compile Remove="Migrations\20201024111551_StoreUser.cs" />
+    <Compile Remove="Migrations\20201024111551_StoreUser.Designer.cs" />
+    <Compile Remove="Models\Service\IUsersService.cs" />
+    <Compile Remove="Models\Service\UsersService.cs" />
+    <Compile Remove="Models\UserManager.cs" />
   </ItemGroup>
 
   <ItemGroup>

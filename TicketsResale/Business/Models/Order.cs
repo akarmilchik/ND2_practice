@@ -14,9 +14,9 @@ namespace TicketsResale.Business.Models
 
         public byte Status { get; set; }
 
-        public int BuyerId { get; set; }
+       // public int BuyerId { get; set; }
 
-        public User Buyer { get; set; }
+       // public User Buyer { get; set; }
 
         public string TrackNumber { get; set; }
 

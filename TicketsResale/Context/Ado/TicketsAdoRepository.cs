@@ -16,7 +16,7 @@ namespace TicketsResale.Context.Ado
 
         public override async Task<IEnumerable<Ticket>> GetAll()
         {
-            const string query = "SELECT Id, EventId, SellerId, Price, Status FROM dbo.Tickets";
+            const string query = "SELECT Id, EventId, Price, Status FROM dbo.Tickets";
             await connection.OpenAsync();
             var reader = await ExecuteQueryAsync(query);
 
@@ -28,7 +28,7 @@ namespace TicketsResale.Context.Ado
                     {
                         Id = reader.GetInt32(0),
                         EventId = reader.GetInt32(1),
-                        SellerId = reader.GetInt32(2),
+                        //SellerId = reader.GetInt32(2),
                         Price = reader.GetDecimal(3),
                         Status = reader.GetByte(4),
                     });
@@ -39,7 +39,7 @@ namespace TicketsResale.Context.Ado
 
         public override async Task<Ticket> Get(int id)
         {
-            const string query = "SELECT Id, EventId, SellerId, Price, Status FROM dbo.Tickets WHERE Id = @id";
+            const string query = "SELECT Id, EventId, Price, Status FROM dbo.Tickets WHERE Id = @id";
             await connection.OpenAsync();
             var reader = await ExecuteQueryAsync(query, new SqlParameter("@id", id));
 
@@ -51,7 +51,7 @@ namespace TicketsResale.Context.Ado
                 {
                     Id = reader.GetInt32(0),
                     EventId = reader.GetInt32(1),
-                    SellerId = reader.GetInt32(2),
+                    //SellerId = reader.GetInt32(2),
                     Price = reader.GetDecimal(3),
                     Status = reader.GetByte(4),
                 };
@@ -65,11 +65,11 @@ namespace TicketsResale.Context.Ado
         public override async Task<int> Add(Ticket item)
         {
             const string query =
-                "INSERT INTO dbo.Tickets(EventId, SellerId, Price, Status) OUTPUT Inserted.Id VALUES(@eventId, @sellerId, @price, @status)";
+                "INSERT INTO dbo.Tickets(EventId,  Price, Status) OUTPUT Inserted.Id VALUES(@eventId, @price, @status)";
             await connection.OpenAsync();
             var result = await ExecuteScalarAsync(query,
                 new SqlParameter("@eventId", item.EventId),
-                new SqlParameter("@sellerId", item.SellerId),
+                //new SqlParameter("@sellerId", item.SellerId),
                 new SqlParameter("@price", item.Price),
                 new SqlParameter("@status", item.Status)
             );
@@ -80,11 +80,11 @@ namespace TicketsResale.Context.Ado
         public override async Task Update(Ticket item)
         {
             const string query =
-                "UPDATE dbo.Tickets SET EventId = @eventId, SellerId = @sellerId, Price = @price, Status = @status  WHERE Id = @id";
+                "UPDATE dbo.Tickets SET EventId = @eventId, Price = @price, Status = @status  WHERE Id = @id";
             await connection.OpenAsync();
             await ExecuteCommandAsync(query,
                 new SqlParameter("@eventId", item.EventId),
-                new SqlParameter("@sellerId", item.SellerId),
+                //new SqlParameter("@sellerId", item.SellerId),
                 new SqlParameter("@price", item.Price),
                 new SqlParameter("@status", item.Status),
                 new SqlParameter("@id", item.Id));
