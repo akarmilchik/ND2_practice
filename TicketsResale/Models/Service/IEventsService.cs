@@ -8,7 +8,9 @@ namespace TicketsResale.Models.Service
 {
     public interface IEventsService
     {
+        Task<IEnumerable<City>> GetCities();
         Task<Event> GetEventById(int id);
         Task<IEnumerable<Event>> GetEvents();
+        Task<IEnumerable<Venue>> GetVenues();
     }
 }

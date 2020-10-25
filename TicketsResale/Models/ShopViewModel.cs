@@ -12,6 +12,6 @@ namespace TicketsResale.Models
 
         public City[] Cities { get; set; }
 
-        public Venue Venues { get; set; }
+        public Venue[] Venues { get; set; }
     }
 }

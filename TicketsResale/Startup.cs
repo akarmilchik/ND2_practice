@@ -30,16 +30,6 @@ namespace TicketsResale
         {
             services.AddControllersWithViews().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix).AddDataAnnotationsLocalization();
 
-            //services.Configure<AdoOptions>(Configuration.GetSection(nameof(AdoOptions)));
-
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(opts =>
-                {
-                    opts.LoginPath = "/User/Login";
-                    opts.AccessDeniedPath = "/User/Login";
-                    opts.Cookie.Name = "AuthShop";
-                });
-
             services.AddLocalization(opts =>
             {
                 opts.ResourcesPath = "Resources";
@@ -92,6 +82,17 @@ namespace TicketsResale
                 opts.FormFieldName = "TicketsStoreSecretInput";
                 opts.HeaderName = "X-CSRF-TOKEN";
                 opts.SuppressXFrameOptionsHeader = false;
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+                options.LoginPath = "/Identity/Account/Login";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.SlidingExpiration = true;
             });
         }
 

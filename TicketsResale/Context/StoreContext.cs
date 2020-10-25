@@ -10,7 +10,6 @@ namespace TicketsResale.Context
         {
 
         }
-
         public DbSet<City> Cities { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<Order> Orders { get; set; }
@@ -36,7 +35,6 @@ namespace TicketsResale.Context
             modelBuilder.Entity<Venue>().ToTable("Venues");
             modelBuilder.Entity<CartItem>().ToTable("CartItems");
             modelBuilder.Entity<TicketsCart>().ToTable("TicketsCarts");
-
 
             modelBuilder.Entity<CartItem>().HasKey(ci => new { ci.TicketsCartId, ci.TicketId });
             modelBuilder.Entity<Order>().HasOne(o => o.Ticket).WithMany(o => o.Orders).HasForeignKey(k => k.TicketId).OnDelete(DeleteBehavior.NoAction).IsRequired();

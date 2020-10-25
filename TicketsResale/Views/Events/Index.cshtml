@@ -1,5 +1,8 @@
 ﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+@model ShopViewModel
+
 <h1>@localizer["Events"]</h1>
+
 <div class="container-fluid">
     <div class="row row-cols-2">
         @foreach (var eventObj in Model.Events)
@@ -9,8 +12,8 @@
                     <img src="~/img/@eventObj.Banner" alt="@eventObj.Name" class="card-img-top img-fluid" />
                     <div class="card-body">
                         <h4><strong>@eventObj.Name</strong></h4>
-                        <h4><strong>@eventObj.Venue.City.Name</strong></h4>
-                        <h4>@localizer["Venue:"] @eventObj.Venue.Name</h4>
+                        <h4><strong>@Model.Cities.Where(c => c.Id == Model.Venues.Where(p => p.Id == eventObj.VenueId).Select(p => p.CityId).FirstOrDefault()).Select(c => c.Name).FirstOrDefault()</strong></h4>
+                        <h4>@localizer["Venue:"] @Model.Venues.Where(p => p.Id == eventObj.VenueId).Select(p => p.Name).FirstOrDefault()</h4>
                         <p><strong>@eventObj.Date.Date.ToShortDateString()</strong></p>
                         <p class="text-justify">@Html.Raw(@eventObj.Description)</p>
                         @Html.ActionLink(localizer["Buy ticket"].Value, "GetEventTickets", "Tickets", new { eventId = eventObj.Id }, new { @class = "btn btn-primary" })

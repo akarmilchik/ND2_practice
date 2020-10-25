@@ -11,7 +11,6 @@ namespace TicketsResale.Controllers
     [Authorize]
     public class CartController : Controller
     {
-        private const string CartCookieName = "TicketsResale.TicketsCartId";
         private readonly ITicketsCartService ticketsCartService;
         private readonly ITicketsService ticketsService;
 

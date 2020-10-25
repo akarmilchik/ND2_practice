@@ -1,26 +1,47 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<TicketsResale.Business.Models.StoreUser> SignInManager
 @inject UserManager<TicketsResale.Business.Models.StoreUser> UserManager
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 
-<ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
-    {
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <ul class="navbar-nav flex-grow-1">
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                <button type="submit" class="nav-link btn btn-link">Logout</button>
             </form>
         </li>
-    }
-    else
-    {
+    </ul>
+    <ul class="navbar-nav flex-grow-1">
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            <a class="nav-link" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-status="selling" asp-route-userName="@User.Identity.Name">
+                <img src="~/img/icons/mytickets-light.svg" width="20" height="20" class="d-inline-block align-top" alt="" loading="lazy"> @localizer["My tickets"]
+            </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="nav-link" asp-area="" asp-controller="MyOrders" asp-action="Index" asp-route-userName="@User.Identity.Name">
+                <img src="~/img/icons/orders-light.svg" width="20" height="20" class="d-inline-block align-top" alt="" loading="lazy"> @localizer["My orders"]
+            </a>
         </li>
-    }
-</ul>
+        <li class="nav-item">
+            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="UserInfo" asp-route-userName="@Context.User.Identity.Name">
+                <img src="~/img/icons/user-info-light.svg" width="20" height="20" class="d-inline-block align-top" alt="" loading="lazy"> @localizer["User info"]
+            </a>
+        </li>
+    </ul>
+}
+else
+{
+    <ul class="navbar-nav flex-grow-1">
+        <li class="nav-item">
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
+    </ul>
+}

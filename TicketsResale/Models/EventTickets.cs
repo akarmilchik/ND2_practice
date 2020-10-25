@@ -8,5 +8,7 @@ namespace TicketsResale.Models
     {
         public Dictionary<Event, List<Ticket>> eventTickets { get; set; }
 
+        public Event Event { get; set; }
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+@model ShopViewModel
 <header>
     <div>
         <h1>@localizer["My tickets"]</h1>
@@ -22,12 +23,13 @@
         {
             <div class="col-sm-3">
                 <div class="card text-center">
-                    <img src="~/img/ticket.jpg" alt="@ticket.Event.Name" class="card-img-top img-fluid" />
+                    <img src="~/img/ticket.jpg" class="card-img-top img-fluid" />
                     <div class="card-body">
-                        <h4><strong>@ticket.Event.Name</strong></h4>
+                        <h4><strong>@Model.Events.Where(e => e.Id == ticket.EventId).Select(e => e.Name).FirstOrDefault()</strong></h4>
                         <p><strong>@ticket.Event.Date.Date.ToShortDateString()</strong></p>
+                        <p><strong>@Model.Events.Where(e => e.Id == ticket.EventId).Select(e => e.Date.Date).FirstOrDefault()</strong></p>
                         <h4>$@ticket.Price</h4>
-                        <p><strong>@localizer["Seller:"] @ticket.Seller.FirstName @ticket.Seller.LastName</strong></p>
+                        <p><strong>@localizer["Seller:"] <!--ticket.Seller.FirstName ticket.Seller.LastName--></strong></p>
 
                         @Html.ActionLink(localizer["Buy"].Value, "Buy", "Store", new { id = ticket.Id }, new { @class = "btn btn-primary" })
                     </div>

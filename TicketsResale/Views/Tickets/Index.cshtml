@@ -1,4 +1,5 @@
 ﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+@model ShopViewModel
 <h1>@localizer["Tickets"]</h1>
 
 <div class="container-fluid">
@@ -12,7 +13,7 @@
                         <h4><strong>@localizer["Seller:"]<!-- ticket.Seller.FirstName ticket.Seller.LastName--></strong></h4>
                         <h4>$@ticket.Price</h4>
                         <p><strong>@ticket.Status</strong></p>
-                        @Html.ActionLink(localizer["Buy"].Value, "Buy", "Store", new { id = @ticket.Id }, new { @class = "btn btn-primary" })
+                        @Html.ActionLink(localizer["Buy"].Value, "Buy", "Tickets", new { id = @ticket.Id }, new { @class = "btn btn-primary" })
                     </div>
                 </div>
             </div>

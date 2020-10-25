@@ -21,6 +21,14 @@ namespace TicketsResale.Models.Service
         {
             return await context.Events.ToListAsync();
         }
+        public async Task<IEnumerable<Venue>> GetVenues()
+        {
+            return await context.Venues.ToListAsync();
+        }
+        public async Task<IEnumerable<City>> GetCities()
+        {
+            return await context.Cities.ToListAsync();
+        }
 
         public async Task<Event> GetEventById(int id)
         {

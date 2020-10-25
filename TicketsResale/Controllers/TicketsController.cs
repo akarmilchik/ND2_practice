@@ -17,12 +17,14 @@ namespace TicketsResale.Controllers
     {
         private readonly IStringLocalizer<TicketsController> localizer;
         private readonly ITicketsService ticketsService;
+        private readonly IEventsService eventsService;
         private readonly ILogger<TicketsController> logger;
 
-        public TicketsController(ITicketsService ticketsService, IStringLocalizer<TicketsController> localizer, ILogger<TicketsController> logger)
-        { 
+        public TicketsController(ITicketsService ticketsService, IEventsService eventsService, IStringLocalizer<TicketsController> localizer, ILogger<TicketsController> logger)
+        {
             this.localizer = localizer;
             this.ticketsService = ticketsService;
+            this.eventsService = eventsService;
             this.logger = logger;
         }
 
@@ -41,9 +43,9 @@ namespace TicketsResale.Controllers
         {
             ViewData["Title"] = localizer["title"];
 
-            var eventWithTickets = await ticketsService.GetEventWithTickets(eventId);
+            var eventTickets = await ticketsService.GetEventWithTickets(eventId);
 
-            return View("EventTickets", eventWithTickets);
+            return View(eventTickets);
         }
 
 
@@ -54,7 +56,8 @@ namespace TicketsResale.Controllers
 
             var model = new ShopViewModel
             {
-                Tickets = (await ticketsService.GetTickets(status, userName)).ToArray()
+                Tickets = (await ticketsService.GetTickets(status, userName)).ToArray(),
+                Events = (await eventsService.GetEvents()).ToArray()
             };
             return View(model);
         }
@@ -67,6 +70,7 @@ namespace TicketsResale.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public IActionResult Create(TicketCreateEditModel model)
         {
             if (ModelState.IsValid)
