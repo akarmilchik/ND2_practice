@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<TicketsResale.Business.Models.StoreUser> SignInManager
-@inject UserManager<TicketsResale.Business.Models.StoreUser> UserManager
+@using TicketsResale.Business.Models 
+@inject SignInManager<StoreUser> SignInManager
+@inject UserManager<StoreUser> UserManager
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 
 
@@ -28,7 +29,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="UserInfo" asp-route-userName="@Context.User.Identity.Name">
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index">
                 <img src="~/img/icons/user-info-light.svg" width="20" height="20" class="d-inline-block align-top" alt="" loading="lazy"> @localizer["User info"]
             </a>
         </li>

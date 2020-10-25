@@ -4,8 +4,8 @@
     <img src="~/img/@Model.eventTickets.Keys.ElementAt(0).Banner" alt="@Model.eventTickets.Keys.ElementAt(0).Name" class="card-img-top img-fluid" />
     <div class="card-body">
         <h4><strong>@Model.eventTickets.Keys.ElementAt(0).Name</strong></h4>
-        <h4><strong>@Model.eventTickets.Keys.ElementAt(0).Venue.City.Name</strong></h4>
-        <h4>@localizer["Venue:"] @Model.eventTickets.Keys.ElementAt(0).Venue.Name</h4>
+        <h4><strong>@Model.Venue.City.Name</strong></h4>
+        <h4>@localizer["Venue:"] @Model.Venue.Name</h4>
         <p><strong>@Model.eventTickets.Keys.ElementAt(0).Date.Date.ToShortDateString()</strong></p>
         <p class="text-justify">@Html.Raw(@Model.eventTickets.Keys.ElementAt(0).Description)</p>
     </div>

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,11 @@ namespace TicketsResale.Models.Service
         public async Task<IEnumerable<City>> GetCities()
         {
             return await context.Cities.ToListAsync();
+        }
+
+        public async Task<IEnumerable<StoreUser>> GetUsers()
+        {
+            return await context.Users.ToListAsync();
         }
 
         public async Task<Event> GetEventById(int id)

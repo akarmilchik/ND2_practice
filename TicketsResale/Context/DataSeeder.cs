@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,14 +25,17 @@ namespace TicketsResale.Context
             new City { Name = "Tokyo" },
             new City { Name = "Dubai" }
         };
-        /*
-        private static readonly List<User> Users = new List<User>
-        {
-            new User { Id = 1, FirstName = "Alexey", LastName = "Robinson", Address = "15, Kosmonavtov Av., Grodno, BLR", Localization = "rus", PhoneNumber = "228228", UserName = "admin", Password = "admin", Role = "Administrator" },
-            new User { Id = 2, FirstName = "Jominez", LastName = "Maxwell", Address = "132/1, Sunlight Av., Barselona, SPA", Localization = "spa", PhoneNumber = "345124", UserName = "user", Password = "user", Role = "User" },
-            new User { Id = 3, FirstName = "Alibaba", LastName = "Bestseller", Address = "6/1, 123 Av., New York, USA", Localization = "eng", PhoneNumber = "777777", UserName = "seller", Password = "seller", Role = "User" }
-        };*/
 
+
+
+        /*
+        private static readonly List<StoreUser> Users = new List<StoreUser>
+        {
+            new StoreUser { Id = 1, FirstName = "Alexey", LastName = "Robinson", Address = "15, Kosmonavtov Av., Grodno, BLR", Localization = "rus", PhoneNumber = "228228", UserName = "admin", Password = "admin", Role = "Administrator" },
+            new StoreUser { Id = 2, FirstName = "Jominez", LastName = "Maxwell", Address = "132/1, Sunlight Av., Barselona, SPA", Localization = "spa", PhoneNumber = "345124", UserName = "user", Password = "user", Role = "User" },
+            new StoreUser { Id = 3, FirstName = "Alibaba", LastName = "Bestseller", Address = "6/1, 123 Av., New York, USA", Localization = "eng", PhoneNumber = "777777", UserName = "seller", Password = "seller", Role = "User" }
+        };
+        */
 
         private static readonly List<Venue> Venues = new List<Venue>
         {

@@ -10,5 +10,9 @@ namespace TicketsResale.Models
 
         public Event Event { get; set; }
 
+        public Venue Venue {get; set;}
+
+        public City City { get; set; }
+
     }
 }

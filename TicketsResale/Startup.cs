@@ -13,6 +13,7 @@ using TicketsResale.Business.Models;
 using TicketsResale.Context;
 using TicketsResale.Models;
 using TicketsResale.Models.Service;
+using FluentValidation.AspNetCore;
 
 namespace TicketsResale
 {
@@ -30,6 +31,8 @@ namespace TicketsResale
         {
             services.AddControllersWithViews().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix).AddDataAnnotationsLocalization();
 
+            services.AddMvc().AddFluentValidation(f => f.RegisterValidatorsFromAssemblyContaining<Startup>());
+
             services.AddLocalization(opts =>
             {
                 opts.ResourcesPath = "Resources";
@@ -40,21 +43,17 @@ namespace TicketsResale
             services.AddScoped<IEventsService, EventsService>();
             services.AddScoped<IOrdersService, OrdersService>();
             services.AddScoped<CartIdHandler>();
-
-
             services.AddScoped<EventTickets>();
-
-            var dataSource = Configuration.GetValue<string>("DataSource");
 
             services.AddDbContext<StoreContext>(o =>
             {
                 o.UseSqlServer(Configuration.GetConnectionString("StoreConnection"))
                 .EnableSensitiveDataLogging();
             });
-                    
-           
 
-            services.AddDefaultIdentity<StoreUser>().AddEntityFrameworkStores<StoreContext>();
+            services.AddIdentity<StoreUser, IdentityRole>()
+                .AddEntityFrameworkStores<StoreContext>();
+               
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -74,7 +73,7 @@ namespace TicketsResale
                 // User settings.
                 options.User.AllowedUserNameCharacters =
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-                options.User.RequireUniqueEmail = true;
+                options.User.RequireUniqueEmail = false;
             });
 
             services.Configure<AntiforgeryOptions>(opts =>
@@ -87,7 +86,7 @@ namespace TicketsResale
             services.ConfigureApplicationCookie(options =>
             {
                 // Cookie settings
-                options.Cookie.HttpOnly = true;
+                options.Cookie.HttpOnly = false;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
                 options.LoginPath = "/Identity/Account/Login";

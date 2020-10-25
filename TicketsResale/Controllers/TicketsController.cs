@@ -4,10 +4,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
-using TicketsResale.Business;
-using TicketsResale.Business.Models;
 using TicketsResale.Models;
 using TicketsResale.Models.Service;
 
@@ -34,7 +31,8 @@ namespace TicketsResale.Controllers
 
             var model = new ShopViewModel
             {
-                Tickets = (await ticketsService.GetTickets()).ToArray()
+                Tickets = (await ticketsService.GetTickets()).ToArray(),
+                Users = (await eventsService.GetUsers()).ToArray()
             };
             return View(model);
         }
@@ -45,7 +43,7 @@ namespace TicketsResale.Controllers
 
             var eventTickets = await ticketsService.GetEventWithTickets(eventId);
 
-            return View(eventTickets);
+            return View("EventTickets", eventTickets);
         }
 
 

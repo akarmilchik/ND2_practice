@@ -6,6 +6,8 @@ namespace TicketsResale.Models
     {
         public Event[] Events { get; set; }
 
+        public StoreUser[] Users { get; set; }
+
         public Ticket[] Tickets { get; set; }
         
         public Order[] Orders { get; set; }

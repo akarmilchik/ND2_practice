@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Localization;
 using System.Linq;
 using System.Threading.Tasks;
-using TicketsResale.Business;
 using TicketsResale.Models;
 using TicketsResale.Models.Service;
 
 namespace TicketsResale.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class MyOrdersController : Controller
     {
         private readonly IStringLocalizer<HomeController> localizer;

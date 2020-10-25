@@ -36,12 +36,16 @@
     <Compile Remove="Migrations\20201024095321_StoreUser.Designer.cs" />
     <Compile Remove="Migrations\20201024111551_StoreUser.cs" />
     <Compile Remove="Migrations\20201024111551_StoreUser.Designer.cs" />
+    <Compile Remove="Migrations\20201025162558_FinalIdentity.cs" />
+    <Compile Remove="Migrations\20201025162558_FinalIdentity.Designer.cs" />
+    <Compile Remove="Models\LoginViewModel.cs" />
     <Compile Remove="Models\Service\IUsersService.cs" />
     <Compile Remove="Models\Service\UsersService.cs" />
     <Compile Remove="Models\UserManager.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="9.3.0-preview3" />
     <PackageReference Include="FontAwesome" Version="4.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.9" />

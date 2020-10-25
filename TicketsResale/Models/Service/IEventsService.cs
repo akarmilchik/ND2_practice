@@ -11,6 +11,7 @@ namespace TicketsResale.Models.Service
         Task<IEnumerable<City>> GetCities();
         Task<Event> GetEventById(int id);
         Task<IEnumerable<Event>> GetEvents();
+        Task<IEnumerable<StoreUser>> GetUsers();
         Task<IEnumerable<Venue>> GetVenues();
     }
 }
