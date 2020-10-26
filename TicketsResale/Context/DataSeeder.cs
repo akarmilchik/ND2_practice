@@ -26,8 +26,6 @@ namespace TicketsResale.Context
             new City { Name = "Dubai" }
         };
 
-
-
         /*
         private static readonly List<StoreUser> Users = new List<StoreUser>
         {
@@ -94,18 +92,18 @@ namespace TicketsResale.Context
             new Ticket { Event = Events[9], Price = 1500, /*Seller = Users[2],*/ Status = (byte)TicketStatuses.waiting }
         };
         /*
-        private static readonly List<Order> Orders = new List<Order>
+        private static readonly List<CartItem> CartItems = new List<CartItem>
         {
-            new Order {/*Buyer = Users[0],*//* Status = (byte)OrderStatuses.confirmed, Ticket = Tickets[0], TrackNumber = "SN53245AB21" },
-            new Order {/* Buyer = Users[1],*/ /*Status = (byte)OrderStatuses.rejected, Ticket = Tickets[2], TrackNumber = "SN34535AB98" },
-            new Order {/* Buyer = Users[2],*//* Status = (byte)OrderStatuses.rejected, Ticket = Tickets[6], TrackNumber = "SN18175AB74" },
-            new Order {/*Buyer = Users[1],*/ /*Status = (byte)OrderStatuses.waiting, Ticket = Tickets[9], TrackNumber = "SN77756AB13" },
-            new Order {/* Buyer = Users[1],*//* Status = (byte)OrderStatuses.confirmed, Ticket = Tickets[12], TrackNumber = "SN22467AB21" },
-            new Order {/* Buyer = Users[0],*//* Status = (byte)OrderStatuses.waiting, Ticket = Tickets[15], TrackNumber = "SN34563AB67" },
-            new Order {/* Buyer = Users[1], *//*Status = (byte)OrderStatuses.rejected, Ticket = Tickets[18], TrackNumber = "SN34442AB67" },
-            new Order {/* Buyer = Users[0], *//*Status = (byte)OrderStatuses.waiting, Ticket = Tickets[20], TrackNumber = "SN53245AB76" },
-            new Order {/* Buyer = Users[2], *//*Status = (byte)OrderStatuses.confirmed, Ticket = Tickets[4], TrackNumber = "SN98762AB21" },
-            new Order {/* Buyer = Users[0],*//* Status = (byte)OrderStatuses.rejected, Ticket = Tickets[22], TrackNumber = "SN23421AB33" }
+            new CartItem { Status = (byte)CartItemStatuses.confirmed, Ticket = Tickets[0], TrackNumber = "SN53245AB21" },
+            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[2], TrackNumber = "SN34535AB98" },
+            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[6], TrackNumber = "SN18175AB74" },
+            new CartItem { Status = (byte)CartItemStatuses.waiting, Ticket = Tickets[9], TrackNumber = "SN77756AB13" },
+            new CartItem { Status = (byte)CartItemStatuses.confirmed, Ticket = Tickets[12], TrackNumber = "SN22467AB21" },
+            new CartItem { Status = (byte)CartItemStatuses.waiting, Ticket = Tickets[15], TrackNumber = "SN34563AB67" },
+            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[18], TrackNumber = "SN34442AB67" },
+            new CartItem { Status = (byte)CartItemStatuses.waiting, Ticket = Tickets[20], TrackNumber = "SN53245AB76" },
+            new CartItem { Status = (byte)CartItemStatuses.confirmed, Ticket = Tickets[4], TrackNumber = "SN98762AB21" },
+            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[22], TrackNumber = "SN23421AB33" }
         };
         */
 
@@ -139,9 +137,9 @@ namespace TicketsResale.Context
                 await context.Tickets.AddRangeAsync(Tickets);
             }
             /*
-            if (!context.Orders.Any())
+            if (!context.CartItems.Any())
             {
-                await context.Orders.AddRangeAsync(Orders);
+                await context.CartItems.AddRangeAsync(CartItems);
             }
             */
             await context.SaveChangesAsync();

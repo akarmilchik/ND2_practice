@@ -2,36 +2,20 @@
 
 namespace TicketsResale.Migrations
 {
-    public partial class ExpandStoreUserWithIdentityRoles : Migration
+    public partial class Identity_ChangeModels_Roles : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_AspNetUsers_TicketsCarts_TicketsCartId",
-                table: "AspNetUsers");
-
             migrationBuilder.DropTable(
                 name: "Orders");
 
-            migrationBuilder.AddColumn<int>(
-                name: "SellerId",
-                table: "Tickets",
-                nullable: false,
-                defaultValue: 0);
-
             migrationBuilder.AddColumn<string>(
-                name: "SellerId1",
+                name: "SellerId",
                 table: "Tickets",
                 nullable: true);
 
-            migrationBuilder.AddColumn<int>(
-                name: "BuyerId",
-                table: "CartItems",
-                nullable: false,
-                defaultValue: 0);
-
             migrationBuilder.AddColumn<string>(
-                name: "BuyerId1",
+                name: "BuyerId",
                 table: "CartItems",
                 nullable: true);
 
@@ -46,44 +30,48 @@ namespace TicketsResale.Migrations
                 table: "CartItems",
                 nullable: true);
 
-            migrationBuilder.AlterColumn<int>(
-                name: "TicketsCartId",
+            migrationBuilder.AddColumn<string>(
+                name: "Address",
                 table: "AspNetUsers",
-                nullable: false,
-                oldClrType: typeof(int),
-                oldType: "int",
-                oldNullable: true);
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "FirstName",
+                table: "AspNetUsers",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "LastName",
+                table: "AspNetUsers",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "Localization",
+                table: "AspNetUsers",
+                nullable: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_SellerId1",
+                name: "IX_Tickets_SellerId",
                 table: "Tickets",
-                column: "SellerId1");
+                column: "SellerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CartItems_BuyerId1",
+                name: "IX_CartItems_BuyerId",
                 table: "CartItems",
-                column: "BuyerId1");
+                column: "BuyerId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_AspNetUsers_TicketsCarts_TicketsCartId",
-                table: "AspNetUsers",
-                column: "TicketsCartId",
-                principalTable: "TicketsCarts",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_CartItems_AspNetUsers_BuyerId1",
+                name: "FK_CartItems_AspNetUsers_BuyerId",
                 table: "CartItems",
-                column: "BuyerId1",
+                column: "BuyerId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Tickets_AspNetUsers_SellerId1",
+                name: "FK_Tickets_AspNetUsers_SellerId",
                 table: "Tickets",
-                column: "SellerId1",
+                column: "SellerId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
@@ -92,23 +80,19 @@ namespace TicketsResale.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_AspNetUsers_TicketsCarts_TicketsCartId",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_CartItems_AspNetUsers_BuyerId1",
+                name: "FK_CartItems_AspNetUsers_BuyerId",
                 table: "CartItems");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Tickets_AspNetUsers_SellerId1",
+                name: "FK_Tickets_AspNetUsers_SellerId",
                 table: "Tickets");
 
             migrationBuilder.DropIndex(
-                name: "IX_Tickets_SellerId1",
+                name: "IX_Tickets_SellerId",
                 table: "Tickets");
 
             migrationBuilder.DropIndex(
-                name: "IX_CartItems_BuyerId1",
+                name: "IX_CartItems_BuyerId",
                 table: "CartItems");
 
             migrationBuilder.DropColumn(
@@ -116,15 +100,7 @@ namespace TicketsResale.Migrations
                 table: "Tickets");
 
             migrationBuilder.DropColumn(
-                name: "SellerId1",
-                table: "Tickets");
-
-            migrationBuilder.DropColumn(
                 name: "BuyerId",
-                table: "CartItems");
-
-            migrationBuilder.DropColumn(
-                name: "BuyerId1",
                 table: "CartItems");
 
             migrationBuilder.DropColumn(
@@ -135,12 +111,21 @@ namespace TicketsResale.Migrations
                 name: "TrackNumber",
                 table: "CartItems");
 
-            migrationBuilder.AlterColumn<int>(
-                name: "TicketsCartId",
-                table: "AspNetUsers",
-                type: "int",
-                nullable: true,
-                oldClrType: typeof(int));
+            migrationBuilder.DropColumn(
+                name: "Address",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "FirstName",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "LastName",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "Localization",
+                table: "AspNetUsers");
 
             migrationBuilder.CreateTable(
                 name: "Orders",
@@ -166,14 +151,6 @@ namespace TicketsResale.Migrations
                 name: "IX_Orders_TicketId",
                 table: "Orders",
                 column: "TicketId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_AspNetUsers_TicketsCarts_TicketsCartId",
-                table: "AspNetUsers",
-                column: "TicketsCartId",
-                principalTable: "TicketsCarts",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
         }
     }
 }

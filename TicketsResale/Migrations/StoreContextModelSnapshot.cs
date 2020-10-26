@@ -162,10 +162,7 @@ namespace TicketsResale.Migrations
                     b.Property<int>("TicketId")
                         .HasColumnType("int");
 
-                    b.Property<int>("BuyerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("BuyerId1")
+                    b.Property<string>("BuyerId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Count")
@@ -179,7 +176,7 @@ namespace TicketsResale.Migrations
 
                     b.HasKey("TicketsCartId", "TicketId");
 
-                    b.HasIndex("BuyerId1");
+                    b.HasIndex("BuyerId");
 
                     b.HasIndex("TicketId");
 
@@ -238,6 +235,9 @@ namespace TicketsResale.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -248,6 +248,15 @@ namespace TicketsResale.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Localization")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -313,10 +322,7 @@ namespace TicketsResale.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("SellerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SellerId1")
+                    b.Property<string>("SellerId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<byte>("Status")
@@ -326,7 +332,7 @@ namespace TicketsResale.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.HasIndex("SellerId1");
+                    b.HasIndex("SellerId");
 
                     b.ToTable("Tickets");
                 });
@@ -421,7 +427,7 @@ namespace TicketsResale.Migrations
                 {
                     b.HasOne("TicketsResale.Business.Models.StoreUser", "Buyer")
                         .WithMany()
-                        .HasForeignKey("BuyerId1");
+                        .HasForeignKey("BuyerId");
 
                     b.HasOne("TicketsResale.Business.Models.Ticket", "Ticket")
                         .WithMany()
@@ -464,7 +470,7 @@ namespace TicketsResale.Migrations
 
                     b.HasOne("TicketsResale.Business.Models.StoreUser", "Seller")
                         .WithMany()
-                        .HasForeignKey("SellerId1");
+                        .HasForeignKey("SellerId");
                 });
 
             modelBuilder.Entity("TicketsResale.Business.Models.Venue", b =>
