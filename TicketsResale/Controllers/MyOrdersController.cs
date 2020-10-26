@@ -12,13 +12,11 @@ namespace TicketsResale.Controllers
     public class MyOrdersController : Controller
     {
         private readonly IStringLocalizer<HomeController> localizer;
-        private readonly IOrdersService ordersService;
         private readonly ITicketsService ticketsService;
         private readonly IEventsService eventsService;
 
-        public MyOrdersController(IOrdersService ordersService, ITicketsService ticketsService, IEventsService eventsService, IStringLocalizer<HomeController> localizer)
+        public MyOrdersController( ITicketsService ticketsService, IEventsService eventsService, IStringLocalizer<HomeController> localizer)
         {
-            this.ordersService = ordersService;
             this.ticketsService = ticketsService;
             this.eventsService = eventsService;
             this.localizer = localizer;
@@ -30,7 +28,7 @@ namespace TicketsResale.Controllers
             ViewData["Title"] = localizer["My orders"];
             var model = new ShopViewModel
             {
-                Orders = (await ordersService.GetOrders()).ToArray(),
+                CartItems = (await eventsService.GetCartItems()).ToArray(),
                 Tickets = (await ticketsService.GetTickets()).ToArray(),
                 Events = (await eventsService.GetEvents()).ToArray()
             };

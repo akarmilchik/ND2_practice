@@ -41,7 +41,6 @@ namespace TicketsResale
             services.AddScoped<ITicketsService, TicketsService>();
             services.AddScoped<ITicketsCartService, TicketsCartService>();
             services.AddScoped<IEventsService, EventsService>();
-            services.AddScoped<IOrdersService, OrdersService>();
             services.AddScoped<CartIdHandler>();
             services.AddScoped<EventTickets>();
 
@@ -51,7 +50,7 @@ namespace TicketsResale
                 .EnableSensitiveDataLogging();
             });
 
-            services.AddIdentity<StoreUser, IdentityRole>()
+            services.AddDefaultIdentity<StoreUser>()
                 .AddEntityFrameworkStores<StoreContext>();
                
 

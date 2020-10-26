@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Business\Models\Order.cs" />
     <Compile Remove="Business\Models\User.cs" />
     <Compile Remove="Context\IRepository.cs" />
     <Compile Remove="Context\UnitOfWork.cs" />
@@ -38,8 +39,16 @@
     <Compile Remove="Migrations\20201024111551_StoreUser.Designer.cs" />
     <Compile Remove="Migrations\20201025162558_FinalIdentity.cs" />
     <Compile Remove="Migrations\20201025162558_FinalIdentity.Designer.cs" />
+    <Compile Remove="Migrations\20201025192332_StoreUser_Expand.cs" />
+    <Compile Remove="Migrations\20201025192332_StoreUser_Expand.Designer.cs" />
+    <Compile Remove="Migrations\20201025210253_AddRoles.cs" />
+    <Compile Remove="Migrations\20201025210253_AddRoles.Designer.cs" />
+    <Compile Remove="Migrations\20201026043322_BackStoreUser.cs" />
+    <Compile Remove="Migrations\20201026043322_BackStoreUser.Designer.cs" />
     <Compile Remove="Models\LoginViewModel.cs" />
+    <Compile Remove="Models\Service\IOrdersService.cs" />
     <Compile Remove="Models\Service\IUsersService.cs" />
+    <Compile Remove="Models\Service\OrdersService.cs" />
     <Compile Remove="Models\Service\UsersService.cs" />
     <Compile Remove="Models\UserManager.cs" />
   </ItemGroup>
@@ -255,6 +264,10 @@
     <EmbeddedResource Update="Resources\Views\Tickets\WaitingConfirmation.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Roles\" />
   </ItemGroup>
 
 </Project>

@@ -8,5 +8,12 @@
 
         public Ticket Ticket { get; set; }
         public TicketsCart TicketsCart { get; set; }
+        public byte Status { get; set; }
+
+        public int BuyerId { get; set; }
+
+        public StoreUser Buyer { get; set; }
+
+        public string TrackNumber { get; set; }
     }
 }

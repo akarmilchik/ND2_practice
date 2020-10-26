@@ -31,6 +31,12 @@ namespace TicketsResale.Models.Service
             return await context.Cities.ToListAsync();
         }
 
+        public async Task<IEnumerable<CartItem>> GetCartItems()
+        {
+            return await context.CartItems.ToListAsync();
+        }
+
+
         public async Task<IEnumerable<StoreUser>> GetUsers()
         {
             return await context.Users.ToListAsync();

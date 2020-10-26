@@ -10,8 +10,8 @@ using TicketsResale.Context;
 namespace TicketsResale.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20201025192332_StoreUser_Expand")]
-    partial class StoreUser_Expand
+    [Migration("20201026051915_ExpandStoreUserWithIdentityRoles")]
+    partial class ExpandStoreUserWithIdentityRoles
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -164,10 +164,24 @@ namespace TicketsResale.Migrations
                     b.Property<int>("TicketId")
                         .HasColumnType("int");
 
+                    b.Property<int>("BuyerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BuyerId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
+                    b.Property<byte>("Status")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("TrackNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("TicketsCartId", "TicketId");
+
+                    b.HasIndex("BuyerId1");
 
                     b.HasIndex("TicketId");
 
@@ -216,37 +230,6 @@ namespace TicketsResale.Migrations
                     b.HasIndex("VenueId");
 
                     b.ToTable("Events");
-                });
-
-            modelBuilder.Entity("TicketsResale.Business.Models.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BuyerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("BuyerId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<byte>("Status")
-                        .HasColumnType("tinyint");
-
-                    b.Property<int>("TicketId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TrackNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BuyerId1");
-
-                    b.HasIndex("TicketId");
-
-                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("TicketsResale.Business.Models.StoreUser", b =>
@@ -438,6 +421,10 @@ namespace TicketsResale.Migrations
 
             modelBuilder.Entity("TicketsResale.Business.Models.CartItem", b =>
                 {
+                    b.HasOne("TicketsResale.Business.Models.StoreUser", "Buyer")
+                        .WithMany()
+                        .HasForeignKey("BuyerId1");
+
                     b.HasOne("TicketsResale.Business.Models.Ticket", "Ticket")
                         .WithMany()
                         .HasForeignKey("TicketId")
@@ -457,19 +444,6 @@ namespace TicketsResale.Migrations
                         .WithMany()
                         .HasForeignKey("VenueId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TicketsResale.Business.Models.Order", b =>
-                {
-                    b.HasOne("TicketsResale.Business.Models.StoreUser", "Buyer")
-                        .WithMany()
-                        .HasForeignKey("BuyerId1");
-
-                    b.HasOne("TicketsResale.Business.Models.Ticket", "Ticket")
-                        .WithMany("Orders")
-                        .HasForeignKey("TicketId")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 

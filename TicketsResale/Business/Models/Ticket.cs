@@ -15,7 +15,7 @@ namespace TicketsResale.Business.Models
 
         public int SellerId { get; set; }
 
-        public ICollection<Order> Orders { get; set; }
+        //public ICollection<Order> Orders { get; set; }
 
         public StoreUser Seller { get; set; }
 

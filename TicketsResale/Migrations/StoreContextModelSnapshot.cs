@@ -44,15 +44,6 @@ namespace TicketsResale.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "fefff99c-a2a8-499a-84e3-c752f87daaef",
-                            ConcurrencyStamp = "50363656-3f8f-4db3-bc98-c0a59cd95d5e",
-                            Name = "Administrator",
-                            NormalizedName = "Administrator"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -106,10 +97,12 @@ namespace TicketsResale.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -138,13 +131,6 @@ namespace TicketsResale.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "fefff99c-a2a8-499a-84e3-c752f87daaef",
-                            RoleId = "fefff99c-a2a8-499a-84e3-c752f87daaef"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -153,10 +139,12 @@ namespace TicketsResale.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -174,10 +162,24 @@ namespace TicketsResale.Migrations
                     b.Property<int>("TicketId")
                         .HasColumnType("int");
 
+                    b.Property<int>("BuyerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BuyerId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
+                    b.Property<byte>("Status")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("TrackNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("TicketsCartId", "TicketId");
+
+                    b.HasIndex("BuyerId1");
 
                     b.HasIndex("TicketId");
 
@@ -228,37 +230,6 @@ namespace TicketsResale.Migrations
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("TicketsResale.Business.Models.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BuyerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("BuyerId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<byte>("Status")
-                        .HasColumnType("tinyint");
-
-                    b.Property<int>("TicketId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TrackNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BuyerId1");
-
-                    b.HasIndex("TicketId");
-
-                    b.ToTable("Orders");
-                });
-
             modelBuilder.Entity("TicketsResale.Business.Models.StoreUser", b =>
                 {
                     b.Property<string>("Id")
@@ -266,9 +237,6 @@ namespace TicketsResale.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -280,15 +248,6 @@ namespace TicketsResale.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Localization")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -339,27 +298,6 @@ namespace TicketsResale.Migrations
                     b.HasIndex("TicketsCartId");
 
                     b.ToTable("AspNetUsers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "fefff99c-a2a8-499a-84e3-c752f87daaef",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "dc603b8b-8184-4966-8d6c-d5938c4c1c35",
-                            Email = "alexey.karm@mail.ru",
-                            EmailConfirmed = true,
-                            FirstName = "Alex",
-                            LastName = "Karm",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ALEXEY.KARM@MAIL.RU",
-                            NormalizedUserName = "ALEXEU121",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPWkMGwEKwvncQjrkw4mi60UlDVMx397CCBvZaBeDlkJAWO8TKBnoiIx2St0t9mX3Q==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "",
-                            TicketsCartId = 0,
-                            TwoFactorEnabled = false,
-                            UserName = "alexeu121"
-                        });
                 });
 
             modelBuilder.Entity("TicketsResale.Business.Models.Ticket", b =>
@@ -481,6 +419,10 @@ namespace TicketsResale.Migrations
 
             modelBuilder.Entity("TicketsResale.Business.Models.CartItem", b =>
                 {
+                    b.HasOne("TicketsResale.Business.Models.StoreUser", "Buyer")
+                        .WithMany()
+                        .HasForeignKey("BuyerId1");
+
                     b.HasOne("TicketsResale.Business.Models.Ticket", "Ticket")
                         .WithMany()
                         .HasForeignKey("TicketId")
@@ -500,19 +442,6 @@ namespace TicketsResale.Migrations
                         .WithMany()
                         .HasForeignKey("VenueId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TicketsResale.Business.Models.Order", b =>
-                {
-                    b.HasOne("TicketsResale.Business.Models.StoreUser", "Buyer")
-                        .WithMany()
-                        .HasForeignKey("BuyerId1");
-
-                    b.HasOne("TicketsResale.Business.Models.Ticket", "Ticket")
-                        .WithMany("Orders")
-                        .HasForeignKey("TicketId")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 

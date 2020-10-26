@@ -14,7 +14,7 @@ namespace TicketsResale.Context
         }
         public DbSet<City> Cities { get; set; }
         public DbSet<Event> Events { get; set; }
-        public DbSet<Order> Orders { get; set; }
+       //public DbSet<Order> Orders { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         
        // public DbSet<User> Users { get; set; }
@@ -29,16 +29,18 @@ namespace TicketsResale.Context
 
             modelBuilder.Entity<City>().ToTable("Cities");
             modelBuilder.Entity<Event>().ToTable("Events");
-            modelBuilder.Entity<Order>().ToTable("Orders");
+           // modelBuilder.Entity<Order>().ToTable("Orders");
             modelBuilder.Entity<Ticket>().ToTable("Tickets");
             modelBuilder.Entity<Venue>().ToTable("Venues");
             modelBuilder.Entity<CartItem>().ToTable("CartItems");
             modelBuilder.Entity<TicketsCart>().ToTable("TicketsCarts");
 
             modelBuilder.Entity<CartItem>().HasKey(ci => new { ci.TicketsCartId, ci.TicketId });
-            modelBuilder.Entity<Order>().HasOne(o => o.Ticket).WithMany(o => o.Orders).HasForeignKey(k => k.TicketId).OnDelete(DeleteBehavior.NoAction).IsRequired();
+            modelBuilder.Entity<CartItem>().HasOne(ci => ci.Buyer);
 
+            //modelBuilder.Entity<Order>().HasOne(o => o.Ticket).WithMany(o => o.Orders).HasForeignKey(k => k.TicketId).OnDelete(DeleteBehavior.NoAction).IsRequired();
 
+            /*
             string ADMIN_ID = Guid.NewGuid().ToString();
             string ROLE_ID = ADMIN_ID;
             //seed custom admin role
@@ -70,7 +72,7 @@ namespace TicketsResale.Context
                 RoleId = ROLE_ID,
                 UserId = ADMIN_ID
             });
-
+            */
            // modelBuilder.Entity<Order>().HasOne(o => o.Buyer).WithMany(o => o.Orders).HasForeignKey(k => k.BuyerId).OnDelete(DeleteBehavior.NoAction).IsRequired();
         }
     }

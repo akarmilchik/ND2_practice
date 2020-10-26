@@ -2,13 +2,16 @@
 
 namespace TicketsResale.Migrations
 {
-    public partial class StoreUser_Expand : Migration
+    public partial class ExpandStoreUserWithIdentityRoles : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_AspNetUsers_TicketsCarts_TicketsCartId",
                 table: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
 
             migrationBuilder.AddColumn<int>(
                 name: "SellerId",
@@ -23,13 +26,24 @@ namespace TicketsResale.Migrations
 
             migrationBuilder.AddColumn<int>(
                 name: "BuyerId",
-                table: "Orders",
+                table: "CartItems",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<string>(
                 name: "BuyerId1",
-                table: "Orders",
+                table: "CartItems",
+                nullable: true);
+
+            migrationBuilder.AddColumn<byte>(
+                name: "Status",
+                table: "CartItems",
+                nullable: false,
+                defaultValue: (byte)0);
+
+            migrationBuilder.AddColumn<string>(
+                name: "TrackNumber",
+                table: "CartItems",
                 nullable: true);
 
             migrationBuilder.AlterColumn<int>(
@@ -46,8 +60,8 @@ namespace TicketsResale.Migrations
                 column: "SellerId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_BuyerId1",
-                table: "Orders",
+                name: "IX_CartItems_BuyerId1",
+                table: "CartItems",
                 column: "BuyerId1");
 
             migrationBuilder.AddForeignKey(
@@ -59,8 +73,8 @@ namespace TicketsResale.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Orders_AspNetUsers_BuyerId1",
-                table: "Orders",
+                name: "FK_CartItems_AspNetUsers_BuyerId1",
+                table: "CartItems",
                 column: "BuyerId1",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
@@ -82,8 +96,8 @@ namespace TicketsResale.Migrations
                 table: "AspNetUsers");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Orders_AspNetUsers_BuyerId1",
-                table: "Orders");
+                name: "FK_CartItems_AspNetUsers_BuyerId1",
+                table: "CartItems");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Tickets_AspNetUsers_SellerId1",
@@ -94,8 +108,8 @@ namespace TicketsResale.Migrations
                 table: "Tickets");
 
             migrationBuilder.DropIndex(
-                name: "IX_Orders_BuyerId1",
-                table: "Orders");
+                name: "IX_CartItems_BuyerId1",
+                table: "CartItems");
 
             migrationBuilder.DropColumn(
                 name: "SellerId",
@@ -107,11 +121,19 @@ namespace TicketsResale.Migrations
 
             migrationBuilder.DropColumn(
                 name: "BuyerId",
-                table: "Orders");
+                table: "CartItems");
 
             migrationBuilder.DropColumn(
                 name: "BuyerId1",
-                table: "Orders");
+                table: "CartItems");
+
+            migrationBuilder.DropColumn(
+                name: "Status",
+                table: "CartItems");
+
+            migrationBuilder.DropColumn(
+                name: "TrackNumber",
+                table: "CartItems");
 
             migrationBuilder.AlterColumn<int>(
                 name: "TicketsCartId",
@@ -119,6 +141,31 @@ namespace TicketsResale.Migrations
                 type: "int",
                 nullable: true,
                 oldClrType: typeof(int));
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Status = table.Column<byte>(type: "tinyint", nullable: false),
+                    TicketId = table.Column<int>(type: "int", nullable: false),
+                    TrackNumber = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_Tickets_TicketId",
+                        column: x => x.TicketId,
+                        principalTable: "Tickets",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_TicketId",
+                table: "Orders",
+                column: "TicketId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetUsers_TicketsCarts_TicketsCartId",
