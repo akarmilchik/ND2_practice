@@ -11,9 +11,14 @@ namespace TicketsResale.Context
     public class DataSeeder
     {
         private readonly StoreContext context;
-        public DataSeeder(StoreContext context)
+        private readonly UserManager<StoreUser> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
+
+        public DataSeeder(StoreContext context, UserManager<StoreUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             this.context = context;
+            this.userManager = userManager;
+            this.roleManager = roleManager;
         }
 
         private static readonly List<City> Cities = new List<City>
@@ -110,6 +115,9 @@ namespace TicketsResale.Context
 
         public async Task SeedDataAsync()
         {
+            if(await roleManager.FindByNameAsync)
+
+
             await context.Database.EnsureCreatedAsync();
 
             if (!context.Cities.Any())

@@ -50,7 +50,7 @@ namespace TicketsResale
                 .EnableSensitiveDataLogging();
             });
 
-            services.AddDefaultIdentity<StoreUser>()
+            services.AddDefaultIdentity<StoreUser>().AddRoleManager<IdentityRole>()
                 .AddEntityFrameworkStores<StoreContext>();
                
 
