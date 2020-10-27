@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TicketsResale.Business.Models;
 
 namespace TicketsResale.Models
 {
@@ -9,7 +10,7 @@ namespace TicketsResale.Models
     {
         public int? Id { get; set; }
 
-        public string Event { get; set; }
+        public Event Event { get; set; }
 
         public decimal Price { get; set; }
 

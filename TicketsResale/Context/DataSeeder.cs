@@ -31,14 +31,28 @@ namespace TicketsResale.Context
             new City { Name = "Dubai" }
         };
 
-        /*
+
+        private static readonly List<TicketsCart> TicketsCarts = new List<TicketsCart>
+        {
+            new TicketsCart { Id = 1 },
+            new TicketsCart { Id = 2 },
+            new TicketsCart { Id = 3 }
+        };
+
         private static readonly List<StoreUser> Users = new List<StoreUser>
         {
-            new StoreUser { Id = 1, FirstName = "Alexey", LastName = "Robinson", Address = "15, Kosmonavtov Av., Grodno, BLR", Localization = "rus", PhoneNumber = "228228", UserName = "admin", Password = "admin", Role = "Administrator" },
-            new StoreUser { Id = 2, FirstName = "Jominez", LastName = "Maxwell", Address = "132/1, Sunlight Av., Barselona, SPA", Localization = "spa", PhoneNumber = "345124", UserName = "user", Password = "user", Role = "User" },
-            new StoreUser { Id = 3, FirstName = "Alibaba", LastName = "Bestseller", Address = "6/1, 123 Av., New York, USA", Localization = "eng", PhoneNumber = "777777", UserName = "seller", Password = "seller", Role = "User" }
+            new StoreUser { FirstName = "Alexey", LastName = "Karm", Address = "15, Kosmonavtov Av., Grodno, BLR", Localization = "rus", PhoneNumber = "228228", UserName = "alexeu121", TicketsCartId = TicketsCarts[0].Id },
+            new StoreUser { FirstName = "Jominez", LastName = "Maxwell", Address = "132/1, Sunlight Av., Barselona, SPA", Localization = "bel", PhoneNumber = "345124", UserName = "Jominez_2"/*, TicketsCartId = TicketsCarts[1].Id */},
+            new StoreUser { FirstName = "Alibaba", LastName = "Bestseller", Address = "6/1, 123 Av., New York, USA", Localization = "eng", PhoneNumber = "777777", UserName = "Alibaba_3"/*, TicketsCartId = TicketsCarts[2].Id */}
         };
-        */
+
+        private static readonly List<IdentityRole> Roles = new List<IdentityRole>
+        {
+            new IdentityRole { Name = "Administrator" },
+            new IdentityRole { Name = "User" }
+        };
+
+
 
         private static readonly List<Venue> Venues = new List<Venue>
         {
@@ -72,31 +86,32 @@ namespace TicketsResale.Context
 
          private static readonly List<Ticket> Tickets = new List<Ticket>
         {
-            new Ticket { Event = Events[0], Price = 15, /*Seller = Users[0],*/ Status = (byte)TicketStatuses.selling },
-            new Ticket { Event = Events[0], Price = 20, /*Seller = Users[0],*/ Status = (byte)TicketStatuses.sold },
-            new Ticket { Event = Events[1], Price = 35, /*Seller = Users[0],*/ Status = (byte)TicketStatuses.waiting },
-            new Ticket { Event = Events[2], Price = 100, /*Seller = Users[1],*/ Status = (byte)TicketStatuses.selling },
-            new Ticket { Event = Events[2], Price = 105,/* Seller = Users[1], */Status = (byte)TicketStatuses.waiting },
-            new Ticket { Event = Events[2], Price = 170,/* Seller = Users[1],*/ Status = (byte)TicketStatuses.waiting },
-            new Ticket { Event = Events[3], Price = 10,/* Seller = Users[0], */Status = (byte)TicketStatuses.selling },
-            new Ticket { Event = Events[3], Price = 6, /*Seller = Users[0],*/ Status = (byte)TicketStatuses.sold },
-            new Ticket { Event = Events[4], Price = 200,/* Seller = Users[2],*/ Status = (byte)TicketStatuses.selling },
-            new Ticket { Event = Events[4], Price = 240,/* Seller = Users[2],*/ Status = (byte)TicketStatuses.sold },
-            new Ticket { Event = Events[4], Price = 260,/* Seller = Users[2],*/ Status = (byte)TicketStatuses.sold },
-            new Ticket { Event = Events[4], Price = 210,/* Seller = Users[2],*/ Status = (byte)TicketStatuses.waiting },
-            new Ticket { Event = Events[5], Price = 70,/* Seller = Users[2],*/ Status = (byte)TicketStatuses.selling },
-            new Ticket { Event = Events[5], Price = 90, /*Seller = Users[2],*/ Status = (byte)TicketStatuses.sold },
-            new Ticket { Event = Events[5], Price = 150, /*Seller = Users[2],*/ Status = (byte)TicketStatuses.selling },
-            new Ticket { Event = Events[5], Price = 200, /*Seller = Users[2],*/ Status = (byte)TicketStatuses.waiting },
-            new Ticket { Event = Events[6], Price = 800, /*Seller = Users[2],*/ Status = (byte)TicketStatuses.sold },
-            new Ticket { Event = Events[6], Price = 750, /*Seller = Users[1],*/ Status = (byte)TicketStatuses.selling },
-            new Ticket { Event = Events[6], Price = 780, /*Seller = Users[2],*/ Status = (byte)TicketStatuses.sold },
-            new Ticket { Event = Events[7], Price = 130,/* Seller = Users[2], */Status = (byte)TicketStatuses.sold },
-            new Ticket { Event = Events[7], Price = 200,/* Seller = Users[2],*/ Status = (byte)TicketStatuses.selling },
-            new Ticket { Event = Events[8], Price = 80, /*Seller = Users[2],*/ Status = (byte)TicketStatuses.selling },
-            new Ticket { Event = Events[9], Price = 1500, /*Seller = Users[2],*/ Status = (byte)TicketStatuses.waiting }
+            new Ticket { Event = Events[0], Price = 15, Seller = Users[0], Status = (byte)TicketStatuses.selling },
+            new Ticket { Event = Events[0], Price = 20, Seller = Users[0], Status = (byte)TicketStatuses.sold },
+            new Ticket { Event = Events[1], Price = 35, Seller = Users[0], Status = (byte)TicketStatuses.waiting },
+            new Ticket { Event = Events[2], Price = 100, Seller = Users[1], Status = (byte)TicketStatuses.selling },
+            new Ticket { Event = Events[2], Price = 105, Seller = Users[1], Status = (byte)TicketStatuses.waiting },
+            new Ticket { Event = Events[2], Price = 170, Seller = Users[1], Status = (byte)TicketStatuses.waiting },
+            new Ticket { Event = Events[3], Price = 10, Seller = Users[0], Status = (byte)TicketStatuses.selling },
+            new Ticket { Event = Events[3], Price = 6, Seller = Users[0], Status = (byte)TicketStatuses.sold },
+            new Ticket { Event = Events[4], Price = 200, Seller = Users[2], Status = (byte)TicketStatuses.selling },
+            new Ticket { Event = Events[4], Price = 240, Seller = Users[2], Status = (byte)TicketStatuses.sold },
+            new Ticket { Event = Events[4], Price = 260, Seller = Users[2], Status = (byte)TicketStatuses.sold },
+            new Ticket { Event = Events[4], Price = 210, Seller = Users[2], Status = (byte)TicketStatuses.waiting },
+            new Ticket { Event = Events[5], Price = 70, Seller = Users[2], Status = (byte)TicketStatuses.selling },
+            new Ticket { Event = Events[5], Price = 90, Seller = Users[2], Status = (byte)TicketStatuses.sold },
+            new Ticket { Event = Events[5], Price = 150, Seller = Users[2], Status = (byte)TicketStatuses.selling },
+            new Ticket { Event = Events[5], Price = 200, Seller = Users[2], Status = (byte)TicketStatuses.waiting },
+            new Ticket { Event = Events[6], Price = 800, Seller = Users[2], Status = (byte)TicketStatuses.sold },
+            new Ticket { Event = Events[6], Price = 750, Seller = Users[1], Status = (byte)TicketStatuses.selling },
+            new Ticket { Event = Events[6], Price = 780, Seller = Users[2], Status = (byte)TicketStatuses.sold },
+            new Ticket { Event = Events[7], Price = 130, Seller = Users[2], Status = (byte)TicketStatuses.sold },
+            new Ticket { Event = Events[7], Price = 200, Seller = Users[2], Status = (byte)TicketStatuses.selling },
+            new Ticket { Event = Events[8], Price = 80, Seller = Users[2], Status = (byte)TicketStatuses.selling },
+            new Ticket { Event = Events[9], Price = 1500, Seller = Users[2], Status = (byte)TicketStatuses.waiting }
         };
-        /*
+
+        
         private static readonly List<CartItem> CartItems = new List<CartItem>
         {
             new CartItem { Status = (byte)CartItemStatuses.confirmed, Ticket = Tickets[0], TrackNumber = "SN53245AB21" },
@@ -110,25 +125,70 @@ namespace TicketsResale.Context
             new CartItem { Status = (byte)CartItemStatuses.confirmed, Ticket = Tickets[4], TrackNumber = "SN98762AB21" },
             new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[22], TrackNumber = "SN23421AB33" }
         };
-        */
+        
 
 
         public async Task SeedDataAsync()
         {
-            if(await roleManager.FindByNameAsync)
-
-
             await context.Database.EnsureCreatedAsync();
+
+            // Roles
+            foreach (IdentityRole role in Roles)
+            {
+                if (await roleManager.RoleExistsAsync(role.Name))
+                { 
+                    await roleManager.CreateAsync(role); 
+                }
+            }
+
+            // TicketsCarts
+            foreach (TicketsCart cart in TicketsCarts)
+            {
+                if (!context.TicketsCarts.Contains(cart))
+                {
+                    await context.TicketsCarts.AddAsync(cart);
+                }
+            }
+
+            await context.SaveChangesAsync();
+
+            // Create Users and sync with Roles
+            if (await userManager.FindByNameAsync(Users[0].UserName) == null)
+            {
+                IdentityResult result = userManager.CreateAsync(Users[0], "admin111").Result;
+
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(Users[0], Roles[0].Name);
+                }
+
+            }
+
+            if (await userManager.FindByNameAsync(Users[0].UserName) == null)
+            {
+                IdentityResult result = userManager.CreateAsync(Users[1], "user222").Result;
+
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(Users[1], Roles[1].Name);
+                }
+            }
+
+            if (await userManager.FindByNameAsync(Users[0].UserName) == null)
+            {
+                IdentityResult result = userManager.CreateAsync(Users[2], "user333").Result;
+
+
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(Users[2], Roles[1].Name);
+                }
+            }
 
             if (!context.Cities.Any())
             {
                 await context.Cities.AddRangeAsync(Cities);
             }
-/*
-            if (!context.Users.Any())
-            {
-                await context.Users.AddRangeAsync(Users);
-            }*/
 
             if (!context.Venues.Any())
             {
@@ -144,12 +204,12 @@ namespace TicketsResale.Context
             {
                 await context.Tickets.AddRangeAsync(Tickets);
             }
-            /*
+            
             if (!context.CartItems.Any())
             {
                 await context.CartItems.AddRangeAsync(CartItems);
             }
-            */
+            
             await context.SaveChangesAsync();
         }
     }
