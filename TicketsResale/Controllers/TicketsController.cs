@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Linq;
 using System.Threading.Tasks;
+using TicketsResale.Context;
 using TicketsResale.Models;
 using TicketsResale.Models.Service;
 
@@ -15,13 +16,15 @@ namespace TicketsResale.Controllers
         private readonly IStringLocalizer<TicketsController> localizer;
         private readonly ITicketsService ticketsService;
         private readonly IEventsService eventsService;
+        private readonly ITicketsCartService ticketsCartService;
         private readonly ILogger<TicketsController> logger;
 
-        public TicketsController(ITicketsService ticketsService, IEventsService eventsService, IStringLocalizer<TicketsController> localizer, ILogger<TicketsController> logger)
+        public TicketsController(ITicketsService ticketsService, IEventsService eventsService, ITicketsCartService ticketsCartService, IStringLocalizer<TicketsController> localizer, ILogger<TicketsController> logger)
         {
             this.localizer = localizer;
             this.ticketsService = ticketsService;
             this.eventsService = eventsService;
+            this.ticketsCartService = ticketsCartService;
             this.logger = logger;
         }
 
@@ -62,8 +65,9 @@ namespace TicketsResale.Controllers
 
         public async Task<IActionResult> Buy([FromRoute] int id)
         {
-            var product = await ticketsService.GetTicketById(id);
-            return View("Index", product);
+            var ticket = await ticketsService.GetTicketById(id);
+            await ticketsCartService.AddItemToCart(HttpContext.GetTicketsCartId(), ticket, 1);
+            return RedirectToAction("Index", "Cart");
         }
 
         [HttpPost]

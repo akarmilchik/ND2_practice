@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TicketsResale.Context;
 
 namespace TicketsResale.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20201027161748_ExpandModels")]
+    partial class ExpandModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -318,7 +320,10 @@ namespace TicketsResale.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("SellerId")
+                    b.Property<int>("SellerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SellerId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<byte>("Status")
@@ -328,7 +333,7 @@ namespace TicketsResale.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.HasIndex("SellerId");
+                    b.HasIndex("SellerId1");
 
                     b.ToTable("Tickets");
                 });
@@ -339,6 +344,9 @@ namespace TicketsResale.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("StoreUserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -462,7 +470,7 @@ namespace TicketsResale.Migrations
 
                     b.HasOne("TicketsResale.Business.Models.StoreUser", "Seller")
                         .WithMany()
-                        .HasForeignKey("SellerId");
+                        .HasForeignKey("SellerId1");
                 });
 
             modelBuilder.Entity("TicketsResale.Business.Models.Venue", b =>

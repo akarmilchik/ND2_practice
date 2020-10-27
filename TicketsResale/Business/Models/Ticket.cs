@@ -11,12 +11,10 @@ namespace TicketsResale.Business.Models
 
         public Event Event { get; set; }
 
-        //public int SellerId { get; set; }
 
         public StoreUser Seller { get; set; }
 
         public decimal Price { get; set; }
-
 
         public byte Status { get; set; }
     }

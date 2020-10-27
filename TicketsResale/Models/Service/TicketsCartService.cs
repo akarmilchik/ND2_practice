@@ -39,7 +39,7 @@ namespace TicketsResale.Models.Service
         {
             var cart = await context.TicketsCarts
                 .Include(c => c.CartItems)
-                .ThenInclude(ci => ci.Ticket)
+                .ThenInclude(ci => ci.Ticket).ThenInclude(e => e.Event)
                 .SingleOrDefaultAsync(c => c.Id == id);
             return cart;
         }

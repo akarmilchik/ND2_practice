@@ -41,9 +41,9 @@ namespace TicketsResale.Context
 
         private static readonly List<StoreUser> Users = new List<StoreUser>
         {
-            new StoreUser { FirstName = "Alexey", LastName = "Karm", Address = "15, Kosmonavtov Av., Grodno, BLR", Localization = "rus", PhoneNumber = "228228", UserName = "alexeu121", TicketsCartId = TicketsCarts[0].Id },
-            new StoreUser { FirstName = "Jominez", LastName = "Maxwell", Address = "132/1, Sunlight Av., Barselona, SPA", Localization = "bel", PhoneNumber = "345124", UserName = "Jominez_2"/*, TicketsCartId = TicketsCarts[1].Id */},
-            new StoreUser { FirstName = "Alibaba", LastName = "Bestseller", Address = "6/1, 123 Av., New York, USA", Localization = "eng", PhoneNumber = "777777", UserName = "Alibaba_3"/*, TicketsCartId = TicketsCarts[2].Id */}
+            new StoreUser { FirstName = "Alexey", LastName = "Karm", Address = "15, Kosmonavtov Av., Grodno, BLR", Localization = "rus", PhoneNumber = "228228", UserName = "alexey.karm@mail.ru", Email = "alexey.karm@mail.ru", TicketsCartId = 1 },
+            new StoreUser { FirstName = "Jominez", LastName = "Maxwell", Address = "132/1, Sunlight Av., Barselona, SPA", Localization = "bel", PhoneNumber = "345124", UserName = "j@mail.ru", Email = "j@mail.ru", TicketsCartId = 2 },
+            new StoreUser { FirstName = "Alibaba", LastName = "Bestseller", Address = "6/1, 123 Av., New York, USA", Localization = "eng", PhoneNumber = "777777", UserName = "a@mail.ru", Email = "a@mail.ru", TicketsCartId = 3 }
         };
 
         private static readonly List<IdentityRole> Roles = new List<IdentityRole>
@@ -114,43 +114,46 @@ namespace TicketsResale.Context
         
         private static readonly List<CartItem> CartItems = new List<CartItem>
         {
-            new CartItem { Status = (byte)CartItemStatuses.confirmed, Ticket = Tickets[0], TrackNumber = "SN53245AB21" },
-            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[2], TrackNumber = "SN34535AB98" },
-            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[6], TrackNumber = "SN18175AB74" },
-            new CartItem { Status = (byte)CartItemStatuses.waiting, Ticket = Tickets[9], TrackNumber = "SN77756AB13" },
-            new CartItem { Status = (byte)CartItemStatuses.confirmed, Ticket = Tickets[12], TrackNumber = "SN22467AB21" },
-            new CartItem { Status = (byte)CartItemStatuses.waiting, Ticket = Tickets[15], TrackNumber = "SN34563AB67" },
-            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[18], TrackNumber = "SN34442AB67" },
-            new CartItem { Status = (byte)CartItemStatuses.waiting, Ticket = Tickets[20], TrackNumber = "SN53245AB76" },
-            new CartItem { Status = (byte)CartItemStatuses.confirmed, Ticket = Tickets[4], TrackNumber = "SN98762AB21" },
-            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[22], TrackNumber = "SN23421AB33" }
+            new CartItem { Status = (byte)CartItemStatuses.confirmed, Ticket = Tickets[0], TrackNumber = "SN53245AB21", TicketsCartId = 1 },
+            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[2], TrackNumber = "SN34535AB98", TicketsCartId = 1 },
+            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[6], TrackNumber = "SN18175AB74", TicketsCartId = 1 },
+            new CartItem { Status = (byte)CartItemStatuses.waiting, Ticket = Tickets[9], TrackNumber = "SN77756AB13", TicketsCartId = 2 },
+            new CartItem { Status = (byte)CartItemStatuses.confirmed, Ticket = Tickets[12], TrackNumber = "SN22467AB21", TicketsCartId = 1 },
+            new CartItem { Status = (byte)CartItemStatuses.waiting, Ticket = Tickets[15], TrackNumber = "SN34563AB67", TicketsCartId = 2 },
+            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[18], TrackNumber = "SN34442AB67", TicketsCartId = 1 },
+            new CartItem { Status = (byte)CartItemStatuses.waiting, Ticket = Tickets[20], TrackNumber = "SN53245AB76", TicketsCartId = 3 },
+            new CartItem { Status = (byte)CartItemStatuses.confirmed, Ticket = Tickets[4], TrackNumber = "SN98762AB21", TicketsCartId = 3 },
+            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[22], TrackNumber = "SN23421AB33", TicketsCartId = 3 }
         };
         
 
 
         public async Task SeedDataAsync()
         {
+            var hasher = new PasswordHasher<StoreUser>();
             await context.Database.EnsureCreatedAsync();
 
             // Roles
             foreach (IdentityRole role in Roles)
             {
-                if (await roleManager.RoleExistsAsync(role.Name))
+                if (!await roleManager.RoleExistsAsync(role.Name))
                 { 
                     await roleManager.CreateAsync(role); 
                 }
             }
-
+            await context.SaveChangesAsync();
+            
             // TicketsCarts
             foreach (TicketsCart cart in TicketsCarts)
             {
                 if (!context.TicketsCarts.Contains(cart))
                 {
-                    await context.TicketsCarts.AddAsync(cart);
+                    await context.TicketsCarts.AddAsync(new TicketsCart { });
                 }
             }
-
             await context.SaveChangesAsync();
+
+            
 
             // Create Users and sync with Roles
             if (await userManager.FindByNameAsync(Users[0].UserName) == null)
@@ -164,9 +167,9 @@ namespace TicketsResale.Context
 
             }
 
-            if (await userManager.FindByNameAsync(Users[0].UserName) == null)
+            if (await userManager.FindByNameAsync(Users[1].UserName) == null)
             {
-                IdentityResult result = userManager.CreateAsync(Users[1], "user222").Result;
+                IdentityResult result = userManager.CreateAsync(Users[1], hasher.HashPassword(null, "user222")).Result;
 
                 if (result.Succeeded)
                 {
@@ -174,9 +177,9 @@ namespace TicketsResale.Context
                 }
             }
 
-            if (await userManager.FindByNameAsync(Users[0].UserName) == null)
+            if (await userManager.FindByNameAsync(Users[2].UserName) == null)
             {
-                IdentityResult result = userManager.CreateAsync(Users[2], "user333").Result;
+                IdentityResult result = userManager.CreateAsync(Users[2], hasher.HashPassword(null, "user333")).Result;
 
 
                 if (result.Succeeded)
@@ -184,6 +187,8 @@ namespace TicketsResale.Context
                     await userManager.AddToRoleAsync(Users[2], Roles[1].Name);
                 }
             }
+
+            await context.SaveChangesAsync();
 
             if (!context.Cities.Any())
             {
