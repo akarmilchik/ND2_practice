@@ -11,8 +11,13 @@ namespace TicketsResale.Business.Models
 
         public Event Event { get; set; }
 
+        //public int SellerId { get; set; }
 
         public StoreUser Seller { get; set; }
+
+        //public int BuyerId { get; set; }
+
+        public StoreUser Buyer { get; set; }
 
         public decimal Price { get; set; }
 

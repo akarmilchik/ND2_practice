@@ -29,13 +29,6 @@ namespace TicketsResale.Controllers
         public async Task<IActionResult> Index()
         {
             ViewData["Title"] = localizer["My orders"];
-            //var model = new ShopViewModel
-            //{
-            //    CartItems = (await eventsService.GetCartItems()).ToArray(),
-            //    Tickets = (await ticketsService.GetTickets()).ToArray(),
-            //    Events = (await eventsService.GetEvents()).ToArray()
-            //};
-
 
             var cartId = HttpContext.GetTicketsCartId();
             var cart = await ticketsCartService.FindCart(cartId);

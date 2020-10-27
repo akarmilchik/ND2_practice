@@ -1,10 +1,10 @@
 ﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
-@model TicketsCartViewModel
+@model IEnumerable<TicketsCartViewModel>
 <h1>@localizer["My orders"]</h1>
 
 <div class="container-fluid">
     <div class="row">
-        @foreach (var order in Model.CartItems)
+        @foreach (var cartItem in Model)
         {
             <div class="col-sm-6">
                 <div class="card mb-3" style="max-width: 540px;">
@@ -14,10 +14,11 @@
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
-                                <h5 class="card-title">@localizer["Order"] №@order.TrackNumber</h5>
-                                <h5 class="card-text">@Model.Events.Where(e => e.Id == Model.Tickets.Where(t => t.Id == order.TicketId).Select(t => t.EventId).FirstOrDefault()).Select(e => e.Name).FirstOrDefault()</h5>
-                                <p class="card-text"><strong>$@order.Ticket.Price</strong></p>
-                                <p class="card-text"><small class="text-muted">@localizer["Status:"] @order.Status</small></p>
+                                <!--
+                                <h5 class="card-title">localizer["Order"] №cartItem.TrackNumber</h5>
+                                <h5 class="card-text">Model.Events.Where(e => e.Id == Model.Tickets.Where(t => t.Id == cartItem.TicketId).Select(t => t.EventId).FirstOrDefault()).Select(e => e.Name).FirstOrDefault()</h5>
+                                <p class="card-text"><strong>$cartItem.Ticket.Price</strong></p>
+                                <p class="card-text"><small class="text-muted">localizer["Status:"] cartItem.Status</small></p>-->
                             </div>
                         </div>
                     </div>
