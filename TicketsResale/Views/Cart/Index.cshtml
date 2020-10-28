@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TicketsCartViewModel>
+﻿@model TicketsCartViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -6,36 +6,37 @@
 
 <h1>Tickets cart</h1>
 
-<table class="table">
-    <thead>
+<table class="table table-light">
+    <thead class="thead-dark">
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TicketName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Count)
-            </th>
+            <th scope="col">Event</th>
+            <th scope="col">Price</th>
+            <th scope="col">Seller</th>
+            <th scope="col">Status</th>
+            <th scope="col">Track/Reason</th>
         </tr>
     </thead>
-    <tbody>
-        @if (Model.Any())
+    <tbody >
+        @if (Model.CartItems.Any())
         {
-            foreach (var item in Model)
+            foreach (var cartItem in Model.CartItems)
             {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TicketName)
-                    </td>
+                    <td>@Model.Events.Where(e => e.Id == Model.Tickets.Where(t => t.Id == Model.CartItems.Where(ci => ci.TicketId == cartItem.TicketId).Select(ci => ci.TicketId).FirstOrDefault()).Select(t => t.EventId).FirstOrDefault()).Select(e => e.Name).FirstOrDefault()</td>
+                    <td>@Model.Tickets.Where(t => t.Id == cartItem.TicketId).Select(t => t.Price).FirstOrDefault())</td>
+                    <td>@Model.Sellers.Where(s => s.TicketsCartId == cartItem.TicketsCartId).Select(s => s.FirstName).FirstOrDefault() @Model.Sellers.Where(s => s.TicketsCartId == cartItem.TicketsCartId).Select(s => s.LastName).FirstOrDefault()</td>
+                    <td>@cartItem.Status</td>
+                    <td>@cartItem.TrackNumber</td>
                     <td>
                         <form method="post" asp-action="ChangeCount" class="form-inline">
-                            <input hidden name="id" value="@item.TicketId" />
-                            <input hidden name="count" value="@(item.Count - 1)" />
+                            <input hidden name="id" value="@cartItem.TicketId" />
+                            <input hidden name="count" value="@(cartItem.Count - 1)" />
                             <button type="submit" class="btn btn-light">-</button>
                         </form>
-                        @Html.DisplayFor(modelItem => item.Count)
+                        @Html.DisplayFor(modelItem => cartItem.Count)
                         <form method="post" asp-action="ChangeCount" class="form-inline">
-                            <input hidden name="id" value="@item.TicketId" />
-                            <input hidden name="count" value="@(item.Count + 1)" />
+                            <input hidden name="id" value="@cartItem.TicketId" />
+                            <input hidden name="count" value="@(cartItem.Count + 1)" />
                             <button type="submit" class="btn btn-light">+</button>
                         </form>
                     </td>
@@ -44,7 +45,10 @@
         }
         else
         {
-        <td colspan="2">Cart is empty</td>
+            <tr>
+                <td colspan="2">Cart is empty</td>
+            </tr>
         }
+
     </tbody>
 </table>

@@ -2,21 +2,22 @@
 
 namespace TicketsResale.Migrations
 {
-    public partial class Identity_ChangeModels_Roles : Migration
+    public partial class ExpandModels : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Orders");
 
-            migrationBuilder.AddColumn<string>(
+            migrationBuilder.AddColumn<int>(
                 name: "SellerId",
                 table: "Tickets",
-                nullable: true);
+                nullable: false,
+                defaultValue: 0);
 
             migrationBuilder.AddColumn<string>(
-                name: "BuyerId",
-                table: "CartItems",
+                name: "SellerId1",
+                table: "Tickets",
                 nullable: true);
 
             migrationBuilder.AddColumn<byte>(
@@ -51,27 +52,14 @@ namespace TicketsResale.Migrations
                 nullable: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_SellerId",
+                name: "IX_Tickets_SellerId1",
                 table: "Tickets",
-                column: "SellerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CartItems_BuyerId",
-                table: "CartItems",
-                column: "BuyerId");
+                column: "SellerId1");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_CartItems_AspNetUsers_BuyerId",
-                table: "CartItems",
-                column: "BuyerId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Tickets_AspNetUsers_SellerId",
+                name: "FK_Tickets_AspNetUsers_SellerId1",
                 table: "Tickets",
-                column: "SellerId",
+                column: "SellerId1",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
@@ -80,28 +68,20 @@ namespace TicketsResale.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_CartItems_AspNetUsers_BuyerId",
-                table: "CartItems");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Tickets_AspNetUsers_SellerId",
+                name: "FK_Tickets_AspNetUsers_SellerId1",
                 table: "Tickets");
 
             migrationBuilder.DropIndex(
-                name: "IX_Tickets_SellerId",
+                name: "IX_Tickets_SellerId1",
                 table: "Tickets");
-
-            migrationBuilder.DropIndex(
-                name: "IX_CartItems_BuyerId",
-                table: "CartItems");
 
             migrationBuilder.DropColumn(
                 name: "SellerId",
                 table: "Tickets");
 
             migrationBuilder.DropColumn(
-                name: "BuyerId",
-                table: "CartItems");
+                name: "SellerId1",
+                table: "Tickets");
 
             migrationBuilder.DropColumn(
                 name: "Status",

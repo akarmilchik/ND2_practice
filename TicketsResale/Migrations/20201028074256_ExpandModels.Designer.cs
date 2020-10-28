@@ -10,7 +10,7 @@ using TicketsResale.Context;
 namespace TicketsResale.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20201027161748_ExpandModels")]
+    [Migration("20201028074256_ExpandModels")]
     partial class ExpandModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -301,8 +301,7 @@ namespace TicketsResale.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("TicketsCartId")
-                        .IsUnique();
+                    b.HasIndex("TicketsCartId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -344,9 +343,6 @@ namespace TicketsResale.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("StoreUserId")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -454,8 +450,8 @@ namespace TicketsResale.Migrations
             modelBuilder.Entity("TicketsResale.Business.Models.StoreUser", b =>
                 {
                     b.HasOne("TicketsResale.Business.Models.TicketsCart", "TicketsCart")
-                        .WithOne("StoreUser")
-                        .HasForeignKey("TicketsResale.Business.Models.StoreUser", "TicketsCartId")
+                        .WithMany()
+                        .HasForeignKey("TicketsCartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

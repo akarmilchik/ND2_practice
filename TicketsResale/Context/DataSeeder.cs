@@ -86,51 +86,49 @@ namespace TicketsResale.Context
 
          private static readonly List<Ticket> Tickets = new List<Ticket>
         {
-            new Ticket { Event = Events[0], Price = 15, Seller = Users[0], Status = (byte)TicketStatuses.selling },
-            new Ticket { Event = Events[0], Price = 20, Seller = Users[0], Status = (byte)TicketStatuses.sold },
-            new Ticket { Event = Events[1], Price = 35, Seller = Users[0], Status = (byte)TicketStatuses.waiting },
-            new Ticket { Event = Events[2], Price = 100, Seller = Users[1], Status = (byte)TicketStatuses.selling },
-            new Ticket { Event = Events[2], Price = 105, Seller = Users[1], Status = (byte)TicketStatuses.waiting },
-            new Ticket { Event = Events[2], Price = 170, Seller = Users[1], Status = (byte)TicketStatuses.waiting },
-            new Ticket { Event = Events[3], Price = 10, Seller = Users[0], Status = (byte)TicketStatuses.selling },
-            new Ticket { Event = Events[3], Price = 6, Seller = Users[0], Status = (byte)TicketStatuses.sold },
-            new Ticket { Event = Events[4], Price = 200, Seller = Users[2], Status = (byte)TicketStatuses.selling },
-            new Ticket { Event = Events[4], Price = 240, Seller = Users[2], Status = (byte)TicketStatuses.sold },
-            new Ticket { Event = Events[4], Price = 260, Seller = Users[2], Status = (byte)TicketStatuses.sold },
-            new Ticket { Event = Events[4], Price = 210, Seller = Users[2], Status = (byte)TicketStatuses.waiting },
-            new Ticket { Event = Events[5], Price = 70, Seller = Users[2], Status = (byte)TicketStatuses.selling },
-            new Ticket { Event = Events[5], Price = 90, Seller = Users[2], Status = (byte)TicketStatuses.sold },
-            new Ticket { Event = Events[5], Price = 150, Seller = Users[2], Status = (byte)TicketStatuses.selling },
-            new Ticket { Event = Events[5], Price = 200, Seller = Users[2], Status = (byte)TicketStatuses.waiting },
-            new Ticket { Event = Events[6], Price = 800, Seller = Users[2], Status = (byte)TicketStatuses.sold },
-            new Ticket { Event = Events[6], Price = 750, Seller = Users[1], Status = (byte)TicketStatuses.selling },
-            new Ticket { Event = Events[6], Price = 780, Seller = Users[2], Status = (byte)TicketStatuses.sold },
-            new Ticket { Event = Events[7], Price = 130, Seller = Users[2], Status = (byte)TicketStatuses.sold },
-            new Ticket { Event = Events[7], Price = 200, Seller = Users[2], Status = (byte)TicketStatuses.selling },
-            new Ticket { Event = Events[8], Price = 80, Seller = Users[2], Status = (byte)TicketStatuses.selling },
-            new Ticket { Event = Events[9], Price = 1500, Seller = Users[2], Status = (byte)TicketStatuses.waiting }
+            new Ticket { Event = Events[0], Price = 15, SellerId = 1, Status = (byte)TicketStatuses.selling },
+            new Ticket { Event = Events[0], Price = 20, SellerId = 1, Status = (byte)TicketStatuses.sold },
+            new Ticket { Event = Events[1], Price = 35, SellerId = 1, Status = (byte)TicketStatuses.waiting },
+            new Ticket { Event = Events[2], Price = 100, SellerId = 2, Status = (byte)TicketStatuses.selling },
+            new Ticket { Event = Events[2], Price = 105, SellerId = 2, Status = (byte)TicketStatuses.waiting },
+            new Ticket { Event = Events[2], Price = 170, SellerId = 2, Status = (byte)TicketStatuses.waiting },
+            new Ticket { Event = Events[3], Price = 10, SellerId = 1, Status = (byte)TicketStatuses.selling },
+            new Ticket { Event = Events[3], Price = 6, SellerId = 1, Status = (byte)TicketStatuses.sold },
+            new Ticket { Event = Events[4], Price = 200, SellerId = 3, Status = (byte)TicketStatuses.selling },
+            new Ticket { Event = Events[4], Price = 240, SellerId = 3, Status = (byte)TicketStatuses.sold },
+            new Ticket { Event = Events[4], Price = 260, SellerId = 3, Status = (byte)TicketStatuses.sold },
+            new Ticket { Event = Events[4], Price = 210, SellerId = 3, Status = (byte)TicketStatuses.waiting },
+            new Ticket { Event = Events[5], Price = 70, SellerId = 3, Status = (byte)TicketStatuses.selling },
+            new Ticket { Event = Events[5], Price = 90, SellerId = 3, Status = (byte)TicketStatuses.sold },
+            new Ticket { Event = Events[5], Price = 150, SellerId = 3, Status = (byte)TicketStatuses.selling },
+            new Ticket { Event = Events[5], Price = 200, SellerId = 3, Status = (byte)TicketStatuses.waiting },
+            new Ticket { Event = Events[6], Price = 800, SellerId = 3, Status = (byte)TicketStatuses.sold },
+            new Ticket { Event = Events[6], Price = 750, SellerId = 2, Status = (byte)TicketStatuses.selling },
+            new Ticket { Event = Events[6], Price = 780, SellerId = 3, Status = (byte)TicketStatuses.sold },
+            new Ticket { Event = Events[7], Price = 130, SellerId = 3, Status = (byte)TicketStatuses.sold },
+            new Ticket { Event = Events[7], Price = 200, SellerId = 3, Status = (byte)TicketStatuses.selling },
+            new Ticket { Event = Events[8], Price = 80, SellerId = 3, Status = (byte)TicketStatuses.selling },
+            new Ticket { Event = Events[9], Price = 1500, SellerId = 3, Status = (byte)TicketStatuses.waiting }
         };
 
-        
+        //Orders of Users
         private static readonly List<CartItem> CartItems = new List<CartItem>
         {
-            new CartItem { Status = (byte)CartItemStatuses.confirmed, Ticket = Tickets[0], TrackNumber = "SN53245AB21", TicketsCartId = 1 },
-            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[2], TrackNumber = "SN34535AB98", TicketsCartId = 1 },
-            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[6], TrackNumber = "SN18175AB74", TicketsCartId = 1 },
-            new CartItem { Status = (byte)CartItemStatuses.waiting, Ticket = Tickets[9], TrackNumber = "SN77756AB13", TicketsCartId = 2 },
-            new CartItem { Status = (byte)CartItemStatuses.confirmed, Ticket = Tickets[12], TrackNumber = "SN22467AB21", TicketsCartId = 1 },
-            new CartItem { Status = (byte)CartItemStatuses.waiting, Ticket = Tickets[15], TrackNumber = "SN34563AB67", TicketsCartId = 2 },
-            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[18], TrackNumber = "SN34442AB67", TicketsCartId = 1 },
-            new CartItem { Status = (byte)CartItemStatuses.waiting, Ticket = Tickets[20], TrackNumber = "SN53245AB76", TicketsCartId = 3 },
-            new CartItem { Status = (byte)CartItemStatuses.confirmed, Ticket = Tickets[4], TrackNumber = "SN98762AB21", TicketsCartId = 3 },
-            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[22], TrackNumber = "SN23421AB33", TicketsCartId = 3 }
+            new CartItem { Status = (byte)CartItemStatuses.confirmed, Ticket = Tickets[0], TrackNumber = "SN53245AB21", TicketsCartId = 1, Count = 1 },
+            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[2], TrackNumber = "SN34535AB98", TicketsCartId = 1, Count = 1},
+            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[6], TrackNumber = "SN18175AB74", TicketsCartId = 1, Count = 1 },
+            new CartItem { Status = (byte)CartItemStatuses.waiting, Ticket = Tickets[9], TrackNumber = "SN77756AB13", TicketsCartId = 2, Count = 1 },
+            new CartItem { Status = (byte)CartItemStatuses.confirmed, Ticket = Tickets[12], TrackNumber = "SN22467AB21", TicketsCartId = 1, Count = 1 },
+            new CartItem { Status = (byte)CartItemStatuses.waiting, Ticket = Tickets[15], TrackNumber = "SN34563AB67", TicketsCartId = 2, Count = 1 },
+            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[18], TrackNumber = "SN34442AB67", TicketsCartId = 1, Count = 1 },
+            new CartItem { Status = (byte)CartItemStatuses.waiting, Ticket = Tickets[20], TrackNumber = "SN53245AB76", TicketsCartId = 3, Count = 1 },
+            new CartItem { Status = (byte)CartItemStatuses.confirmed, Ticket = Tickets[4], TrackNumber = "SN98762AB21", TicketsCartId = 3, Count = 1 },
+            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[22], TrackNumber = "SN23421AB33", TicketsCartId = 3, Count = 1 }
         };
-        
 
 
         public async Task SeedDataAsync()
         {
-            var hasher = new PasswordHasher<StoreUser>();
             await context.Database.EnsureCreatedAsync();
 
             // Roles
@@ -169,7 +167,7 @@ namespace TicketsResale.Context
 
             if (await userManager.FindByNameAsync(Users[1].UserName) == null)
             {
-                IdentityResult result = userManager.CreateAsync(Users[1], hasher.HashPassword(null, "user222")).Result;
+                IdentityResult result = userManager.CreateAsync(Users[1], "user222").Result;
 
                 if (result.Succeeded)
                 {
@@ -179,7 +177,7 @@ namespace TicketsResale.Context
 
             if (await userManager.FindByNameAsync(Users[2].UserName) == null)
             {
-                IdentityResult result = userManager.CreateAsync(Users[2], hasher.HashPassword(null, "user333")).Result;
+                IdentityResult result = userManager.CreateAsync(Users[2], "user333").Result;
 
 
                 if (result.Succeeded)

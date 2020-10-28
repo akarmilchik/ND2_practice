@@ -25,21 +25,6 @@ namespace TicketsResale.Controllers
             this.localizer = localizer;
         }
 
-        [Authorize]
-        public async Task<IActionResult> Index()
-        {
-            ViewData["Title"] = localizer["My orders"];
 
-            var cartId = HttpContext.GetTicketsCartId();
-            var cart = await ticketsCartService.FindCart(cartId);
-            var items = cart.CartItems.Select(ci => new TicketsCartViewModel
-            {
-                TicketId = ci.TicketId,
-                TicketName = ci.Ticket.Event.Name,
-                Count = ci.Count
-            });
-
-            return View(items);
-        }
     }
 }

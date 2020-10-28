@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using TicketsResale.Context;
 
 namespace TicketsResale.Business.Models
 {
-    public class Ticket : IEntity
+    public class Ticket
     {
         public int Id { get; set; }
 
@@ -11,13 +12,9 @@ namespace TicketsResale.Business.Models
 
         public Event Event { get; set; }
 
-        //public int SellerId { get; set; }
+        public int SellerId { get; set; }
 
         public StoreUser Seller { get; set; }
-
-        //public int BuyerId { get; set; }
-
-        public StoreUser Buyer { get; set; }
 
         public decimal Price { get; set; }
 

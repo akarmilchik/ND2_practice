@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using TicketsResale.Context;
 using TicketsResale.Models;
@@ -22,24 +24,29 @@ namespace TicketsResale.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var cartId = HttpContext.GetTicketsCartId();
+            var cartId = HttpContext.GetTicketsCartId();         
             var cart = await ticketsCartService.FindCart(cartId);
-            var items = cart.CartItems.Select(ci => new TicketsCartViewModel
+            var tickets = await ticketsService.GetTicketsByCart(cart.Id);
+            var events = await ticketsService.GetEvents();
+            var sellers = await ticketsService.GetSellers();
+
+            var model =  new TicketsCartViewModel
             {
-                TicketId = ci.TicketId,
-                TicketName = ci.Ticket.Event.Name,
-                Count = ci.Count
-            });
+               Events = events.ToArray(),
+               CartItems = cart.CartItems,
+               Tickets = tickets.ToArray(),
+               Sellers = sellers.ToArray()
+            };
 
-            return View(items);
+            return View(model);
         }
-
+        /*
         public async Task<IActionResult> Add(int id, int count)
         {
             var product = await ticketsService.GetTicketById(id);
             await ticketsCartService.AddItemToCart(HttpContext.GetTicketsCartId(), product, count);
-            return RedirectToAction("Index", "Store");
-        }
+            return RedirectToAction("Index", "Tickets");
+        }*/
 
         [HttpPost]
         public async Task<IActionResult> Remove(int id)

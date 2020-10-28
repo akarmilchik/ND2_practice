@@ -10,6 +10,7 @@ namespace TicketsResale.Models.Service
         Task ClearCart(int id);
         Task<int> CreateCart();
         Task<TicketsCart> FindCart(int id);
+        Task<int> GetTicketsCartIdByUserId(string id);
         Task RemoveItemFromCart(int id, Ticket item);
     }
 }

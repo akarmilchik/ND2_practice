@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,6 +22,18 @@ namespace TicketsResale.Models.Service
         {
             return await context.Tickets.ToListAsync();
         }
+
+        public async Task<IEnumerable<Event>> GetEvents()
+        {
+            return await context.Events.ToListAsync();
+        }
+
+        public async Task<IEnumerable<StoreUser>> GetSellers()
+        {
+            return await context.Users.ToListAsync();
+        }
+
+
 
         public async Task<IEnumerable<Ticket>> GetTickets(byte status, string userName)
         {
@@ -57,6 +70,30 @@ namespace TicketsResale.Models.Service
         public async Task<Ticket> GetTicketById(int id)
         {
             return await context.Tickets.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<Ticket>> GetTicketsByCart(int ticketsCartId)
+        {
+            var items = await context.CartItems.Where(t => t.TicketsCartId == ticketsCartId).ToListAsync();
+
+            var AllTickets = await context.Tickets.ToListAsync();
+
+            List<Ticket> resTickets = new List<Ticket>();
+
+
+            foreach (CartItem item in items)
+            {
+                foreach (Ticket ticket in AllTickets)
+                {
+                    if (ticket.Id == item.TicketId)
+                    {
+                        resTickets.Add(ticket);
+                    }
+                }
+            }
+
+            return resTickets;
+
         }
 
     }

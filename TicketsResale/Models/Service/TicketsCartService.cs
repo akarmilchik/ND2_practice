@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -44,6 +45,11 @@ namespace TicketsResale.Models.Service
             return cart;
         }
 
+        public async Task<int> GetTicketsCartIdByUserId(string id)
+        {
+            return context.Users.Where(u => u.Id == id).Select(u => u.TicketsCartId).FirstOrDefault();
+        }
+
         public async Task ChangeItemCount(int id, Ticket item, int newCount)
         {
             var cart = await GetCart(id);
@@ -79,5 +85,6 @@ namespace TicketsResale.Models.Service
             await context.SaveChangesAsync();
             return newCart.Entity.Id;
         }
+        
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TicketsResale.Context;
@@ -39,7 +40,7 @@ namespace TicketsResale.Controllers
             };
             return View(model);
         }
-
+        [Authorize]
         public async Task<IActionResult> GetEventTickets(int eventId)
         {
             ViewData["Title"] = localizer["title"];
@@ -62,12 +63,12 @@ namespace TicketsResale.Controllers
             };
             return View(model);
         }
-
+        [Authorize]
         public async Task<IActionResult> Buy([FromRoute] int id)
         {
             var ticket = await ticketsService.GetTicketById(id);
             await ticketsCartService.AddItemToCart(HttpContext.GetTicketsCartId(), ticket, 1);
-            return RedirectToAction("Index", "Cart");
+            return RedirectToAction("Index", "Cart", ticket);
         }
 
         [HttpPost]

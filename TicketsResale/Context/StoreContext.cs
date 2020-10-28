@@ -14,6 +14,7 @@ namespace TicketsResale.Context
         public DbSet<Event> Events { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Venue> Venues { get; set; }
+
         public DbSet<TicketsCart> TicketsCarts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
 
@@ -29,6 +30,10 @@ namespace TicketsResale.Context
             modelBuilder.Entity<TicketsCart>().ToTable("TicketsCarts");
 
             modelBuilder.Entity<CartItem>().HasKey(ci => new { ci.TicketsCartId, ci.TicketId });
+
+            //modelBuilder.Entity<Ticket>().HasKey(t => t.StoreUserId);
+            
+            //.Map(m => m.MapKey("StoreUserId"));
 
             /*modelBuilder.Entity<CartItem>().HasKey(ci => ci.BuyerId);
             modelBuilder.Entity<Event>().HasKey(ev => ev.VenueId);

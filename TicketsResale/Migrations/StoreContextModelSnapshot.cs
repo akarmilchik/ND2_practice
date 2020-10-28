@@ -311,16 +311,16 @@ namespace TicketsResale.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("BuyerId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("EventId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("SellerId")
+                    b.Property<int>("SellerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SellerId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<byte>("Status")
@@ -328,11 +328,9 @@ namespace TicketsResale.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BuyerId");
-
                     b.HasIndex("EventId");
 
-                    b.HasIndex("SellerId");
+                    b.HasIndex("SellerId1");
 
                     b.ToTable("Tickets");
                 });
@@ -458,10 +456,6 @@ namespace TicketsResale.Migrations
 
             modelBuilder.Entity("TicketsResale.Business.Models.Ticket", b =>
                 {
-                    b.HasOne("TicketsResale.Business.Models.StoreUser", "Buyer")
-                        .WithMany()
-                        .HasForeignKey("BuyerId");
-
                     b.HasOne("TicketsResale.Business.Models.Event", "Event")
                         .WithMany()
                         .HasForeignKey("EventId")
@@ -470,7 +464,7 @@ namespace TicketsResale.Migrations
 
                     b.HasOne("TicketsResale.Business.Models.StoreUser", "Seller")
                         .WithMany()
-                        .HasForeignKey("SellerId");
+                        .HasForeignKey("SellerId1");
                 });
 
             modelBuilder.Entity("TicketsResale.Business.Models.Venue", b =>
