@@ -38,11 +38,12 @@ namespace TicketsResale.Models.Service
         public async Task<IEnumerable<Ticket>> GetTickets(byte status, string userName)
         {
             var chosenTickets = new List<Ticket>();
-            var tickets = await context.Tickets.ToListAsync();
+            var tickets = await context.Tickets.Include(e => e.Seller).ToListAsync();
+            var sellers = await context.Users.ToListAsync();
 
             for (int i = 0; i < tickets.Count; i++)
             {
-                if ((tickets[i].Status == status)/* && (tickets[i].Seller.UserName == userName)*/)
+                if ((tickets[i].Status == status) && (tickets[i].Seller.UserName == ()
                     chosenTickets.Add(tickets[i]);
             }
 

@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@using TicketsResale.Business.Models 
+@using TicketsResale.Business.Models
+@using System.Security.Claims;
 @inject SignInManager<StoreUser> SignInManager
 @inject UserManager<StoreUser> UserManager
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
@@ -18,7 +19,7 @@
     </ul>
     <ul class="navbar-nav flex-grow-1">
         <li class="nav-item">
-            <a class="nav-link" asp-area="" asp-controller="Tickets" asp-action="Index" asp-route-status="selling" asp-route-userName="@User.Identity.Name">
+            <a class="nav-link" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-status="1" asp-route-userName="@User.Identity.Name">
                 <img src="~/img/icons/mytickets-light.svg" width="20" height="20" class="d-inline-block align-top" alt="" loading="lazy"> @localizer["My tickets"]
             </a>
         </li>
