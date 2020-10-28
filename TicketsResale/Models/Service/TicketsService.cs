@@ -43,7 +43,7 @@ namespace TicketsResale.Models.Service
 
             for (int i = 0; i < tickets.Count; i++)
             {
-                if ((tickets[i].Status == status) && (tickets[i].Seller.UserName == ()
+                //if ((tickets[i].Status == status) && (tickets[i].Seller.UserName == ()
                     chosenTickets.Add(tickets[i]);
             }
 

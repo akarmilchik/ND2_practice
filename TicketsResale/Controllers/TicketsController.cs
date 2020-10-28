@@ -59,7 +59,8 @@ namespace TicketsResale.Controllers
             var model = new ShopViewModel
             {
                 Tickets = (await ticketsService.GetTickets(status, userName)).ToArray(),
-                Events = (await eventsService.GetEvents()).ToArray()
+                Events = (await eventsService.GetEvents()).ToArray(), 
+                Users = (await eventsService.GetUsers()).ToArray()
             };
             return View(model);
         }

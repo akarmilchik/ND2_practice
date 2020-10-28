@@ -44,10 +44,6 @@ namespace TicketsResale.Context
                 }
             }
 
-
-
-
-
             await next(context);
         }
     }
