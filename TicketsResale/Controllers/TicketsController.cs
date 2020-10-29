@@ -15,16 +15,14 @@ namespace TicketsResale.Controllers
     {
         private readonly IStringLocalizer<TicketsController> localizer;
         private readonly ITicketsService ticketsService;
-        private readonly IEventsService eventsService;
         private readonly ITicketsCartService ticketsCartService;
         private readonly ITakeDataService takeDataService;
         private readonly ILogger<TicketsController> logger;
 
-        public TicketsController(ITicketsService ticketsService, IEventsService eventsService, ITicketsCartService ticketsCartService, ITakeDataService takeDataService, IStringLocalizer<TicketsController> localizer, ILogger<TicketsController> logger)
+        public TicketsController(ITicketsService ticketsService, ITicketsCartService ticketsCartService, ITakeDataService takeDataService, IStringLocalizer<TicketsController> localizer, ILogger<TicketsController> logger)
         {
             this.localizer = localizer;
             this.ticketsService = ticketsService;
-            this.eventsService = eventsService;
             this.ticketsCartService = ticketsCartService;
             this.takeDataService = takeDataService;
             this.logger = logger;

@@ -6,12 +6,16 @@
 
   <ItemGroup>
     <Compile Remove="Context\Ado\**" />
+    <Compile Remove="Views\Roles\**" />
     <Compile Remove="Views\User\**" />
     <Content Remove="Context\Ado\**" />
+    <Content Remove="Views\Roles\**" />
     <Content Remove="Views\User\**" />
     <EmbeddedResource Remove="Context\Ado\**" />
+    <EmbeddedResource Remove="Views\Roles\**" />
     <EmbeddedResource Remove="Views\User\**" />
     <None Remove="Context\Ado\**" />
+    <None Remove="Views\Roles\**" />
     <None Remove="Views\User\**" />
   </ItemGroup>
 
@@ -162,15 +166,6 @@
     <EmbeddedResource Update="Resources\Models\LoginViewModel.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\UserManager.be-BY.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\UserManager.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\UserManager.ru-RU.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\User\Login.be-BY.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
@@ -297,10 +292,6 @@
     <EmbeddedResource Update="Resources\Views\Tickets\WaitingConfirmation.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Roles\" />
   </ItemGroup>
 
 </Project>

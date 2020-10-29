@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using TicketsResale.Business.Models;
 using TicketsResale.Context;
@@ -11,11 +14,12 @@ namespace TicketsResale.Models.Service
     public class TicketsService : ITicketsService
     {
         private readonly StoreContext context;
+        private readonly IHttpContextAccessor accessor;
 
-
-        public TicketsService(StoreContext context)
+        public TicketsService(StoreContext context, IHttpContextAccessor accessor)
         {
             this.context = context;
+            this.accessor = accessor;
         }
 
         public async Task<IEnumerable<Ticket>> GetTickets(byte status, string userName)
@@ -23,10 +27,13 @@ namespace TicketsResale.Models.Service
             var chosenTickets = new List<Ticket>();
             var tickets = await context.Tickets.Include(e => e.Seller).ToListAsync();
             var sellers = await context.Users.ToListAsync();
+            var currentSeller = sellers.Where(s => s.UserName == userName).Select(s => s).FirstOrDefault();
+            var res = accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
 
             for (int i = 0; i < tickets.Count; i++)
             {
-                //if ((tickets[i].Status == status) && (tickets[i].Seller.UserName == ()
+                if ((tickets[i].Status == status)/* && (tickets[i].SellerId.ToString()  == accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)*/)
                     chosenTickets.Add(tickets[i]);
             }
 

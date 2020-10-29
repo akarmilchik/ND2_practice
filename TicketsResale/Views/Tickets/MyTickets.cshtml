@@ -6,13 +6,13 @@
     </div>
     <ul class="nav nav-tabs justify-content-center">
         <li class="nav-item bg-dark text-light">
-            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-status="selling" asp-route-userName="@User.Identity.Name">@localizer["Selling"]</a>
+            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-status="selling">localizer["Selling"]</a>
         </li>
         <li class="nav-item bg-dark text-light">
-            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-status="waiting" asp-route-userName="@User.Identity.Name">@localizer["Waiting Confirmation"]</a>
+            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-status="waiting">@localizer["Waiting Confirmation"]</a>
         </li>
         <li class="nav-item bg-dark text-light">
-            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-status="sold" asp-route-userName="@User.Identity.Name">@localizer["Sold"]</a>
+            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-status="sold" >@localizer["Sold"]</a>
         </li>
     </ul>
 </header>
@@ -20,6 +20,8 @@
 <table class="table bg-dark text-light">
     <thead>
         <tr>
+            <th> 
+            </th>
             <th>
                 Name
             </th>
@@ -30,75 +32,51 @@
                 Date
             </th>
             <th>
+                Price
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Seller
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Tickets)
+        @foreach (var ticket in Model.Tickets)
         {
-            <tr>
-                <td>
-                    <img src="~/img/@item.Banner" alt="@item.Name" class="card-img-top img-fluid" />
-                   
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @item.Date.ToShortDateString()
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Venue.Id)
-                </td>
-                <td>
-                    @Html.Raw(item.Description)
-                </td>
-                <td>
-                    <ul class="nav flex-column bg-dark">
-                        <li class="nav-item bg-primary">
-                            <a class="nav-link text-light" asp-action="Edit">
-                                Edit
-                            </a>
-                        </li>
-                        <li class="nav-item bg-danger">
-                            <a class="nav-link text-light" asp-action="Delete">
-                                Delete
-                            </a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                <img src="~/img/ticket.jpg" alt="Ticket" class="card-img-top img-fluid" />
+            </td>
+            <td>
+                @Model.Events.Where(e => e.Id == ticket.EventId).Select(e => e.Name).FirstOrDefault()
+            </td>
+            <td>
+                @ticket.Event.Date.Date.ToShortDateString()
+            </td>
+            <td>
+                @Model.Events.Where(e => e.Id == ticket.EventId).Select(e => e.Date.Date).FirstOrDefault()
+            </td>
+            <td>
+                $@ticket.Price
+            </td>
+            <td>
+               Seller: @Model.Users.Where(u => u.Id == ticket.SellerId.ToString()).Select(u => u.FirstName).FirstOrDefault() @Model.Users.Where(u => u.Id == ticket.SellerId.ToString()).Select(u => u.LastName).FirstOrDefault()
+            </td>
+            <td>
+                <ul class="nav flex-column bg-dark">
+                    <li class="nav-item bg-primary">
+                        <a class="nav-link text-light" asp-action="Confirm" asp-controller="Tickets">
+                            Confirm
+                        </a>
+                    </li>
+                    <li class="nav-item bg-danger">
+                        <a class="nav-link text-light" asp-action="Delete" asp-controller="Tickets">
+                            Reject
+                        </a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
         }
     </tbody>
 </table>
-
-
-
-
-<div class="container-fluid">
-    <div class="row row-cols-2">
-        @foreach (var ticket in Model.Tickets)
-        {
-            <div class="col-sm-4">
-                <div class="card text-center">
-                    <img src="~/img/ticket.jpg" height="30" class="card-img-top img-fluid" />
-                    <div class="card-body">
-                        <h4><strong>@Model.Events.Where(e => e.Id == ticket.EventId).Select(e => e.Name).FirstOrDefault()</strong></h4>
-                        <p>@ticket.Event.Date.Date.ToShortDateString()</p>
-                        <p>@Model.Events.Where(e => e.Id == ticket.EventId).Select(e => e.Date.Date).FirstOrDefault()</p>
-                        <p>$@ticket.Price</p>
-                        <p>@localizer["Seller:"] @Model.Users.Where(u => u.Id == ticket.SellerId.ToString()).Select(u => u.FirstName).FirstOrDefault() @Model.Users.Where(u => u.Id == ticket.SellerId.ToString()).Select(u => u.LastName).FirstOrDefault()</p>
-
-                        @Html.ActionLink("Confirm", "Confirm", "Tickets", new { id = ticket.Id }, new { @class = "btn btn-secondary" })
-                        @Html.ActionLink("Reject", "Reject", "Ticket", new { id = ticket.Id }, new { @class = "btn btn-danger" })
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-</div>
-
