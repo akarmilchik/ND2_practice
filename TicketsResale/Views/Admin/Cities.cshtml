@@ -14,7 +14,7 @@
     </li>
     <li class="nav-item">
 
-        <a class="nav-link text-light" asp-action="Create">
+        <a class="nav-link text-light" asp-action="CreateCity">
             Create new
         </a>
     </li>
@@ -39,12 +39,13 @@
                 <td>
                     <ul class="nav d-sm-flex float-right bg-dark">
                         <li class="nav-item bg-primary">
-                            <a class="nav-link text-light" asp-action="Edit">
+                            <a class="nav-link text-light" asp-action="EditCity">
                                 Edit
                             </a>
+                            @Html.ActionLink("Edit", "EditCity", "Admin", new { name = @item.Name }, new { @class = "btn btn-primary" })
                         </li>
                         <li class="nav-item bg-danger">
-                            <a class="nav-link text-light" asp-action="Delete">
+                            <a class="nav-link text-light" asp-action="DeleteCity">
                                 Delete
                             </a>
                         </li>

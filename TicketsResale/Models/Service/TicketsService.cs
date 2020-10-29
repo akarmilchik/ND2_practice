@@ -14,12 +14,10 @@ namespace TicketsResale.Models.Service
     public class TicketsService : ITicketsService
     {
         private readonly StoreContext context;
-        private readonly IHttpContextAccessor accessor;
 
-        public TicketsService(StoreContext context, IHttpContextAccessor accessor)
+        public TicketsService(StoreContext context)
         {
             this.context = context;
-            this.accessor = accessor;
         }
 
         public async Task<IEnumerable<Ticket>> GetTickets(byte status, string userName)
@@ -27,13 +25,15 @@ namespace TicketsResale.Models.Service
             var chosenTickets = new List<Ticket>();
             var tickets = await context.Tickets.Include(e => e.Seller).ToListAsync();
             var sellers = await context.Users.ToListAsync();
-            var currentSeller = sellers.Where(s => s.UserName == userName).Select(s => s).FirstOrDefault();
-            var res = accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var cartitems = await context.CartItems.ToListAsync();
 
+            var userCartId = sellers.Where(s => s.UserName == userName).Select(s => s.TicketsCartId).FirstOrDefault();
 
             for (int i = 0; i < tickets.Count; i++)
             {
-                if ((tickets[i].Status == status)/* && (tickets[i].SellerId.ToString()  == accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)*/)
+                var cartId = cartitems.Where(ci => ci.TicketId == tickets[i].Id).Select(ci => ci.TicketsCartId).FirstOrDefault();
+
+                if ((tickets[i].Status == status) && (cartId == userCartId))
                     chosenTickets.Add(tickets[i]);
             }
 

@@ -1,7 +1,7 @@
 ﻿@model TicketsResale.Business.Models.City
 
 @{
-    ViewData["Title"] = "CreateCity";
+    ViewData["Title"] = "Create City";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -26,7 +26,13 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <ul class="nav nav-tabs flex-column bg-dark">
+        <li class="nav-item">
+            <a class="nav-link text-light" asp-area="" asp-controller="Admin" asp-action="Index">
+                Back
+            </a>
+        </li>
+    </ul>
 </div>
 
 @section Scripts {

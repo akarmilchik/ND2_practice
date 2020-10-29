@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using TicketsResale.Business.Models;
+using TicketsResale.Context;
 using TicketsResale.Models;
 using TicketsResale.Models.Service;
 
@@ -17,12 +23,16 @@ namespace TicketsResale.Controllers
         RoleManager<IdentityRole> _roleManager;
         UserManager<StoreUser> _userManager;
         private readonly ITakeDataService takeDataService;
+        private readonly IAddDataService addDataService;
+        private readonly ILogger<AdminController> logger;
 
-        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<StoreUser> userManager, ITakeDataService takeDataService)
+        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<StoreUser> userManager, ITakeDataService takeDataService, IAddDataService addDataService, ILogger<AdminController> logger)
         {
             _roleManager = roleManager;
             _userManager = userManager;
             this.takeDataService = takeDataService;
+            this.addDataService = addDataService;
+            this.logger = logger;
         }
         
         public IActionResult Index()
@@ -71,11 +81,69 @@ namespace TicketsResale.Controllers
 
             return View("Roles", roles);
         }
-        /*
-        public async Task<IActionResult> CreateCity()
+        
+
+        public IActionResult CreateCity()
         {
-            return View();
+            return View("CreateCity");
         }
+    
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateCity(City model)
+        {
+
+            if (ModelState.IsValid)
+            {
+
+                addDataService.AddCityToDb(model);
+                logger.LogDebug(JsonConvert.SerializeObject(model));
+            }
+            else
+            {
+                return View("CreateCity", model);
+            }
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult EditCity(string name)
+        {
+            var cities = takeDataService.GetCities();
+
+
+            var model = new CityCreateEditModel
+            {
+                Name = name,
+                City = cities.Result.Where(s => s.Name == name).Select(s => s).FirstOrDefault()
+            };
+
+            return View("EditCity", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditCity(City model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                
+
+                addDataService.AddCityToDb(model);
+                logger.LogDebug(JsonConvert.SerializeObject(model));
+            }
+            else
+            {
+                return View("EditCity", model);
+            }
+            return RedirectToAction("Index");
+        }
+
+
+
+
+
+        /*
         public async Task<IActionResult> CreateEvent()
         {
             return View();

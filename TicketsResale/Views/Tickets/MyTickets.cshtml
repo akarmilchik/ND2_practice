@@ -6,13 +6,13 @@
     </div>
     <ul class="nav nav-tabs justify-content-center">
         <li class="nav-item bg-dark text-light">
-            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-status="selling">localizer["Selling"]</a>
+            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-status="1">Selling</a>
         </li>
         <li class="nav-item bg-dark text-light">
-            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-status="waiting">@localizer["Waiting Confirmation"]</a>
+            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-status="2">Waiting Confirmation</a>
         </li>
         <li class="nav-item bg-dark text-light">
-            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-status="sold" >@localizer["Sold"]</a>
+            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-status="3" >Sold</a>
         </li>
     </ul>
 </header>
@@ -45,7 +45,7 @@
         {
         <tr>
             <td>
-                <img src="~/img/ticket.jpg" alt="Ticket" class="card-img-top img-fluid" />
+                <img src="~/img/ticket.jpg"  alt="Ticket" class="card-img-top" />
             </td>
             <td>
                 @Model.Events.Where(e => e.Id == ticket.EventId).Select(e => e.Name).FirstOrDefault()

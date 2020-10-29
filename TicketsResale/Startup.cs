@@ -42,6 +42,7 @@ namespace TicketsResale
             services.AddScoped<ITicketsCartService, TicketsCartService>();
             services.AddScoped<IEventsService, EventsService>();
             services.AddScoped<ITakeDataService, TakeDataService>();
+            services.AddScoped<IAddDataService, AddDataService>();
             services.AddScoped<CartIdHandler>();
 
             services.AddScoped<EventTicketsViewModel>();
@@ -57,7 +58,6 @@ namespace TicketsResale
 
             services.AddDefaultIdentity<StoreUser>().AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<StoreContext>();
-               
 
             services.Configure<IdentityOptions>(options =>
             {
