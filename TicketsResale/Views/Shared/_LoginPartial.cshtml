@@ -33,6 +33,14 @@
                 <img src="~/img/icons/user-info-light.svg" width="20" height="20" class="d-inline-block align-top" alt="" loading="lazy"> @localizer["User info"]
             </a>
         </li>
+        @if (SignInManager.Context.User.IsInRole("Administrator"))
+        {
+            <li class="nav-item">
+                <a class="nav-link" asp-area="Identity" asp-controller="Admin" asp-action="Index">
+                    <img src="~/img/icons/settings-light.svg" width="20" height="20" class="d-inline-block align-top" alt="" loading="lazy"> Admin panel
+                </a>
+            </li>
+        }
     </ul>
 }
 else

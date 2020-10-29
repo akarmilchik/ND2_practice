@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Operations;
 using Microsoft.Extensions.Localization;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TicketsResale.Business;
 using TicketsResale.Models;
 using TicketsResale.Models.Service;
 
@@ -12,24 +9,24 @@ namespace TicketsResale.Business.Models
 {
     public class EventsController : Controller
     {
-        private readonly IEventsService eventsService;
-
         private readonly IStringLocalizer<EventsController> localizer;
+        private readonly ITakeDataService takeDataService;
 
-        public EventsController(IEventsService eventsService, IStringLocalizer<EventsController> localizer)
+        public EventsController(IStringLocalizer<EventsController> localizer, ITakeDataService takeDataService)
         {
-            this.eventsService = eventsService;
+
             this.localizer = localizer;
+            this.takeDataService = takeDataService;
         }
         public async Task<IActionResult> Index()  
         {
             ViewData["Title"] = localizer["eventstitle"];
 
-            var model = new ShopViewModel
+            var model = new EventsViewModel
             {
-                Events = (await eventsService.GetEvents()).ToArray(),
-                Venues = (await eventsService.GetVenues()).ToArray(),
-                Cities = (await eventsService.GetCities()).ToArray(),
+                Events = (await takeDataService.GetEvents()).ToArray(),
+                Venues = (await takeDataService.GetVenues()).ToArray(),
+                Cities = (await takeDataService.GetCities()).ToArray(),
             };
 
             return View(model);

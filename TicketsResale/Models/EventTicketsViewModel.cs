@@ -4,7 +4,7 @@ using TicketsResale.Context;
 
 namespace TicketsResale.Models
 {
-    public class EventTickets
+    public class EventTicketsViewModel
     {
         public Dictionary<Event, List<Ticket>> eventTickets { get; set; }
 

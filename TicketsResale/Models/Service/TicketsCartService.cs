@@ -47,7 +47,7 @@ namespace TicketsResale.Models.Service
 
         public async Task<int> GetTicketsCartIdByUserId(string id)
         {
-            return context.Users.Where(u => u.Id == id).Select(u => u.TicketsCartId).FirstOrDefault();
+            return await context.Users.Where(u => u.Id == id).Select(u => u.TicketsCartId).FirstOrDefaultAsync();
         }
 
         public async Task ChangeItemCount(int id, Ticket item, int newCount)

@@ -15,11 +15,13 @@ namespace TicketsResale.Controllers
     {
         private readonly ITicketsCartService ticketsCartService;
         private readonly ITicketsService ticketsService;
+        private readonly ITakeDataService takeDataService;
 
-        public CartController(ITicketsCartService ticketsCartService, ITicketsService ticketsService)
+        public CartController(ITicketsCartService ticketsCartService, ITicketsService ticketsService, ITakeDataService takeDataService)
         {
             this.ticketsCartService = ticketsCartService;
             this.ticketsService = ticketsService;
+            this.takeDataService = takeDataService;
         }
 
         public async Task<IActionResult> Index()
@@ -27,8 +29,8 @@ namespace TicketsResale.Controllers
             var cartId = HttpContext.GetTicketsCartId();         
             var cart = await ticketsCartService.FindCart(cartId);
             var tickets = await ticketsService.GetTicketsByCart(cart.Id);
-            var events = await ticketsService.GetEvents();
-            var sellers = await ticketsService.GetSellers();
+            var events = await takeDataService.GetEvents();
+            var sellers = await takeDataService.GetUsers();
 
             var model =  new TicketsCartViewModel
             {

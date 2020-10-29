@@ -1,5 +1,5 @@
 ﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
-@model ShopViewModel
+@model MyTicketsViewModel
 <header>
     <div>
         <h1>@localizer["My tickets"]</h1>
@@ -17,6 +17,68 @@
     </ul>
 </header>
 <p></p>
+<table class="table bg-dark text-light">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Date
+            </th>
+            <th>
+                Date
+            </th>
+            <th>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Tickets)
+        {
+            <tr>
+                <td>
+                    <img src="~/img/@item.Banner" alt="@item.Name" class="card-img-top img-fluid" />
+                   
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @item.Date.ToShortDateString()
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Venue.Id)
+                </td>
+                <td>
+                    @Html.Raw(item.Description)
+                </td>
+                <td>
+                    <ul class="nav flex-column bg-dark">
+                        <li class="nav-item bg-primary">
+                            <a class="nav-link text-light" asp-action="Edit">
+                                Edit
+                            </a>
+                        </li>
+                        <li class="nav-item bg-danger">
+                            <a class="nav-link text-light" asp-action="Delete">
+                                Delete
+                            </a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
 <div class="container-fluid">
     <div class="row row-cols-2">
         @foreach (var ticket in Model.Tickets)
@@ -31,8 +93,8 @@
                         <p>$@ticket.Price</p>
                         <p>@localizer["Seller:"] @Model.Users.Where(u => u.Id == ticket.SellerId.ToString()).Select(u => u.FirstName).FirstOrDefault() @Model.Users.Where(u => u.Id == ticket.SellerId.ToString()).Select(u => u.LastName).FirstOrDefault()</p>
 
-                        @Html.ActionLink("Edit", "Edit", "Ticket", new { id = ticket.Id }, new { @class = "btn btn-secondary" })
-                        @Html.ActionLink("Delete", "Delete", "Ticket", new { id = ticket.Id }, new { @class = "btn btn-danger" })
+                        @Html.ActionLink("Confirm", "Confirm", "Tickets", new { id = ticket.Id }, new { @class = "btn btn-secondary" })
+                        @Html.ActionLink("Reject", "Reject", "Ticket", new { id = ticket.Id }, new { @class = "btn btn-danger" })
                     </div>
                 </div>
             </div>

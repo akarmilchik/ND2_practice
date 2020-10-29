@@ -41,8 +41,13 @@ namespace TicketsResale
             services.AddScoped<ITicketsService, TicketsService>();
             services.AddScoped<ITicketsCartService, TicketsCartService>();
             services.AddScoped<IEventsService, EventsService>();
+            services.AddScoped<ITakeDataService, TakeDataService>();
             services.AddScoped<CartIdHandler>();
-            services.AddScoped<EventTickets>();
+
+            services.AddScoped<EventTicketsViewModel>();
+            services.AddScoped<TicketsViewModel>();
+            services.AddScoped<MyTicketsViewModel>();
+            services.AddScoped<EventsViewModel>();
 
             services.AddDbContext<StoreContext>(o =>
             {

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TicketsResale.Business.Models.Venue>
+﻿@model EventsViewModel
 
 @{
     ViewData["Title"] = "Venues";
@@ -6,27 +6,35 @@
 }
 
 <h1>Venues</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+    <ul class="nav nav-tabs bg-dark">
+        <li class="nav-item">
+            <a class="nav-link text-light" asp-action="Index">
+                Back
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light" asp-action="Create">
+                Create new
+            </a>
+        </li>
+    </ul>
+<table class="table bg-dark text-light">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.Venues[0].Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Address)
+                @Html.DisplayNameFor(model => model.Venues[0].Address)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.City)
+                @Html.DisplayNameFor(model => model.Venues[0].City)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Venues) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -35,12 +43,21 @@
                 @Html.DisplayFor(modelItem => item.Address)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.City.Id)
+                @Model.Cities.Where(c => c.Id == item.CityId).Select(c => c.Name).FirstOrDefault()
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <ul class="nav flex-column bg-dark">
+                    <li class="nav-item bg-primary">
+                        <a class="nav-link text-light" asp-action="Edit">
+                            Edit
+                        </a>
+                    </li>
+                    <li class="nav-item bg-danger">
+                        <a class="nav-link text-light" asp-action="Delete">
+                            Delete
+                        </a>
+                    </li>
+                </ul>
             </td>
         </tr>
 }

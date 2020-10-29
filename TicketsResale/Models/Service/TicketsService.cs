@@ -18,23 +18,6 @@ namespace TicketsResale.Models.Service
             this.context = context;
         }
 
-        public async Task<IEnumerable<Ticket>> GetTickets()
-        {
-            return await context.Tickets.ToListAsync();
-        }
-
-        public async Task<IEnumerable<Event>> GetEvents()
-        {
-            return await context.Events.ToListAsync();
-        }
-
-        public async Task<IEnumerable<StoreUser>> GetSellers()
-        {
-            return await context.Users.ToListAsync();
-        }
-
-
-
         public async Task<IEnumerable<Ticket>> GetTickets(byte status, string userName)
         {
             var chosenTickets = new List<Ticket>();
@@ -50,9 +33,9 @@ namespace TicketsResale.Models.Service
             return chosenTickets.ToArray();
         }
 
-        public async Task<EventTickets> GetEventWithTickets(int eventId)
+        public async Task<EventTicketsViewModel> GetEventWithTickets(int eventId)
         {
-            EventTickets eventTickets = new EventTickets();
+            EventTicketsViewModel eventTickets = new EventTicketsViewModel();
             Dictionary<Event, List<Ticket>> dic = new Dictionary<Event, List<Ticket>>();
 
             var chosenEvent = await context.Events.SingleOrDefaultAsync(e => e.Id == eventId);

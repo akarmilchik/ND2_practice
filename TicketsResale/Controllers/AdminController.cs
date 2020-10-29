@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TicketsResale.Business.Models;
 using TicketsResale.Models;
+using TicketsResale.Models.Service;
 
 namespace TicketsResale.Controllers
 {
@@ -15,36 +16,76 @@ namespace TicketsResale.Controllers
     {
         RoleManager<IdentityRole> _roleManager;
         UserManager<StoreUser> _userManager;
+        private readonly ITakeDataService takeDataService;
 
-        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<StoreUser> userManager)
+        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<StoreUser> userManager, ITakeDataService takeDataService)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            this.takeDataService = takeDataService;
         }
-
+        
         public IActionResult Index()
         {
+            return View("Index");
+        }
+        
+        public async Task<IActionResult> Cities()
+        {
+            ViewData["Title"] = "Cities";
+
+            var cities = await takeDataService.GetCities();
+
+            return View("Cities", cities);
+        }
+        public async Task<IActionResult> Events()
+        {
+        
+            ViewData["Title"] = "Events";
+
+            var events = await takeDataService.GetEvents();
+
+            return View("Events", events);
+            
+        }
+        public async Task<IActionResult> Venues()
+        {
+
+            ViewData["Title"] = "Venues";
+
+            var venues = await takeDataService.GetVenues();
+            var model = new EventsViewModel
+            {
+                Venues = (await takeDataService.GetVenues()).ToArray(),
+                Cities = (await takeDataService.GetCities()).ToArray()
+            };
+
+            return View("Venues", model);
+
+        }
+        public async Task<IActionResult> Roles()
+        {
+            ViewData["Title"] = "Roles";
+
+            var roles = await takeDataService.GetUsersRoles();
+
+            return View("Roles", roles);
+        }
+        /*
+        public async Task<IActionResult> CreateCity()
+        {
+            return View();
+        }
+        public async Task<IActionResult> CreateEvent()
+        {
             return View();
         }
 
-        public IActionResult Cities()
+        public async Task<IActionResult> CreateVenue()
         {
             return View();
         }
-        public IActionResult CreateCity()
-        {
-            return View();
-        }
-        public IActionResult CreateEvent()
-        {
-            return View();
-        }
-
-        public IActionResult CreateVenue()
-        {
-            return View();
-        }
-
+        */
 
         [HttpPost]
         public async Task<IActionResult> CreateRole(string name)
@@ -66,21 +107,21 @@ namespace TicketsResale.Controllers
             }
             return View(name);
         }
-
-        public IActionResult DeleteCity()
+        /*
+        public async Task<IActionResult> DeleteCity()
         {
             return View();
         }
-        public IActionResult DeleteEvent()
-        {
-            return View();
-        }
-
-        public IActionResult DeleteVenue()
+        public async Task<IActionResult> DeleteEvent()
         {
             return View();
         }
 
+        public async Task<IActionResult> DeleteVenue()
+        {
+            return View();
+        }
+        */
         [HttpPost]
         public async Task<IActionResult> DeleteRole(string id)
         {
@@ -91,21 +132,21 @@ namespace TicketsResale.Controllers
             }
             return RedirectToAction("Index");
         }
-
-        public IActionResult EditCity()
+        /*
+        public async Task<IActionResult> EditCity()
         {
             return View();
         }
 
-        public IActionResult EditEvent()
+        public async Task<IActionResult> EditEvent()
         {
             return View();
         }
 
-        public IActionResult EditVenue()
+        public async Task<IActionResult> EditVenue()
         {
             return View();
-        }
+        }*/
 
         public async Task<IActionResult> EditRole(string userId)
         {

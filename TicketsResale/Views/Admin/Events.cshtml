@@ -4,13 +4,20 @@
     ViewData["Title"] = "Events";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <h1>Events</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+    <ul class="nav nav-tabs bg-dark">
+        <li class="nav-item">
+            <a class="nav-link text-light" asp-action="Index">
+                Back
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light" asp-action="Create">
+                Create new
+            </a>
+        </li>
+    </ul>
+<table class="table bg-dark text-light">
     <thead>
         <tr>
             <th>
@@ -22,8 +29,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Venue)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Banner)
+            <th> 
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Description)
@@ -38,21 +44,30 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Date)
+                @item.Date.ToShortDateString()
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Venue.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Banner)
+                <img src="~/img/@item.Banner" alt="@item.Name" class="card-img-top img-fluid" />
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
+                @Html.Raw(item.Description)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <ul class="nav flex-column bg-dark">
+                    <li class="nav-item bg-primary">
+                        <a class="nav-link text-light" asp-action="Edit">
+                            Edit
+                        </a>
+                    </li>
+                    <li class="nav-item bg-danger">
+                        <a class="nav-link text-light" asp-action="Delete">
+                            Delete
+                        </a>
+                    </li>
+                </ul>
             </td>
         </tr>
 }

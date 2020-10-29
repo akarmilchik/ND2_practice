@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using TicketsResale.Business.Models;
+using TicketsResale.Context;
 
 namespace TicketsResale.Areas.Identity.Pages.Account
 {
@@ -30,6 +31,7 @@ namespace TicketsResale.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
             await _signInManager.SignOutAsync();
+            HttpContext.Response.Cookies.Delete(Constants.CartCookieName);
             _logger.LogInformation("User logged out.");
             if (returnUrl != null)
             {

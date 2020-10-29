@@ -1,10 +1,10 @@
 ﻿@model TicketsCartViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "My orders";
 }
 
-<h1>Tickets cart</h1>
+<h1>My orders</h1>
 
 <table class="table table-light">
     <thead class="thead-dark">
@@ -25,7 +25,7 @@
             {
                 <tr>
                     <td>@Model.Events.Where(e => e.Id == Model.Tickets.Where(t => t.Id == Model.CartItems.Where(ci => ci.TicketId == cartItem.TicketId).Select(ci => ci.TicketId).FirstOrDefault()).Select(t => t.EventId).FirstOrDefault()).Select(e => e.Name).FirstOrDefault()</td>
-                    <td>@Model.Tickets.Where(t => t.Id == cartItem.TicketId).Select(t => t.Price).FirstOrDefault())</td>
+                    <td>@Model.Tickets.Where(t => t.Id == cartItem.TicketId).Select(t => t.Price).FirstOrDefault()</td>
                     <td>@Model.Sellers.Where(s => s.TicketsCartId == cartItem.TicketsCartId).Select(s => s.FirstName).FirstOrDefault() @Model.Sellers.Where(s => s.TicketsCartId == cartItem.TicketsCartId).Select(s => s.LastName).FirstOrDefault()</td>
                     <td>@cartItem.Status</td>
                     <td>@cartItem.TrackNumber</td>

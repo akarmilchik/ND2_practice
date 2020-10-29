@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TicketsResale.Context;
@@ -18,14 +17,16 @@ namespace TicketsResale.Controllers
         private readonly ITicketsService ticketsService;
         private readonly IEventsService eventsService;
         private readonly ITicketsCartService ticketsCartService;
+        private readonly ITakeDataService takeDataService;
         private readonly ILogger<TicketsController> logger;
 
-        public TicketsController(ITicketsService ticketsService, IEventsService eventsService, ITicketsCartService ticketsCartService, IStringLocalizer<TicketsController> localizer, ILogger<TicketsController> logger)
+        public TicketsController(ITicketsService ticketsService, IEventsService eventsService, ITicketsCartService ticketsCartService, ITakeDataService takeDataService, IStringLocalizer<TicketsController> localizer, ILogger<TicketsController> logger)
         {
             this.localizer = localizer;
             this.ticketsService = ticketsService;
             this.eventsService = eventsService;
             this.ticketsCartService = ticketsCartService;
+            this.takeDataService = takeDataService;
             this.logger = logger;
         }
 
@@ -33,10 +34,10 @@ namespace TicketsResale.Controllers
         {
             ViewData["Title"] = localizer["ticketstitle"];
 
-            var model = new ShopViewModel
+            var model = new TicketsViewModel
             {
-                Tickets = (await ticketsService.GetTickets()).ToArray(),
-                Users = (await eventsService.GetUsers()).ToArray()
+                Tickets = (await takeDataService.GetTickets()).ToArray(),
+                Users = (await takeDataService.GetUsers()).ToArray()
             };
             return View(model);
         }
@@ -56,11 +57,11 @@ namespace TicketsResale.Controllers
         {
             ViewData["Title"] = localizer["My tickets"];
 
-            var model = new ShopViewModel
+            var model = new MyTicketsViewModel
             {
                 Tickets = (await ticketsService.GetTickets(status, userName)).ToArray(),
-                Events = (await eventsService.GetEvents()).ToArray(), 
-                Users = (await eventsService.GetUsers()).ToArray()
+                Events = (await takeDataService.GetEvents()).ToArray(), 
+                Users = (await takeDataService.GetUsers()).ToArray()
             };
             return View(model);
         }

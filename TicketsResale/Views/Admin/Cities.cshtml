@@ -6,11 +6,20 @@
 }
 
 <h1>Cities</h1>
+<ul class="nav nav-tabs bg-dark">
+    <li class="nav-item">
+        <a class="nav-link text-light" asp-action="Index">
+            Back
+        </a>
+    </li>
+    <li class="nav-item">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+        <a class="nav-link text-light" asp-action="Create">
+            Create new
+        </a>
+    </li>
+</ul>
+<table class="table bg-dark text-light">
     <thead>
         <tr>
             <th>
@@ -20,17 +29,28 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                
+                <td>
+                    <ul class="nav d-sm-flex float-right bg-dark">
+                        <li class="nav-item bg-primary">
+                            <a class="nav-link text-light" asp-action="Edit">
+                                Edit
+                            </a>
+                        </li>
+                        <li class="nav-item bg-danger">
+                            <a class="nav-link text-light" asp-action="Delete">
+                                Delete
+                            </a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
