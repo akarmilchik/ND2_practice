@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
 using TicketsResale.Business.Models;
-using TicketsResale.Context;
 using TicketsResale.Models;
 using TicketsResale.Models.Service;
 
@@ -59,10 +54,8 @@ namespace TicketsResale.Controllers
         }
         public async Task<IActionResult> Venues()
         {
-
             ViewData["Title"] = "Venues";
 
-            var venues = await takeDataService.GetVenues();
             var model = new EventsViewModel
             {
                 Venues = (await takeDataService.GetVenues()).ToArray(),
@@ -80,77 +73,66 @@ namespace TicketsResale.Controllers
 
             return View("Roles", roles);
         }
-        
+
+
         public IActionResult CreateCity()
         {
-            return View("CreateCity");
+            return  View("CreateCity");
         }
-    
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult CreateCity(City model)
-        {
 
-            if (ModelState.IsValid)
-            {
-                addDataService.AddCityToDb(model);
-            }
-            else
-            {
-                return View("CreateCity", model);
-            }
+        [HttpPost]
+        public async Task<IActionResult> CreateCity(City city)
+        {
+            await addDataService.AddCityToDb(city);
+
             return RedirectToAction("Cities");
         }
 
-        public IActionResult DeleteCity(string name)
-        {
-            var res = new CityCreateEditModel
-            {
-                Name = name
-            };
-            return View("DeleteCity", res);
-        }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteCity(CityCreateEditModel model)
+        public async Task<IActionResult> EditCity(int? id)
         {
-            if (ModelState.IsValid)
+            if (id != null)
             {
-                addDataService.RemoveCityFromDb(model);
+                var cities = await takeDataService.GetCities();
+
+                City city = cities.FirstOrDefault(p => p.Id == id);
+
+                if (city != null)
+                    return View(city);
             }
-            else
-            {
-                return View("CreateCity", model);
-            }
+            return NotFound();
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditCity(City city)
+        {
+            await addDataService.UpdCityToDb(city);
+
             return RedirectToAction("Cities");
         }
-        
-        public IActionResult EditCity(string name)
-        {
-            var res = new CityCreateEditModel
-            {
-                Name = name
-            };
-            return View("EditCity", res);
-        }
 
+        public async Task<IActionResult> DeleteCity(int? id)
+        {
+            if (id != null)
+            {
+                var cities = await takeDataService.GetCities();
+
+                City city = cities.FirstOrDefault(p => p.Id == id);
+
+                if (city != null)
+                    return View(city);
+            }
+            return NotFound();
+        }
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult EditCity(CityCreateEditModel model)
+        public async Task<IActionResult> DeleteCity(City city)
         {
+            await addDataService.RemoveCityFromDb(city);
 
-            if (ModelState.IsValid)
-            {
-                addDataService.AddCityToDb(new City { Name = model.NewName});
-            }
-            else
-            {
-                return View("EditCity", model);
-            }
-            return RedirectToAction("Index");
+            return RedirectToAction("Cities");
         }
-        
+
+
+
         /*
         public async Task<IActionResult> CreateEvent()
         {

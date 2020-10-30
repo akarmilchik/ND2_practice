@@ -17,17 +17,22 @@ namespace TicketsResale.Models.Service
         
         public async Task AddCityToDb(City item)
         {
-            City city = new City { Name = item.Name };
             context.Database.EnsureCreated();
-            await context.Cities.AddAsync(city);
+            await context.Cities.AddAsync(item);
             await context.SaveChangesAsync();
         }
 
-        public async Task RemoveCityFromDb(CityCreateEditModel item)
+        public async Task UpdCityToDb(City item)
         {
-            City city = new City { Name = item.Name };
             context.Database.EnsureCreated();
-            context.Cities.Remove(city);
+            context.Cities.Update(item);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task RemoveCityFromDb(City item)
+        {
+            context.Database.EnsureCreated();
+            context.Cities.Remove(item);
             await context.SaveChangesAsync();
         }
 
