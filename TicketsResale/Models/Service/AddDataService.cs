@@ -15,7 +15,7 @@ namespace TicketsResale.Models.Service
         }
 
         
-        public async Task AddCityToDb (City item)
+        public async Task AddCityToDb(City item)
         {
             City city = new City { Name = item.Name };
             context.Database.EnsureCreated();
@@ -23,7 +23,7 @@ namespace TicketsResale.Models.Service
             await context.SaveChangesAsync();
         }
 
-        public async Task RemoveCityToDb(City item)
+        public async Task RemoveCityFromDb(CityCreateEditModel item)
         {
             City city = new City { Name = item.Name };
             context.Database.EnsureCreated();

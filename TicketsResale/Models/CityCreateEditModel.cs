@@ -8,8 +8,9 @@ namespace TicketsResale.Models
 {
     public class CityCreateEditModel
     {
-        public City City { get; set; }
         public string Name { get; set; }
+
+        public string NewName { get; set; }
 
     }
 }

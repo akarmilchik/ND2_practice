@@ -1,4 +1,4 @@
-﻿@model TicketsResale.Business.Models.City
+﻿@model CityCreateEditModel
 
 @{
     ViewData["Title"] = "Delete City";
@@ -12,17 +12,24 @@
     <h4>City</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
     </dl>
-    
-    <form asp-action="DeleteCity">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+
+    <ul class="nav d-sm-flex float-right bg-dark">
+        <li class="nav-item bg-danger">
+            <a class="nav-link text-light" asp-action="DeleteCity" asp-route-model="@Model">
+                Delete
+            </a>
+            </li>
+        <li class="nav-item bg-primary">
+            <a class="nav-link text-light" asp-action="Cities">
+                Back
+            </a>
+        </li>
+     </ul>
 </div>

@@ -39,7 +39,6 @@ namespace TicketsResale.Controllers
         {
             return View("Index");
         }
-        
         public async Task<IActionResult> Cities()
         {
             ViewData["Title"] = "Cities";
@@ -82,7 +81,6 @@ namespace TicketsResale.Controllers
             return View("Roles", roles);
         }
         
-
         public IActionResult CreateCity()
         {
             return View("CreateCity");
@@ -95,42 +93,56 @@ namespace TicketsResale.Controllers
 
             if (ModelState.IsValid)
             {
-
                 addDataService.AddCityToDb(model);
-                logger.LogDebug(JsonConvert.SerializeObject(model));
             }
             else
             {
                 return View("CreateCity", model);
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Cities");
         }
 
-        public IActionResult EditCity(string name)
+        public IActionResult DeleteCity(string name)
         {
-            var cities = takeDataService.GetCities();
-
-
-            var model = new CityCreateEditModel
+            var res = new CityCreateEditModel
             {
-                Name = name,
-                City = cities.Result.Where(s => s.Name == name).Select(s => s).FirstOrDefault()
+                Name = name
             };
-
-            return View("EditCity", model);
+            return View("DeleteCity", res);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditCity(City model)
+        public IActionResult DeleteCity(CityCreateEditModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                addDataService.RemoveCityFromDb(model);
+            }
+            else
+            {
+                return View("CreateCity", model);
+            }
+            return RedirectToAction("Cities");
+        }
+        
+        public IActionResult EditCity(string name)
+        {
+            var res = new CityCreateEditModel
+            {
+                Name = name
+            };
+            return View("EditCity", res);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditCity(CityCreateEditModel model)
         {
 
             if (ModelState.IsValid)
             {
-                
-
-                addDataService.AddCityToDb(model);
-                logger.LogDebug(JsonConvert.SerializeObject(model));
+                addDataService.AddCityToDb(new City { Name = model.NewName});
             }
             else
             {
@@ -138,11 +150,7 @@ namespace TicketsResale.Controllers
             }
             return RedirectToAction("Index");
         }
-
-
-
-
-
+        
         /*
         public async Task<IActionResult> CreateEvent()
         {
@@ -176,10 +184,7 @@ namespace TicketsResale.Controllers
             return View(name);
         }
         /*
-        public async Task<IActionResult> DeleteCity()
-        {
-            return View();
-        }
+
         public async Task<IActionResult> DeleteEvent()
         {
             return View();
