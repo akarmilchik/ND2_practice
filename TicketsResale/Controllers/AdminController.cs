@@ -78,7 +78,7 @@ namespace TicketsResale.Controllers
                 Roles = (await takeDataService.GetRoles()).ToArray(),
                 UsersRoles = (await takeDataService.GetUsersRoles()).ToArray()
             };
-            return View("Cities", model);
+            return View("Users", model);
         }
 
         //============================================
@@ -292,127 +292,53 @@ namespace TicketsResale.Controllers
 
         public async Task<IActionResult> EditUser(string? id)
         {
-            if (id != null)
+            if (id != null && id != "")
             {
                 var users = await takeDataService.GetUsers();
                 var roles = await takeDataService.GetRoles();
                 var usersRoles = await takeDataService.GetUsersRoles();
-                
 
                 var list = new SelectList(roles, "Id", "Name");
 
                 ViewBag.Roles = list;
-                ViewBag.UsersRoles = usersRoles;
 
                 StoreUser user = users.FirstOrDefault(p => p.Id == id);
 
-                if (user != null)
-                    return View(user);
+                var model = new UsersRolesViewModel
+                {
+                    User = user,
+                    Role = roles.Where(r => r.Id == usersRoles.Where(ur => ur.UserId == id).Select(ur => ur.RoleId).FirstOrDefault()).FirstOrDefault(),
+                    UserRole = usersRoles.Where(ur => ur.UserId == id).Select(ur => ur).FirstOrDefault(),
+                    UserId = id,
+                    FirstRoleId = usersRoles.Where(ur => ur.UserId == id).Select(ur => ur.RoleId).FirstOrDefault()
+                };
+
+
+                if (model != null)
+                    return View(model);
             }
             return NotFound();
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditUser(StoreUser user)
+        public async Task<IActionResult> EditUser(UsersRolesViewModel model)
         {
-            await addDataService.UpdUserToDb(user);
 
-            return RedirectToAction("Venues");
+            var dbRoles = await takeDataService.GetRoles();
+            var users = await takeDataService.GetUsers();
+            var usersRoles = await takeDataService.GetUsersRoles();
+
+            var user = users.Where(u => u.Id == model.UserId).Select(u => u).FirstOrDefault();
+            var oldRole = dbRoles.Where(r => r.Id == usersRoles.Where(ur => ur.UserId == model.UserId).Select(ur => ur).FirstOrDefault().RoleId).Select(r => r.Name).FirstOrDefault();
+            var newRole = dbRoles.Where(r => r.Id == model.Role.Id).Select(r => r.Name).FirstOrDefault();
+            
+            await _userManager.RemoveFromRoleAsync(user, oldRole);
+            await _userManager.AddToRoleAsync(user, newRole);
+           
+            return RedirectToAction("Users");
         }
 
        
-
-        /*
-         * [HttpPost]
-        public async Task<IActionResult> CreateRole(string name)
-        {
-            if (!string.IsNullOrEmpty(name))
-            {
-                IdentityResult result = await _roleManager.CreateAsync(new IdentityRole(name));
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
-                }
-            }
-            return View(name);
-        }
-        
-
-
-
-
-
-
-
-
-        
-        [HttpPost]
-        public async Task<IActionResult> DeleteRole(string id)
-        {
-            IdentityRole role = await _roleManager.FindByIdAsync(id);
-            if (role != null)
-            {
-                IdentityResult result = await _roleManager.DeleteAsync(role);
-            }
-            return RedirectToAction("Index");
-        }
-        
-
-
-        public async Task<IActionResult> EditRole(string userId)
-        {
-            StoreUser user = await _userManager.FindByIdAsync(userId);
-
-            if (user != null)
-            {
-                var userRoles = await _userManager.GetRolesAsync(user);
-
-                var allRoles = _roleManager.Roles.ToList();
-
-                ChangeRoleViewModel model = new ChangeRoleViewModel
-                {
-                    UserId = user.Id,
-                    UserEmail = user.Email,
-                    UserRoles = userRoles,
-                    AllRoles = allRoles
-                };
-                return View(model);
-            }
-
-            return NotFound();
-        }
-        [HttpPost]
-        public async Task<IActionResult> EditRole(string userId, List<string> roles)
-        {
-            StoreUser user = await _userManager.FindByIdAsync(userId);
-
-            if (user != null)
-            {
-                var userRoles = await _userManager.GetRolesAsync(user);
-
-                var allRoles = _roleManager.Roles.ToList();
-
-                var addedRoles = roles.Except(userRoles);
-
-                var removedRoles = userRoles.Except(roles);
-
-                await _userManager.AddToRolesAsync(user, addedRoles);
-
-                await _userManager.RemoveFromRolesAsync(user, removedRoles);
-
-                return RedirectToAction("UserList");
-            }
-
-            return NotFound();
-        }*/
-
     }
 }
 

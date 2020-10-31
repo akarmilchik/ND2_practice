@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 using TicketsResale.Business.Models;
 using TicketsResale.Context;
@@ -18,70 +19,93 @@ namespace TicketsResale.Models.Service
         public async Task AddCityToDb(City item)
         {
             context.Database.EnsureCreated();
+
             await context.Cities.AddAsync(item);
+
             await context.SaveChangesAsync();
         }
 
         public async Task UpdCityToDb(City item)
         {
             context.Database.EnsureCreated();
+
             context.Cities.Update(item);
+
             await context.SaveChangesAsync();
         }
 
         public async Task RemoveCityFromDb(City item)
         {
             context.Database.EnsureCreated();
+
             context.Cities.Remove(item);
+
             await context.SaveChangesAsync();
         }
 
         public async Task AddEventToDb(Event item)
         {
             context.Database.EnsureCreated();
+
             await context.Events.AddAsync(item);
+
             await context.SaveChangesAsync();
         }
 
         public async Task UpdEventToDb(Event item)
         {
             context.Database.EnsureCreated();
+
             context.Events.Update(item);
+
             await context.SaveChangesAsync();
         }
 
         public async Task RemoveEventFromDb(Event item)
         {
             context.Database.EnsureCreated();
+
             context.Events.Remove(item);
+
             await context.SaveChangesAsync();
         }
 
         public async Task AddVenueToDb(Venue item)
         {
             context.Database.EnsureCreated();
+
             await context.Venues.AddAsync(item);
+
             await context.SaveChangesAsync();
         }
 
         public async Task UpdVenueToDb(Venue item)
         {
             context.Database.EnsureCreated();
+
             context.Venues.Update(item);
+
             await context.SaveChangesAsync();
         }
 
         public async Task RemoveVenueFromDb(Venue item)
         {
             context.Database.EnsureCreated();
+
             context.Venues.Remove(item);
+
             await context.SaveChangesAsync();
         }
 
-        public async Task UpdUserToDb(StoreUser item)
+        public async Task UpdUserToDb(UsersRolesViewModel item)
         {
             context.Database.EnsureCreated();
-            context.Users.Update(item);
+           // context.UserRoles.Remove(new IdentityUserRole<string> { UserId = item.UserId, RoleId = item.FirstRoleId });
+           // await context.SaveChangesAsync();
+
+            context.UserRoles.Update(new IdentityUserRole<string> { UserId = item.UserId, RoleId = item.Role.Id });
+          //  context.Database.EnsureCreated();
+           // await context.UserRoles.AddAsync(new IdentityUserRole<string> { UserId = item.UserId, RoleId = item.Role.Id });
             await context.SaveChangesAsync();
         }
 

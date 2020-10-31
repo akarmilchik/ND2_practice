@@ -49,6 +49,12 @@ namespace TicketsResale
             services.AddScoped<TicketsViewModel>();
             services.AddScoped<MyTicketsViewModel>();
             services.AddScoped<EventsViewModel>();
+            services.AddScoped<ChangeRoleViewModel>();
+            services.AddScoped<CityCreateEditModel>();
+            services.AddScoped<TicketCreateEditModel>();
+            services.AddScoped<TicketsCartViewModel>();
+            services.AddScoped<UsersRolesViewModel>();
+            services.AddScoped<UsersViewModel>();
 
             services.AddDbContext<StoreContext>(o =>
             {

@@ -13,7 +13,7 @@ namespace TicketsResale.Models.Service
         Task RemoveVenueFromDb(Venue item);
         Task UpdCityToDb(City item);
         Task UpdEventToDb(Event item);
-        Task UpdUserToDb(StoreUser item);
+        Task UpdUserToDb(UsersRolesViewModel item);
         Task UpdVenueToDb(Venue item);
     }
 }
