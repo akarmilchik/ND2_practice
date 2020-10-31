@@ -11,7 +11,8 @@ namespace TicketsResale.Models.Service
         Task<IEnumerable<Event>> GetEvents();
         Task<IEnumerable<Ticket>> GetTickets();
         Task<IEnumerable<StoreUser>> GetUsers();
-        Task<IEnumerable<IdentityRole>> GetUsersRoles();
+        Task<IEnumerable<IdentityRole>> GetRoles();
+        Task<IEnumerable<IdentityUserRole<string>>> GetUsersRoles();
         Task<IEnumerable<Venue>> GetVenues();
     }
 }

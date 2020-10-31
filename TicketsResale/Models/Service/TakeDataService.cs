@@ -33,9 +33,13 @@ namespace TicketsResale.Models.Service
         {
             return await context.Users.ToListAsync();
         }
-        public async Task<IEnumerable<IdentityRole>> GetUsersRoles()
+        public async Task<IEnumerable<IdentityRole>> GetRoles()
         {
             return await context.Roles.ToListAsync();
+        }
+        public async Task<IEnumerable<IdentityUserRole<string>>> GetUsersRoles()
+        {
+            return await context.UserRoles.ToListAsync();
         }
         public async Task<IEnumerable<Ticket>> GetTickets()
         {

@@ -36,5 +36,54 @@ namespace TicketsResale.Models.Service
             await context.SaveChangesAsync();
         }
 
+        public async Task AddEventToDb(Event item)
+        {
+            context.Database.EnsureCreated();
+            await context.Events.AddAsync(item);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task UpdEventToDb(Event item)
+        {
+            context.Database.EnsureCreated();
+            context.Events.Update(item);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task RemoveEventFromDb(Event item)
+        {
+            context.Database.EnsureCreated();
+            context.Events.Remove(item);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task AddVenueToDb(Venue item)
+        {
+            context.Database.EnsureCreated();
+            await context.Venues.AddAsync(item);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task UpdVenueToDb(Venue item)
+        {
+            context.Database.EnsureCreated();
+            context.Venues.Update(item);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task RemoveVenueFromDb(Venue item)
+        {
+            context.Database.EnsureCreated();
+            context.Venues.Remove(item);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task UpdUserToDb(StoreUser item)
+        {
+            context.Database.EnsureCreated();
+            context.Users.Update(item);
+            await context.SaveChangesAsync();
+        }
+
     }
 }

@@ -14,7 +14,7 @@
                         <h4><strong>@eventObj.Name</strong></h4>
                         <h4><strong>@Model.Cities.Where(c => c.Id == Model.Venues.Where(p => p.Id == eventObj.VenueId).Select(p => p.CityId).FirstOrDefault()).Select(c => c.Name).FirstOrDefault()</strong></h4>
                         <h4>@localizer["Venue:"] @Model.Venues.Where(p => p.Id == eventObj.VenueId).Select(p => p.Name).FirstOrDefault()</h4>
-                        <p><strong>@eventObj.Date.Date.ToShortDateString()</strong></p>
+                        <p><strong>@eventObj.Date.ToShortDateString()</strong></p>
                         <p class="text-justify">@Html.Raw(@eventObj.Description)</p>
                         @Html.ActionLink(localizer["Buy ticket"].Value, "GetEventTickets", "Tickets", new { eventId = eventObj.Id }, new { @class = "btn btn-primary" })
                     </div>

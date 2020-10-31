@@ -4,20 +4,19 @@
     ViewData["Title"] = "Venues";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <h1>Venues</h1>
-    <ul class="nav nav-tabs bg-dark">
-        <li class="nav-item">
-            <a class="nav-link text-light" asp-action="Index">
-                Back
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-light" asp-action="Create">
-                Create new
-            </a>
-        </li>
-    </ul>
+<ul class="nav nav-tabs bg-dark">
+    <li class="nav-item">
+        <a class="nav-link text-light" asp-action="Index">
+            Back
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-light" asp-action="CreateVenue">
+            Create new
+        </a>
+    </li>
+</ul>
 <table class="table bg-dark text-light">
     <thead>
         <tr>
@@ -46,14 +45,14 @@
                 @Model.Cities.Where(c => c.Id == item.CityId).Select(c => c.Name).FirstOrDefault()
             </td>
             <td>
-                <ul class="nav flex-column bg-dark">
+                <ul class="nav d-sm-flex float-right bg-dark text-center">
                     <li class="nav-item bg-primary">
-                        <a class="nav-link text-light" asp-action="Edit">
+                        <a class="nav-link text-light" asp-action="EditVenue"  asp-route-id="@item.Id">
                             Edit
                         </a>
                     </li>
                     <li class="nav-item bg-danger">
-                        <a class="nav-link text-light" asp-action="Delete">
+                        <a class="nav-link text-light" asp-action="DeleteVenue"  asp-route-id="@item.Id">
                             Delete
                         </a>
                     </li>

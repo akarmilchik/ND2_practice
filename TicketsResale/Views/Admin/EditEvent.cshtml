@@ -1,17 +1,14 @@
 ﻿@model TicketsResale.Business.Models.Event
 
 @{
-    ViewData["Title"] = "EditEvent";
+    ViewData["Title"] = "Edit event";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h1>EditEvent</h1>
-
-<h4>Event</h4>
+<h1>Edit event</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="EditEvent">
+        <form asp-action="EditEvent" asp-controller="Admin" asp-route-id="@Model.Id">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -25,29 +22,24 @@
                 <span asp-validation-for="Date" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="VenueId" class="control-label"></label>
-                <select asp-for="VenueId" class="form-control" asp-items="ViewBag.VenueId"></select>
+                <label asp-for="Venue" class="control-label"></label>
+                <select asp-for="VenueId" class="form-control" asp-items="@ViewBag.Venues"></select>
                 <span asp-validation-for="VenueId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Banner" class="control-label"></label>
-                <input asp-for="Banner" class="form-control" />
-                <span asp-validation-for="Banner" class="text-danger"></span>
+                <img src="~/img/@Model.Banner" width="50%" height="50%" class="card-img-top" />
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <label asp-for="Description" class="control-label align-content-around"></label>
+                <textarea asp-for="Description" cols="150" id="Description" name="Description" rows="5"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-success" />
+                <input type="submit" value="Back" class="btn btn-primary" asp-action="Events" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

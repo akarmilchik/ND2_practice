@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Data;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TicketsResale.Business.Models;
@@ -12,7 +12,7 @@ using TicketsResale.Models.Service;
 
 namespace TicketsResale.Controllers
 {
-    [Authorize(Roles ="Administrator")]
+    [Authorize(Roles = "Administrator")]
     public class AdminController : Controller
     {
         RoleManager<IdentityRole> _roleManager;
@@ -29,7 +29,7 @@ namespace TicketsResale.Controllers
             this.addDataService = addDataService;
             this.logger = logger;
         }
-        
+
         public IActionResult Index()
         {
             return View("Index");
@@ -44,13 +44,16 @@ namespace TicketsResale.Controllers
         }
         public async Task<IActionResult> Events()
         {
-        
+
             ViewData["Title"] = "Events";
+            var model = new EventsViewModel
+            {
+                Events = (await takeDataService.GetEvents()).ToArray(),
+                Venues = (await takeDataService.GetVenues()).ToArray()
+            };
 
-            var events = await takeDataService.GetEvents();
+            return View("Events", model);
 
-            return View("Events", events);
-            
         }
         public async Task<IActionResult> Venues()
         {
@@ -65,19 +68,24 @@ namespace TicketsResale.Controllers
             return View("Venues", model);
 
         }
-        public async Task<IActionResult> Roles()
+
+        public async Task<IActionResult> Users()
         {
-            ViewData["Title"] = "Roles";
-
-            var roles = await takeDataService.GetUsersRoles();
-
-            return View("Roles", roles);
+            ViewData["Title"] = "Users";
+            var model = new UsersViewModel
+            {
+                Users = (await takeDataService.GetUsers()).ToArray(),
+                Roles = (await takeDataService.GetRoles()).ToArray(),
+                UsersRoles = (await takeDataService.GetUsersRoles()).ToArray()
+            };
+            return View("Cities", model);
         }
 
+        //============================================
 
         public IActionResult CreateCity()
         {
-            return  View("CreateCity");
+            return View("CreateCity");
         }
 
         [HttpPost]
@@ -87,7 +95,6 @@ namespace TicketsResale.Controllers
 
             return RedirectToAction("Cities");
         }
-
 
         public async Task<IActionResult> EditCity(int? id)
         {
@@ -102,6 +109,7 @@ namespace TicketsResale.Controllers
             }
             return NotFound();
         }
+
         [HttpPost]
         public async Task<IActionResult> EditCity(City city)
         {
@@ -123,6 +131,7 @@ namespace TicketsResale.Controllers
             }
             return NotFound();
         }
+
         [HttpPost]
         public async Task<IActionResult> DeleteCity(City city)
         {
@@ -131,21 +140,190 @@ namespace TicketsResale.Controllers
             return RedirectToAction("Cities");
         }
 
-
-
-        /*
-        public async Task<IActionResult> CreateEvent()
+        //============================================
+        
+        public IActionResult CreateEvent()
         {
-            return View();
+            var venues = takeDataService.GetVenues().Result;
+            var list = new SelectList(venues, "Id", "Name");
+            ViewBag.Venues = list;
+            
+            return View("CreateEvent");
         }
-
-        public async Task<IActionResult> CreateVenue()
-        {
-            return View();
-        }
-        */
 
         [HttpPost]
+        public async Task<IActionResult> CreateEvent(Event eevent)
+        {
+            await addDataService.AddEventToDb(eevent);
+
+            ViewBag.DateToday = DateTime.Today.ToShortDateString();
+
+            return RedirectToAction("Events");
+        }
+
+        public async Task<IActionResult> EditEvent(int? id)
+        {
+            if (id != null)
+            {
+                var events = await takeDataService.GetEvents();
+
+                Event eevent = events.FirstOrDefault(p => p.Id == id);
+
+                var venues = takeDataService.GetVenues().Result;
+
+                var list = new SelectList(venues, "Id", "Name");
+
+                ViewBag.Venues = list;
+
+                if (eevent != null)
+                    return View(eevent);
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditEvent(Event eevent)
+        {
+            await addDataService.UpdEventToDb(eevent);
+
+            return RedirectToAction("Events");
+        }
+
+        public async Task<IActionResult> DeleteEvent(int? id)
+        {
+            if (id != null)
+            {
+                var events = await takeDataService.GetEvents();
+                var venues = takeDataService.GetVenues().Result;
+                
+                Event eevent = events.FirstOrDefault(p => p.Id == id);
+
+                if (eevent != null)
+                {
+                    ViewBag.VenueName = venues.Where(v => v.Id == eevent.VenueId).Select(v=> v.Name).FirstOrDefault();
+                    return View(eevent);
+                }
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteEvent(Event eevent)
+        {
+            await addDataService.RemoveEventFromDb(eevent);
+
+            return RedirectToAction("Events");
+        }
+
+        //============================================
+
+        public IActionResult CreateVenue()
+        {
+            var cities = takeDataService.GetCities().Result;
+            var list = new SelectList(cities, "Id", "Name");
+            ViewBag.Cities = list;
+
+            return View("CreateVenue");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateVenue(Venue venue)
+        {
+            await addDataService.AddVenueToDb(venue);
+
+            return RedirectToAction("Venues");
+        }
+
+        public async Task<IActionResult> EditVenue(int? id)
+        {
+            if (id != null)
+            {
+                var venues = await takeDataService.GetVenues();
+                var cities = await takeDataService.GetCities();
+
+
+                var list = new SelectList(cities, "Id", "Name");
+
+                ViewBag.Cities = list;
+
+                Venue venue = venues.FirstOrDefault(p => p.Id == id);
+
+                if (venue != null)
+                    return View(venue);
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditVenue(Venue venue)
+        {
+            await addDataService.UpdVenueToDb(venue);
+
+            return RedirectToAction("Venues");
+        }
+
+        public async Task<IActionResult> DeleteVenue(int? id)
+        {
+            if (id != null)
+            {
+                var venues = await takeDataService.GetVenues();
+                var cities = takeDataService.GetCities().Result;
+
+                Venue venue = venues.FirstOrDefault(p => p.Id == id);
+
+                if (venue != null)
+                {
+                    ViewBag.CityName = cities.Where(v => v.Id == venue.CityId).Select(v => v.Name).FirstOrDefault();
+                    return View(venue);
+                }
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteVenue(Venue venue)
+        {
+            await addDataService.RemoveVenueFromDb(venue);
+
+            return RedirectToAction("Venues");
+        }
+
+        //========================================================
+
+        public async Task<IActionResult> EditUser(string? id)
+        {
+            if (id != null)
+            {
+                var users = await takeDataService.GetUsers();
+                var roles = await takeDataService.GetRoles();
+                var usersRoles = await takeDataService.GetUsersRoles();
+                
+
+                var list = new SelectList(roles, "Id", "Name");
+
+                ViewBag.Roles = list;
+                ViewBag.UsersRoles = usersRoles;
+
+                StoreUser user = users.FirstOrDefault(p => p.Id == id);
+
+                if (user != null)
+                    return View(user);
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUser(StoreUser user)
+        {
+            await addDataService.UpdUserToDb(user);
+
+            return RedirectToAction("Venues");
+        }
+
+       
+
+        /*
+         * [HttpPost]
         public async Task<IActionResult> CreateRole(string name)
         {
             if (!string.IsNullOrEmpty(name))
@@ -165,18 +343,16 @@ namespace TicketsResale.Controllers
             }
             return View(name);
         }
-        /*
+        
 
-        public async Task<IActionResult> DeleteEvent()
-        {
-            return View();
-        }
 
-        public async Task<IActionResult> DeleteVenue()
-        {
-            return View();
-        }
-        */
+
+
+
+
+
+
+        
         [HttpPost]
         public async Task<IActionResult> DeleteRole(string id)
         {
@@ -187,21 +363,8 @@ namespace TicketsResale.Controllers
             }
             return RedirectToAction("Index");
         }
-        /*
-        public async Task<IActionResult> EditCity()
-        {
-            return View();
-        }
+        
 
-        public async Task<IActionResult> EditEvent()
-        {
-            return View();
-        }
-
-        public async Task<IActionResult> EditVenue()
-        {
-            return View();
-        }*/
 
         public async Task<IActionResult> EditRole(string userId)
         {
@@ -248,7 +411,8 @@ namespace TicketsResale.Controllers
             }
 
             return NotFound();
-        }
+        }*/
 
     }
 }
+

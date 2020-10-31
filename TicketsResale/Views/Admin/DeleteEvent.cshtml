@@ -1,52 +1,52 @@
 ﻿@model TicketsResale.Business.Models.Event
 
 @{
-    ViewData["Title"] = "DeleteEvent";
+    ViewData["Title"] = "Delete event";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h1>DeleteEvent</h1>
-
-<h3>Are you sure you want to delete this?</h3>
+<h1>Delete event</h1>
+<h4> Are you sure you want to delete event: @Html.DisplayFor(modelItem => Model.Name)?</h4>
 <div>
-    <h4>Event</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
+        </dd> 
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Date)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Date)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Venue)
+        <dt class="col-sm-2">
+            Venue
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Venue.Id)
-        </dd class>
-        <dt class = "col-sm-2">
+        <dd class="col-sm-10">
+            @ViewBag.VenueName
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Banner)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Banner)
+        <dd class="col-sm-10">
+            <div class="form-group">
+                <img src="~/img/@Model.Banner" width="50%" height="50%" class="card-img-top" />
+            </div>
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+        <dd class="col-sm-10">
+            @Html.Raw(Model.Description)
         </dd>
     </dl>
-    
-    <form asp-action="DeleteEvent">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+
+    <form asp-action="DeleteEvent" asp-controller="Admin" asp-route-id="@Model.Id">
+        <div class="form-group">
+            <input type="submit" value="Delete" class="btn btn-danger" />
+            <input type="submit" value="Back" class="btn btn-primary" asp-action="Events" />
+        </div>
     </form>
 </div>
