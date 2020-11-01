@@ -49,11 +49,16 @@ namespace TicketsResale.Models.Service
             var chosenTickets = await context.Tickets.Include(t => t.Event).Where(p => p.EventId == eventId).Select(p => p).ToListAsync();
             var chosenVenue = await context.Venues.SingleOrDefaultAsync(v => v.Id == chosenEvent.VenueId);
             var chosenCity = await context.Cities.SingleOrDefaultAsync(v => v.Id == chosenVenue.CityId);
+            var sellers = (await context.Users.ToListAsync()).ToArray();
+            var cartItems = (await context.CartItems.ToListAsync()).ToArray();
+
             dic.Add(chosenEvent, chosenTickets);
 
             eventTickets.eventTickets = dic;
             eventTickets.Venue = chosenVenue;
             eventTickets.City = chosenCity;
+            eventTickets.Sellers = sellers;
+            eventTickets.CartItems = cartItems;
 
             return eventTickets;
         }

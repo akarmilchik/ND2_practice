@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using TicketsResale.Context;
-
-namespace TicketsResale.Business.Models
+﻿namespace TicketsResale.Business.Models
 {
     public class Ticket
     {
@@ -12,7 +8,7 @@ namespace TicketsResale.Business.Models
 
         public Event Event { get; set; }
 
-        public int SellerId { get; set; }
+        public string SellerId { get; set; }
 
         public StoreUser Seller { get; set; }
 
