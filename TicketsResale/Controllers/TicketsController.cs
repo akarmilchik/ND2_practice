@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,14 +20,16 @@ namespace TicketsResale.Controllers
         private readonly ITicketsService ticketsService;
         private readonly ITicketsCartService ticketsCartService;
         private readonly ITakeDataService takeDataService;
+        private readonly IAddDataService addDataService;
         private readonly ILogger<TicketsController> logger;
 
-        public TicketsController(ITicketsService ticketsService, ITicketsCartService ticketsCartService, ITakeDataService takeDataService, IStringLocalizer<TicketsController> localizer, ILogger<TicketsController> logger)
+        public TicketsController(ITicketsService ticketsService, ITicketsCartService ticketsCartService, ITakeDataService takeDataService, IAddDataService addDataService, IStringLocalizer<TicketsController> localizer, ILogger<TicketsController> logger)
         {
             this.localizer = localizer;
             this.ticketsService = ticketsService;
             this.ticketsCartService = ticketsCartService;
             this.takeDataService = takeDataService;
+            this.addDataService = addDataService;
             this.logger = logger;
         }
         /*
@@ -61,17 +62,18 @@ namespace TicketsResale.Controllers
             return View("EventTickets", eventTickets);
         }
 
-        
+
         [Authorize]
-        public async Task<IActionResult> MyTickets(byte status, string userName)
+        public async Task<IActionResult> MyTickets(byte ticketStatus, byte orderStatus, string userName)
         {
             ViewData["Title"] = localizer["My tickets"];
 
             var model = new MyTicketsViewModel
             {
-                Tickets = (await ticketsService.GetTickets(status, userName)).ToArray(),
-                Events = (await takeDataService.GetEvents()).ToArray(), 
-                Users = (await takeDataService.GetUsers()).ToArray()
+                Tickets = (await ticketsService.GetTickets(ticketStatus, orderStatus, userName)).ToArray(),
+                Events = (await takeDataService.GetEvents()).ToArray(),
+                Users = (await takeDataService.GetUsers()).ToArray(),
+                ticketStatus = ticketStatus
             };
             return View(model);
         }
@@ -89,31 +91,80 @@ namespace TicketsResale.Controllers
         public IActionResult CreateTicket()
         {
             ViewData["Title"] = "Create ticket";
-            var users = takeDataService.GetUsers().Result;
+
             var events = takeDataService.GetEvents().Result;
 
             var listEvents = new SelectList(events, "Id", "Name");
 
-            ViewBag.Users = users;
             ViewBag.Events = listEvents;
 
             return View("TicketCreateEdit");
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Authorize]
         public IActionResult CreateTicket(TicketCreateEditModel model)
         {
-            if (ModelState.IsValid)
+            var user = takeDataService.GetUsers().Result.Where(u => u.UserName == User.Identity.Name).Select(u => u).FirstOrDefault();
+
+            var eevent = takeDataService.GetEvents().Result.Where(e => e.Id == model.Event.Id).Select(u => u).FirstOrDefault();
+
+            if (user != null)
+                model.Seller = user;
+
+            if (eevent != null)
+                model.Event = eevent;
+
+            Ticket ticket = new Ticket() { EventId = model.Event.Id, Event = model.Event, SellerId = model.Seller.Id, Seller = model.Seller, Price = model.Price, Status = model.Status };
+
+            addDataService.AddTicketToDb(ticket);
+
+            return RedirectToAction("MyTickets", new { ticketStatus = 1, orderStatus = 0, userName = User.Identity.Name });
+
+        }
+
+
+        [Authorize]
+        public IActionResult ConfirmTicket(int? id)
+        {
+            if (id != null)
             {
-                logger.LogDebug(JsonConvert.SerializeObject(model));
+                var tickets = takeDataService.GetTickets().Result;
+                var events = takeDataService.GetEvents().Result;
+
+                Ticket ticket = tickets.FirstOrDefault(p => p.Id == id);
+                
+
+                if (ticket != null)
+                {
+                    Event eevent = events.FirstOrDefault(p => p.Id == ticket.EventId);
+                    var model = new ConfirmRejectTicketViewModel
+                    {
+                        Ticket = ticket,
+                        Event = eevent
+                    };
+
+                    return View(model);
+                }
             }
-            else
+            return NotFound();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult ConfirmTicket(ConfirmRejectTicketViewModel model, int ticketId)
+        {
+            var AllCartItems = takeDataService.GetCartsItems().Result;
+            var needCartItems = AllCartItems.Where(ci => ci.TicketId == ticketId).ToList();
+
+            foreach (CartItem cartItem in needCartItems)
             {
-                return View("TicketCreateEdit", model);
+                cartItem.Status = model.Confirmation ? (byte)2 : (byte)3;
+                addDataService.UpdCartItemToDb(cartItem);
             }
-            return RedirectToAction("Index");
+
+            return RedirectToAction("MyTickets", new { ticketStatus = 1, orderStatus = 0, userName = User.Identity.Name });
+
         }
 
     }

@@ -20,21 +20,40 @@ namespace TicketsResale.Models.Service
             this.context = context;
         }
 
-        public async Task<IEnumerable<Ticket>> GetTickets(byte status, string userName)
+        public async Task<IEnumerable<Ticket>> GetTickets(byte ticketStatus, byte orderStatus, string userName)
         {
+           
+
             var chosenTickets = new List<Ticket>();
             var tickets = await context.Tickets.Include(e => e.Seller).ToListAsync();
             var sellers = await context.Users.ToListAsync();
             var cartitems = await context.CartItems.ToListAsync();
-
-            var userCartId = sellers.Where(s => s.UserName == userName).Select(s => s.TicketsCartId).FirstOrDefault();
+            var seller = sellers.Where(s => s.UserName == userName).Select(s => s).FirstOrDefault();
+            var otherOrdersAll = cartitems.Where(ci => ci.TicketsCartId != seller.TicketsCartId).Select(ci => ci).ToList();
 
             for (int i = 0; i < tickets.Count; i++)
             {
-                var cartId = cartitems.Where(ci => ci.TicketId == tickets[i].Id).Select(ci => ci.TicketsCartId).FirstOrDefault();
+                 
+                //var cartItem = cartitems.Where(ci => ci.TicketId == tickets[i].Id).Select(ci => ci).FirstOrDefault();
 
-                if ((tickets[i].Status == status) && (cartId == userCartId))
-                    chosenTickets.Add(tickets[i]);
+                if (orderStatus != 0)
+                {
+                    List<CartItem> otherOrdersOfCurrentTicketWithNeedOrderStatus = new List<CartItem>();
+                    if (otherOrdersAll.Count != 0)
+                    {
+                        otherOrdersOfCurrentTicketWithNeedOrderStatus = otherOrdersAll.Where(ci => ci.TicketId == tickets[i].Id && ci.Status == orderStatus).Select(ci => ci).ToList();
+                    }
+
+                    if ((tickets[i].SellerId == seller.Id) && (tickets[i].Status == ticketStatus) && (otherOrdersOfCurrentTicketWithNeedOrderStatus.Count != 0))
+                    { chosenTickets.Add(tickets[i]); }
+
+                }
+                else 
+                {
+                    if ((tickets[i].SellerId == seller.Id) && (tickets[i].Status == ticketStatus))
+                    { chosenTickets.Add(tickets[i]); }
+                }
+
             }
 
             return chosenTickets.ToArray();

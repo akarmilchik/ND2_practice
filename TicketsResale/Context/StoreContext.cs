@@ -30,16 +30,6 @@ namespace TicketsResale.Context
             modelBuilder.Entity<TicketsCart>().ToTable("TicketsCarts");
 
             modelBuilder.Entity<CartItem>().HasKey(ci => new { ci.TicketsCartId, ci.TicketId });
-
-            //modelBuilder.Entity<Ticket>().HasKey(t => t.StoreUserId);
-            
-            //.Map(m => m.MapKey("StoreUserId"));
-
-            /*modelBuilder.Entity<CartItem>().HasKey(ci => ci.BuyerId);
-            modelBuilder.Entity<Event>().HasKey(ev => ev.VenueId);
-            modelBuilder.Entity<Ticket>().HasKey(t => t.EventId);
-            modelBuilder.Entity<Ticket>().HasKey(t => t.SellerId);*/
-
         }
     }
     

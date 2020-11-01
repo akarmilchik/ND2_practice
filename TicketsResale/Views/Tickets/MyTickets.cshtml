@@ -6,20 +6,25 @@
     </div>
     <ul class="nav nav-tabs justify-content-center">
         <li class="nav-item bg-dark text-light">
-            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-status="1">Selling</a>
+            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-ticketStatus="1" asp-route-userName="@User.Identity.Name">Selling</a>
         </li>
         <li class="nav-item bg-dark text-light">
-            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-status="2">Waiting Confirmation</a>
+            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-ticketStatus="2" asp-route-orderStatus="1" asp-route-userName="@User.Identity.Name">Waiting Confirmation</a>
         </li>
         <li class="nav-item bg-dark text-light">
-            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-status="3">Sold</a>
+            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-ticketStatus="3" asp-route-orderStatus="2" asp-route-userName="@User.Identity.Name">Sold</a>
         </li>
     </ul>
 </header>
 <p></p>
-<div class="form-group">
-    <input type="submit" value="Create ticket" class="btn btn-primary" asp-controller="Tickets" asp-action="CreateTicket" />
-</div>
+<ul class="nav nav-tabs bg-dark">
+
+    <li class="nav-item">
+        <a class="nav-link text-light" asp-action="CreateTicket">
+            Add ticket
+        </a>
+    </li>
+</ul>
 <table class="table bg-dark text-light">
     <thead>
         <tr>
@@ -27,9 +32,6 @@
             </th>
             <th>
                 Name
-            </th>
-            <th>
-                Date
             </th>
             <th>
                 Date
@@ -57,28 +59,23 @@
                     @ticket.Event.Date.Date.ToShortDateString()
                 </td>
                 <td>
-                    @Model.Events.Where(e => e.Id == ticket.EventId).Select(e => e.Date.Date).FirstOrDefault()
-                </td>
-                <td>
                     $@ticket.Price
                 </td>
                 <td>
-                    Seller: @Model.Users.Where(u => u.Id == ticket.SellerId.ToString()).Select(u => u.FirstName).FirstOrDefault() @Model.Users.Where(u => u.Id == ticket.SellerId.ToString()).Select(u => u.LastName).FirstOrDefault()
+                    @Model.Users.Where(u => u.Id == ticket.SellerId.ToString()).Select(u => u.FirstName).FirstOrDefault() @Model.Users.Where(u => u.Id == ticket.SellerId.ToString()).Select(u => u.LastName).FirstOrDefault()
                 </td>
-                <td>
-                    <ul class="nav flex-column bg-dark">
-                        <li class="nav-item bg-primary">
-                            <a class="nav-link text-light" asp-action="Confirm" asp-controller="Tickets">
-                                Confirm
-                            </a>
-                        </li>
-                        <li class="nav-item bg-danger">
-                            <a class="nav-link text-light" asp-action="Delete" asp-controller="Tickets">
-                                Reject
-                            </a>
-                        </li>
-                    </ul>
-                </td>
+                @if (Model.ticketStatus == 2)
+                {
+                    <td>
+                        <ul class="nav flex-column bg-dark">
+                            <li class="nav-item bg-primary">
+                                <a class="nav-link text-light" asp-action="ConfirmTicket" asp-controller="Tickets" asp-route-id="@ticket.Id">
+                                    Confirm | Reject
+                                </a>
+                            </li>
+                        </ul>
+                    </td>
+                }
             </tr>
         }
     </tbody>

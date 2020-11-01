@@ -15,7 +15,6 @@
             <th scope="col">Status</th>
             <th scope="col">Track/Reason</th>
             <th scope="col">Count</th>
-            <th scope="col">Count</th>
         </tr>
     </thead>
     <tbody >
@@ -26,8 +25,8 @@
                 <tr>
                     <td>@Model.Events.Where(e => e.Id == Model.Tickets.Where(t => t.Id == Model.CartItems.Where(ci => ci.TicketId == cartItem.TicketId).Select(ci => ci.TicketId).FirstOrDefault()).Select(t => t.EventId).FirstOrDefault()).Select(e => e.Name).FirstOrDefault()</td>
                     <td>@Model.Tickets.Where(t => t.Id == cartItem.TicketId).Select(t => t.Price).FirstOrDefault()</td>
-                    <td>@Model.Sellers.Where(s => s.TicketsCartId == cartItem.TicketsCartId).Select(s => s.FirstName).FirstOrDefault() @Model.Sellers.Where(s => s.TicketsCartId == cartItem.TicketsCartId).Select(s => s.LastName).FirstOrDefault()</td>
-                    <td>@cartItem.Status</td>
+                    <td>@Model.Sellers.Where(s => s.Id == Model.Tickets.Where(t => t.Id == cartItem.TicketId).Select(t => t.SellerId).FirstOrDefault()).Select(s => s.FirstName).FirstOrDefault() @Model.Sellers.Where(s => s.Id == Model.Tickets.Where(t => t.Id == cartItem.TicketId).Select(t => t.SellerId).FirstOrDefault()).Select(s => s.LastName).FirstOrDefault()</td>
+                    <td>@ViewBag.ticketStatuses[cartItem.Status]</td>
                     <td>@cartItem.TrackNumber</td>
                     <td>
                         <form method="post" asp-action="ChangeCount" class="form-inline">
@@ -41,15 +40,6 @@
                             <input hidden name="count" value="@(cartItem.Count + 1)" />
                             <button type="submit" class="btn btn-light">+</button>
                         </form>
-                    </td>
-                    <td>
-                        <a class="nav-link" asp-action="ChangeCount">
-                            <img src="~/img/icons/up-chevron.svg" width="20" height="20" class="d-inline-block align-top" alt="" loading="lazy">
-                        </a>
-                        <a class="nav-link" asp-action="ChangeCount">
-                            <img src="~/img/icons/down-chevron.svg" width="20" height="20" class="d-inline-block align-top" alt="" loading="lazy">
-                        </a>
-
                     </td>
                 </tr>
             }

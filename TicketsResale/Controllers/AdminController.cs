@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TicketsResale.Business.Models;
@@ -141,23 +142,33 @@ namespace TicketsResale.Controllers
         }
 
         //============================================
-        
+
         public IActionResult CreateEvent()
         {
             var venues = takeDataService.GetVenues().Result;
             var list = new SelectList(venues, "Id", "Name");
             ViewBag.Venues = list;
-            
+            ViewBag.DateToday = DateTime.Today.ToShortDateString();
+
             return View("CreateEvent");
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateEvent(Event eevent)
+        public async Task<IActionResult> CreateEvent(EventCreateViewModel eevent)
         {
-            await addDataService.AddEventToDb(eevent);
+            if (ModelState.IsValid)
+            {
+                var fileName = $"{ Path.GetRandomFileName()}" + $".{Path.GetExtension(eevent.Banner.FileName)}";
 
-            ViewBag.DateToday = DateTime.Today.ToShortDateString();
+                using (var stream = System.IO.File.Create(Path.Combine("wwwroot/img/events/", fileName)))
+                {
+                    await eevent.Banner.CopyToAsync(stream);
+                }
 
+                Event resEvent = new Event { Name = eevent.Name, Venue = eevent.Venue, VenueId = eevent.VenueId, Date = eevent.Date, Banner = "events/" + fileName, Description = eevent.Description };
+                await addDataService.AddEventToDb(resEvent);
+
+            }
             return RedirectToAction("Events");
         }
 
@@ -338,7 +349,7 @@ namespace TicketsResale.Controllers
             return RedirectToAction("Users");
         }
 
-       
+
     }
 }
 

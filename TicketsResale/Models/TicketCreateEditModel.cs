@@ -14,6 +14,10 @@ namespace TicketsResale.Models
 
         public decimal Price { get; set; }
 
-        public byte Status { get; set; }
+        public byte Status { get; set; } = 1;
+
+        public string SellerName { get; set; }
+
+        public StoreUser Seller { get; set; }
     }
 }

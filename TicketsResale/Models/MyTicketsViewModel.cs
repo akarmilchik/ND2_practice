@@ -11,5 +11,6 @@ namespace TicketsResale.Models
         public Ticket[] Tickets { get; set; }
         public Event[] Events { get; set; }
         public StoreUser[] Users { get; set; }
+        public byte ticketStatus { get; set; }
     }
 }

@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using TicketsResale.Business.Models;
 using TicketsResale.Context;
 using TicketsResale.Models;
 using TicketsResale.Models.Service;
@@ -31,6 +34,15 @@ namespace TicketsResale.Controllers
             var tickets = await ticketsService.GetTicketsByCart(cart.Id);
             var events = await takeDataService.GetEvents();
             var sellers = await takeDataService.GetUsers();
+
+            Dictionary<byte, string> statusesDic = new Dictionary<byte, string>();
+            foreach (CartItemStatuses statuses in Enum.GetValues(typeof(CartItemStatuses)))
+            {
+                statusesDic.Add((byte)statuses, statuses.ToString());
+            }
+
+            ViewBag.ticketStatuses = statusesDic;
+
 
             var model =  new TicketsCartViewModel
             {

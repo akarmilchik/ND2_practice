@@ -9,7 +9,7 @@
 {
     <ul class="navbar-nav flex-grow-1">
         <li class="nav-item">
-            <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello, @User.Identity.Name!</a>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
@@ -19,7 +19,7 @@
     </ul>
     <ul class="navbar-nav flex-grow-1">
         <li class="nav-item">
-            <a class="nav-link" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-status="1" asp-route-userName="@User.Identity.Name">
+            <a class="nav-link" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-ticketStatus="1" asp-route-userName="@User.Identity.Name">
                 <img src="~/img/icons/mytickets-light.svg" width="20" height="20" class="d-inline-block align-top" alt="" loading="lazy"> @localizer["My tickets"]
             </a>
         </li>

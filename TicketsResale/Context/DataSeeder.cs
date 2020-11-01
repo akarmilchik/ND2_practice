@@ -30,7 +30,6 @@ namespace TicketsResale.Context
             new City { Name = "Dubai" }
         };
 
-
         private static readonly List<TicketsCart> TicketsCarts = new List<TicketsCart>
         {
             new TicketsCart { Id = 1 },
@@ -50,8 +49,6 @@ namespace TicketsResale.Context
             new IdentityRole { Name = "Administrator" },
             new IdentityRole { Name = "User" }
         };
-
-
 
         private static readonly List<Venue> Venues = new List<Venue>
         {
@@ -113,16 +110,16 @@ namespace TicketsResale.Context
         //Orders of Users
         private static readonly List<CartItem> CartItems = new List<CartItem>
         {
-            new CartItem { Status = (byte)CartItemStatuses.confirmed, Ticket = Tickets[0], TrackNumber = "SN53245AB21", TicketsCartId = TicketsCarts[0].Id, Count = 1 },
-            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[2], TrackNumber = "SN34535AB98", TicketsCartId = TicketsCarts[0].Id, Count = 1},
-            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[6], TrackNumber = "SN18175AB74", TicketsCartId = TicketsCarts[0].Id, Count = 1 },
+            new CartItem { Status = (byte)CartItemStatuses.confirmed, Ticket = Tickets[0], TrackNumber = "SN53245AB21", TicketsCartId = TicketsCarts[2].Id, Count = 1 },
+            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[2], TrackNumber = "SN34535AB98", TicketsCartId = TicketsCarts[1].Id, Count = 1},
+            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[6], TrackNumber = "SN18175AB74", TicketsCartId = TicketsCarts[2].Id, Count = 1 },
             new CartItem { Status = (byte)CartItemStatuses.waiting, Ticket = Tickets[9], TrackNumber = "SN77756AB13", TicketsCartId = TicketsCarts[1].Id, Count = 1 },
             new CartItem { Status = (byte)CartItemStatuses.confirmed, Ticket = Tickets[12], TrackNumber = "SN22467AB21", TicketsCartId = TicketsCarts[0].Id, Count = 1 },
-            new CartItem { Status = (byte)CartItemStatuses.waiting, Ticket = Tickets[15], TrackNumber = "SN34563AB67", TicketsCartId = TicketsCarts[1].Id, Count = 1 },
-            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[18], TrackNumber = "SN34442AB67", TicketsCartId = TicketsCarts[0].Id, Count = 1 },
+            new CartItem { Status = (byte)CartItemStatuses.waiting, Ticket = Tickets[15], TrackNumber = "SN34563AB67", TicketsCartId = TicketsCarts[0].Id, Count = 1 },
+            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[18], TrackNumber = "SN34442AB67", TicketsCartId = TicketsCarts[1].Id, Count = 1 },
             new CartItem { Status = (byte)CartItemStatuses.waiting, Ticket = Tickets[20], TrackNumber = "SN53245AB76", TicketsCartId = TicketsCarts[2].Id, Count = 1 },
-            new CartItem { Status = (byte)CartItemStatuses.confirmed, Ticket = Tickets[4], TrackNumber = "SN98762AB21", TicketsCartId = TicketsCarts[2].Id, Count = 1 },
-            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[22], TrackNumber = "SN23421AB33", TicketsCartId = TicketsCarts[2].Id, Count = 1 }
+            new CartItem { Status = (byte)CartItemStatuses.confirmed, Ticket = Tickets[4], TrackNumber = "SN98762AB21", TicketsCartId = TicketsCarts[0].Id, Count = 1 },
+            new CartItem { Status = (byte)CartItemStatuses.rejected, Ticket = Tickets[22], TrackNumber = "SN23421AB33", TicketsCartId = TicketsCarts[1].Id, Count = 1 }
         };
 
 

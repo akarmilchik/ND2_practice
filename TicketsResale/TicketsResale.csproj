@@ -82,6 +82,8 @@
     <Compile Remove="Migrations\20201028071405_ExpandModels.Designer.cs" />
     <Compile Remove="Migrations\20201028072517_ExpandModels.cs" />
     <Compile Remove="Migrations\20201028072517_ExpandModels.Designer.cs" />
+    <Compile Remove="Migrations\20201101214407_ChangeCartItem.cs" />
+    <Compile Remove="Migrations\20201101214407_ChangeCartItem.Designer.cs" />
     <Compile Remove="Models\LoginViewModel.cs" />
     <Compile Remove="Models\Service\IOrdersService.cs" />
     <Compile Remove="Models\Service\IUsersService.cs" />

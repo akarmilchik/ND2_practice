@@ -100,12 +100,28 @@ namespace TicketsResale.Models.Service
         public async Task UpdUserToDb(UsersRolesViewModel item)
         {
             context.Database.EnsureCreated();
-           // context.UserRoles.Remove(new IdentityUserRole<string> { UserId = item.UserId, RoleId = item.FirstRoleId });
-           // await context.SaveChangesAsync();
 
             context.UserRoles.Update(new IdentityUserRole<string> { UserId = item.UserId, RoleId = item.Role.Id });
-          //  context.Database.EnsureCreated();
-           // await context.UserRoles.AddAsync(new IdentityUserRole<string> { UserId = item.UserId, RoleId = item.Role.Id });
+
+            await context.SaveChangesAsync();
+        }
+
+
+        public async Task AddTicketToDb(Ticket item)
+        {
+            context.Database.EnsureCreated();
+
+            await context.Tickets.AddAsync(item);
+
+            await context.SaveChangesAsync();
+        }
+
+        public async Task UpdCartItemToDb(CartItem item)
+        {
+            context.Database.EnsureCreated();
+
+            context.CartItems.Update(item);
+
             await context.SaveChangesAsync();
         }
 
