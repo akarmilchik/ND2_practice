@@ -146,11 +146,21 @@ namespace TicketsResale.Controllers
         {
             var AllCartItems = takeDataService.GetCartsItems().Result;
             var needCartItems = AllCartItems.Where(ci => ci.TicketId == ticketId).ToList();
+            var needTicket = takeDataService.GetTickets().Result.Where(ci => ci.Id == ticketId).FirstOrDefault();
 
             foreach (CartItem cartItem in needCartItems)
             {
                 cartItem.Status = model.Confirmation ? (byte)2 : (byte)3;
+
                 addDataService.UpdCartItemToDb(cartItem);
+
+
+            }
+
+            if (model.Confirmation)
+            {
+                needTicket.Status = 3;
+                addDataService.UpdTicketToDb(needTicket);
             }
 
             return RedirectToAction("MyTickets", new { ticketStatus = 1, orderStatus = 0, userName = User.Identity.Name });
