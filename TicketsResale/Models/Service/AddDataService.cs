@@ -125,5 +125,14 @@ namespace TicketsResale.Models.Service
             await context.SaveChangesAsync();
         }
 
+        public async Task UpdTicketToDb(Ticket item)
+        {
+            context.Database.EnsureCreated();
+
+            context.Tickets.Update(item);
+
+            await context.SaveChangesAsync();
+        }
+
     }
 }

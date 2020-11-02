@@ -17,5 +17,6 @@ namespace TicketsResale.Models.Service
         Task UpdVenueToDb(Venue item);
         Task AddTicketToDb(Ticket item);
         Task UpdCartItemToDb(CartItem item);
+        Task UpdTicketToDb(Ticket item);
     }
 }

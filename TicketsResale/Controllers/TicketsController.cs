@@ -32,18 +32,6 @@ namespace TicketsResale.Controllers
             this.addDataService = addDataService;
             this.logger = logger;
         }
-        /*
-        public async Task<IActionResult> Index()
-        {
-            ViewData["Title"] = localizer["ticketstitle"];
-
-            var model = new TicketsViewModel
-            {
-                Tickets = (await takeDataService.GetTickets()).ToArray(),
-                Users = (await takeDataService.GetUsers()).ToArray()
-            };
-            return View(model);
-        }*/
 
         public async Task<IActionResult> GetEventTickets(int eventId)
         {
@@ -83,6 +71,8 @@ namespace TicketsResale.Controllers
         {
             var ticket = await ticketsService.GetTicketById(id);
             await ticketsCartService.AddItemToCart(HttpContext.GetTicketsCartId(), ticket, 1);
+            ticket.Status = 2;
+            await addDataService.UpdTicketToDb(ticket);
             return RedirectToAction("Index", "Cart", ticket);
         }
 

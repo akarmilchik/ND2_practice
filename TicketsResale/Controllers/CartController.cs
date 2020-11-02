@@ -54,21 +54,6 @@ namespace TicketsResale.Controllers
 
             return View(model);
         }
-        /*
-        public async Task<IActionResult> Add(int id, int count)
-        {
-            var product = await ticketsService.GetTicketById(id);
-            await ticketsCartService.AddItemToCart(HttpContext.GetTicketsCartId(), product, count);
-            return RedirectToAction("Index", "Tickets");
-        }*/
-
-        [HttpPost]
-        public async Task<IActionResult> Remove(int id)
-        {
-            var product = await ticketsService.GetTicketById(id);
-            await ticketsCartService.RemoveItemFromCart(HttpContext.GetTicketsCartId(), product);
-            return RedirectToAction("Index");
-        }
 
         [HttpPost]
         public async Task<IActionResult> ChangeCount(int id, int count)
@@ -83,12 +68,6 @@ namespace TicketsResale.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> ClearCart()
-        {
-            await ticketsCartService.ClearCart(HttpContext.GetTicketsCartId());
-            return RedirectToAction("Index", "Store");
-        }
 
     }
 }

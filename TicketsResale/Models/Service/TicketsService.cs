@@ -22,8 +22,6 @@ namespace TicketsResale.Models.Service
 
         public async Task<IEnumerable<Ticket>> GetTickets(byte ticketStatus, byte orderStatus, string userName)
         {
-           
-
             var chosenTickets = new List<Ticket>();
             var tickets = await context.Tickets.Include(e => e.Seller).ToListAsync();
             var sellers = await context.Users.ToListAsync();
@@ -33,9 +31,6 @@ namespace TicketsResale.Models.Service
 
             for (int i = 0; i < tickets.Count; i++)
             {
-                 
-                //var cartItem = cartitems.Where(ci => ci.TicketId == tickets[i].Id).Select(ci => ci).FirstOrDefault();
-
                 if (orderStatus != 0)
                 {
                     List<CartItem> otherOrdersOfCurrentTicketWithNeedOrderStatus = new List<CartItem>();
@@ -65,7 +60,7 @@ namespace TicketsResale.Models.Service
             Dictionary<Event, List<Ticket>> dic = new Dictionary<Event, List<Ticket>>();
 
             var chosenEvent = await context.Events.SingleOrDefaultAsync(e => e.Id == eventId);
-            var chosenTickets = await context.Tickets.Include(t => t.Event).Where(p => p.EventId == eventId).Select(p => p).ToListAsync();
+            var chosenTickets = await context.Tickets.Where(p => p.EventId == eventId).Select(p => p).ToListAsync();
             var chosenVenue = await context.Venues.SingleOrDefaultAsync(v => v.Id == chosenEvent.VenueId);
             var chosenCity = await context.Cities.SingleOrDefaultAsync(v => v.Id == chosenVenue.CityId);
             var sellers = (await context.Users.ToListAsync()).ToArray();
