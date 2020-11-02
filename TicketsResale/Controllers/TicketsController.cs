@@ -98,6 +98,16 @@ namespace TicketsResale.Controllers
             var user = takeDataService.GetUsers().Result.Where(u => u.UserName == User.Identity.Name).Select(u => u).FirstOrDefault();
 
             var eevent = takeDataService.GetEvents().Result.Where(e => e.Id == model.Event.Id).Select(u => u).FirstOrDefault();
+            
+            var venue = takeDataService.GetVenues().Result.Where(e => e.Id == eevent.VenueId).Select(u => u).FirstOrDefault();
+
+            var city = takeDataService.GetCities().Result.Where(e => e.Id == venue.CityId).Select(u => u).FirstOrDefault();
+
+            if (venue != null)
+                eevent.Venue = venue;
+
+            if (city != null)
+                eevent.Venue.City = city;
 
             if (user != null)
                 model.Seller = user;

@@ -20,7 +20,7 @@ namespace TicketsResale.Business.Models
         }
         public async Task<IActionResult> Index()  
         {
-            ViewData["Title"] = localizer["eventstitle"];
+            ViewData["Title"] = "Events";
 
             var model = new EventsViewModel
             {
