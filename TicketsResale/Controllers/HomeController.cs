@@ -1,24 +1,16 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-using System.Threading.Tasks;
-using TicketsResale.Business;
 using TicketsResale.Models;
-using TicketsResale.Models.Service;
 
 namespace TicketsResale.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IStringLocalizer<HomeController> localizer;
-        //private readonly IUsersService usersService;
 
-
-        public HomeController(IStringLocalizer<HomeController> localizer/*, IUsersService usersService*/)
+        public HomeController(IStringLocalizer<HomeController> localizer)
         {
-            //this.usersService = usersService;
             this.localizer = localizer;
 
         }
@@ -29,19 +21,6 @@ namespace TicketsResale.Controllers
 
             return View();
         }
-        /*
-        [Authorize]
-        public async Task<IActionResult> UserInfo(string userName)
-        {
-            ViewData["Title"] = localizer["UserInfo"];
-
-            var model = new ShopViewModel
-            {
-                User = await usersService.GetUserByName(userName)
-            };
-
-            return View(model);
-        }*/
 
         public IActionResult Privacy()
         {

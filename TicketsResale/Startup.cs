@@ -45,17 +45,6 @@ namespace TicketsResale
             services.AddScoped<IAddDataService, AddDataService>();
             services.AddScoped<CartIdHandler>();
 
-            services.AddScoped<EventTicketsViewModel>();
-            services.AddScoped<TicketsViewModel>();
-            services.AddScoped<MyTicketsViewModel>();
-            services.AddScoped<EventsViewModel>();
-            services.AddScoped<ChangeRoleViewModel>();
-            services.AddScoped<CityCreateEditModel>();
-            services.AddScoped<TicketCreateEditModel>();
-            services.AddScoped<TicketsCartViewModel>();
-            services.AddScoped<UsersRolesViewModel>();
-            services.AddScoped<UsersViewModel>();
-
             services.AddDbContext<StoreContext>(o =>
             {
                 o.UseSqlServer(Configuration.GetConnectionString("StoreConnection"))
@@ -83,7 +72,7 @@ namespace TicketsResale
                 // User settings.
                 options.User.AllowedUserNameCharacters =
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-                options.User.RequireUniqueEmail = false;
+                options.User.RequireUniqueEmail = true;
             });
 
             services.Configure<AntiforgeryOptions>(opts =>

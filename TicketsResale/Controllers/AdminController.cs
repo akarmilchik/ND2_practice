@@ -39,7 +39,7 @@ namespace TicketsResale.Controllers
         {
             ViewData["Title"] = "Cities";
 
-            var cities = await takeDataService.GetCities();
+            var cities = (await takeDataService.GetCities()).ToArray();
 
             return View("Cities", cities);
         }
@@ -101,7 +101,7 @@ namespace TicketsResale.Controllers
         {
             if (id != null)
             {
-                var cities = await takeDataService.GetCities();
+                var cities = (await takeDataService.GetCities()).ToArray();
 
                 City city = cities.FirstOrDefault(p => p.Id == id);
 
@@ -123,7 +123,7 @@ namespace TicketsResale.Controllers
         {
             if (id != null)
             {
-                var cities = await takeDataService.GetCities();
+                var cities = (await takeDataService.GetCities()).ToArray();
 
                 City city = cities.FirstOrDefault(p => p.Id == id);
 
@@ -143,10 +143,12 @@ namespace TicketsResale.Controllers
 
         //============================================
 
-        public IActionResult CreateEvent()
+        public async Task<IActionResult> CreateEvent()
         {
-            var venues = takeDataService.GetVenues().Result;
+            var venues = (await takeDataService.GetVenues()).ToArray();
+
             var list = new SelectList(venues, "Id", "Name");
+
             ViewBag.Venues = list;
             ViewBag.DateToday = DateTime.Today.ToShortDateString();
 
@@ -166,6 +168,7 @@ namespace TicketsResale.Controllers
                 }
 
                 Event resEvent = new Event { Name = eevent.Name, Venue = eevent.Venue, VenueId = eevent.VenueId, Date = eevent.Date, Banner = "events/" + fileName, Description = eevent.Description };
+                
                 await addDataService.AddEventToDb(resEvent);
 
             }
@@ -176,11 +179,11 @@ namespace TicketsResale.Controllers
         {
             if (id != null)
             {
-                var events = await takeDataService.GetEvents();
+                var events = (await takeDataService.GetEvents()).ToArray();
 
                 Event eevent = events.FirstOrDefault(p => p.Id == id);
 
-                var venues = takeDataService.GetVenues().Result;
+                var venues = (await takeDataService.GetVenues()).ToArray();
 
                 var list = new SelectList(venues, "Id", "Name");
 
@@ -204,8 +207,8 @@ namespace TicketsResale.Controllers
         {
             if (id != null)
             {
-                var events = await takeDataService.GetEvents();
-                var venues = takeDataService.GetVenues().Result;
+                var events = (await takeDataService.GetEvents()).ToArray();
+                var venues = (await takeDataService.GetVenues()).ToArray();
                 
                 Event eevent = events.FirstOrDefault(p => p.Id == id);
 
@@ -228,10 +231,12 @@ namespace TicketsResale.Controllers
 
         //============================================
 
-        public IActionResult CreateVenue()
+        public async Task<IActionResult> CreateVenue()
         {
-            var cities = takeDataService.GetCities().Result;
+            var cities = (await takeDataService.GetCities()).ToArray();
+
             var list = new SelectList(cities, "Id", "Name");
+
             ViewBag.Cities = list;
 
             return View("CreateVenue");
@@ -249,8 +254,8 @@ namespace TicketsResale.Controllers
         {
             if (id != null)
             {
-                var venues = await takeDataService.GetVenues();
-                var cities = await takeDataService.GetCities();
+                var venues = (await takeDataService.GetVenues()).ToArray();
+                var cities = (await takeDataService.GetCities()).ToArray();
 
 
                 var list = new SelectList(cities, "Id", "Name");
@@ -277,8 +282,8 @@ namespace TicketsResale.Controllers
         {
             if (id != null)
             {
-                var venues = await takeDataService.GetVenues();
-                var cities = takeDataService.GetCities().Result;
+                var venues = (await takeDataService.GetVenues()).ToArray();
+                var cities = (await takeDataService.GetCities()).ToArray();
 
                 Venue venue = venues.FirstOrDefault(p => p.Id == id);
 
@@ -305,9 +310,10 @@ namespace TicketsResale.Controllers
         {
             if (id != null && id != "")
             {
-                var users = await takeDataService.GetUsers();
-                var roles = await takeDataService.GetRoles();
-                var usersRoles = await takeDataService.GetUsersRoles();
+                var users = (await takeDataService.GetUsers()).ToArray();
+                var roles = (await takeDataService.GetRoles()).ToArray();
+                var usersRoles = (await takeDataService.GetUsersRoles()).ToArray();
+
 
                 var list = new SelectList(roles, "Id", "Name");
 
@@ -335,9 +341,9 @@ namespace TicketsResale.Controllers
         public async Task<IActionResult> EditUser(UsersRolesViewModel model)
         {
 
-            var dbRoles = await takeDataService.GetRoles();
-            var users = await takeDataService.GetUsers();
-            var usersRoles = await takeDataService.GetUsersRoles();
+            var dbRoles = (await takeDataService.GetRoles()).ToArray();
+            var users = (await takeDataService.GetUsers()).ToArray();
+            var usersRoles = (await takeDataService.GetUsersRoles()).ToArray();
 
             var user = users.Where(u => u.Id == model.UserId).Select(u => u).FirstOrDefault();
             var oldRole = dbRoles.Where(r => r.Id == usersRoles.Where(ur => ur.UserId == model.UserId).Select(ur => ur).FirstOrDefault().RoleId).Select(r => r.Name).FirstOrDefault();

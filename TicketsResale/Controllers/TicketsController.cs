@@ -78,11 +78,11 @@ namespace TicketsResale.Controllers
 
 
         [Authorize]
-        public IActionResult CreateTicket()
+        public async Task<IActionResult> CreateTicket()
         {
             ViewData["Title"] = "Create ticket";
 
-            var events = takeDataService.GetEvents().Result;
+            var events = await takeDataService.GetEvents();
 
             var listEvents = new SelectList(events, "Id", "Name");
 
@@ -93,15 +93,15 @@ namespace TicketsResale.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult CreateTicket(TicketCreateEditModel model)
+        public async Task<IActionResult> CreateTicket(TicketCreateEditModel model)
         {
-            var user = takeDataService.GetUsers().Result.Where(u => u.UserName == User.Identity.Name).Select(u => u).FirstOrDefault();
+            var user = (await takeDataService.GetUsers()).ToArray().Where(u => u.UserName == User.Identity.Name).Select(u => u).FirstOrDefault();
 
-            var eevent = takeDataService.GetEvents().Result.Where(e => e.Id == model.Event.Id).Select(u => u).FirstOrDefault();
+            var eevent = (await takeDataService.GetEvents()).ToArray().Where(e => e.Id == model.Event.Id).Select(u => u).FirstOrDefault();
             
-            var venue = takeDataService.GetVenues().Result.Where(e => e.Id == eevent.VenueId).Select(u => u).FirstOrDefault();
+            var venue = (await takeDataService.GetVenues()).ToArray().Where(e => e.Id == eevent.VenueId).Select(u => u).FirstOrDefault();
 
-            var city = takeDataService.GetCities().Result.Where(e => e.Id == venue.CityId).Select(u => u).FirstOrDefault();
+            var city = (await takeDataService.GetCities()).ToArray().Where(e => e.Id == venue.CityId).Select(u => u).FirstOrDefault();
 
             if (venue != null)
                 eevent.Venue = venue;
@@ -117,7 +117,7 @@ namespace TicketsResale.Controllers
 
             Ticket ticket = new Ticket() { EventId = model.Event.Id, Event = model.Event, SellerId = model.Seller.Id, Seller = model.Seller, Price = model.Price, Status = model.Status };
 
-            addDataService.AddTicketToDb(ticket);
+            await addDataService.AddTicketToDb(ticket);
 
             return RedirectToAction("MyTickets", new { ticketStatus = 1, orderStatus = 0, userName = User.Identity.Name });
 
@@ -125,15 +125,14 @@ namespace TicketsResale.Controllers
 
 
         [Authorize]
-        public IActionResult ConfirmTicket(int? id)
+        public async Task<IActionResult> ConfirmTicket(int? id)
         {
             if (id != null)
             {
-                var tickets = takeDataService.GetTickets().Result;
-                var events = takeDataService.GetEvents().Result;
+                var tickets = (await takeDataService.GetTickets()).ToArray();
+                var events = (await takeDataService.GetEvents()).ToArray();
 
                 Ticket ticket = tickets.FirstOrDefault(p => p.Id == id);
-                
 
                 if (ticket != null)
                 {
@@ -152,25 +151,25 @@ namespace TicketsResale.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult ConfirmTicket(ConfirmRejectTicketViewModel model, int ticketId)
+        public async Task<IActionResult> ConfirmTicket(ConfirmRejectTicketViewModel model, int ticketId)
         {
-            var AllCartItems = takeDataService.GetCartsItems().Result;
+            var AllCartItems = (await takeDataService.GetCartsItems()).ToArray();
+
             var needCartItems = AllCartItems.Where(ci => ci.TicketId == ticketId).ToList();
-            var needTicket = takeDataService.GetTickets().Result.Where(ci => ci.Id == ticketId).FirstOrDefault();
+
+            var needTicket = (await takeDataService.GetTickets()).ToArray().Where(ci => ci.Id == ticketId).FirstOrDefault();
 
             foreach (CartItem cartItem in needCartItems)
             {
                 cartItem.Status = model.Confirmation ? (byte)2 : (byte)3;
 
-                addDataService.UpdCartItemToDb(cartItem);
-
-
+                await addDataService.UpdCartItemToDb(cartItem);
             }
 
             if (model.Confirmation)
             {
                 needTicket.Status = 3;
-                addDataService.UpdTicketToDb(needTicket);
+                await addDataService.UpdTicketToDb(needTicket);
             }
 
             return RedirectToAction("MyTickets", new { ticketStatus = 1, orderStatus = 0, userName = User.Identity.Name });
