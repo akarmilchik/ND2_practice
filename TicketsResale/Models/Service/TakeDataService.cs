@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TicketsResale.Business.Models;
 using TicketsResale.Context;
@@ -26,6 +27,11 @@ namespace TicketsResale.Models.Service
         public async Task<List<City>> GetCities()
         {
             return await context.Cities.ToListAsync();
+        }
+
+        public async Task<City> GetCityById(int? id)
+        {
+            return await context.Cities.Where(c => c.Id == id).FirstOrDefaultAsync();
         }
         public async Task<List<StoreUser>> GetUsers()
         {

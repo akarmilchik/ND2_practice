@@ -100,9 +100,7 @@ namespace TicketsResale.Controllers
         {
             if (id != null)
             {
-                var cities = await takeDataService.GetCities();
-
-                City city = cities.FirstOrDefault(p => p.Id == id);
+                var city = await takeDataService.GetCityById(id);
 
                 if (city != null)
                     return View(city);
@@ -155,18 +153,18 @@ namespace TicketsResale.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateEvent(EventCreateViewModel eevent)
+        public async Task<IActionResult> CreateEvent(EventCreateViewModel @event)
         {
             if (ModelState.IsValid)
             {
-                var fileName = $"{ Path.GetRandomFileName()}" + $".{Path.GetExtension(eevent.Banner.FileName)}";
+                var fileName = $"{ Path.GetRandomFileName()}" + $".{Path.GetExtension(@event.Banner.FileName)}";
 
                 using (var stream = System.IO.File.Create(Path.Combine("wwwroot/img/events/", fileName)))
                 {
-                    await eevent.Banner.CopyToAsync(stream);
+                    await @event.Banner.CopyToAsync(stream);
                 }
 
-                Event resEvent = new Event { Name = eevent.Name, Venue = eevent.Venue, VenueId = eevent.VenueId, Date = eevent.Date, Banner = "events/" + fileName, Description = eevent.Description };
+                Event resEvent = new Event { Name = @event.Name, Venue = @event.Venue, VenueId = @event.VenueId, Date = @event.Date, Banner = "events/" + fileName, Description = @event.Description };
                 
                 await addDataService.AddEventToDb(resEvent);
 
