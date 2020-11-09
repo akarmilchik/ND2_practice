@@ -20,7 +20,7 @@ namespace TicketsResale.Models.Service
             this.context = context;
         }
 
-        public async Task<IEnumerable<Ticket>> GetTickets(byte ticketStatus, byte orderStatus, string userName)
+        public async Task<List<Ticket>> GetTicketsByStatusesAndUserName(TicketStatuses ticketStatus, CartItemStatuses orderStatus, string userName)
         {
             var chosenTickets = new List<Ticket>();
             var tickets = await context.Tickets.Include(e => e.Seller).ToListAsync();
@@ -51,30 +51,7 @@ namespace TicketsResale.Models.Service
 
             }
 
-            return chosenTickets.ToArray();
-        }
-
-        public async Task<EventTicketsViewModel> GetEventWithTickets(int eventId)
-        {
-            EventTicketsViewModel eventTickets = new EventTicketsViewModel();
-            Dictionary<Event, List<Ticket>> dic = new Dictionary<Event, List<Ticket>>();
-
-            var chosenEvent = await context.Events.SingleOrDefaultAsync(e => e.Id == eventId);
-            var chosenTickets = await context.Tickets.Where(p => p.EventId == eventId).Select(p => p).ToListAsync();
-            var chosenVenue = await context.Venues.SingleOrDefaultAsync(v => v.Id == chosenEvent.VenueId);
-            var chosenCity = await context.Cities.SingleOrDefaultAsync(v => v.Id == chosenVenue.CityId);
-            var sellers = (await context.Users.ToListAsync()).ToArray();
-            var cartItems = (await context.CartItems.ToListAsync()).ToArray();
-
-            dic.Add(chosenEvent, chosenTickets);
-
-            eventTickets.eventTickets = dic;
-            eventTickets.Venue = chosenVenue;
-            eventTickets.City = chosenCity;
-            eventTickets.Sellers = sellers;
-            eventTickets.CartItems = cartItems;
-
-            return eventTickets;
+            return chosenTickets;
         }
 
         public async Task<Ticket> GetTicketById(int id)
@@ -82,7 +59,7 @@ namespace TicketsResale.Models.Service
             return await context.Tickets.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Ticket>> GetTicketsByCart(int ticketsCartId)
+        public async Task<List<Ticket>> GetTicketsByCart(int ticketsCartId)
         {
             var items = await context.CartItems.Where(t => t.TicketsCartId == ticketsCartId).ToListAsync();
 

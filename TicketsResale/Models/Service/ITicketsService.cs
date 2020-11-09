@@ -6,9 +6,8 @@ namespace TicketsResale.Models.Service
 {
     public interface ITicketsService
     {
-        Task<EventTicketsViewModel> GetEventWithTickets(int eventId);
         Task<Ticket> GetTicketById(int id);
-        Task<IEnumerable<Ticket>> GetTickets(byte ticketStatus, byte orderStatus, string userName);
-        Task<IEnumerable<Ticket>> GetTicketsByCart(int ticketsCartId);
+        Task<List<Ticket>> GetTicketsByStatusesAndUserName(TicketStatuses ticketStatus, CartItemStatuses orderStatus, string userName);
+        Task<List<Ticket>> GetTicketsByCart(int ticketsCartId);
     }
 }

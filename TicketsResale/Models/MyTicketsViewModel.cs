@@ -8,9 +8,9 @@ namespace TicketsResale.Models
 {
     public class MyTicketsViewModel
     {
-        public Ticket[] Tickets { get; set; }
-        public Event[] Events { get; set; }
-        public StoreUser[] Users { get; set; }
-        public byte ticketStatus { get; set; }
+        public List<Ticket> Tickets { get; set; }
+        public List<Event> Events { get; set; }
+        public List<StoreUser> Users { get; set; }
+        public TicketStatuses ticketStatus { get; set; }
     }
 }

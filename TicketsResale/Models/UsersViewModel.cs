@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 using TicketsResale.Business.Models;
 
 namespace TicketsResale.Models
 {
     public class UsersViewModel
     {
-        public StoreUser[] Users { get; set; }
-        public IdentityUserRole<string>[] UsersRoles { get; set; }
-        public IdentityRole[] Roles { get; set; }
+        public List<StoreUser> Users { get; set; }
+        public List<IdentityUserRole<string>> UsersRoles { get; set; }
+        public List<IdentityRole> Roles { get; set; }
     }
 }

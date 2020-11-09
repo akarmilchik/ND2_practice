@@ -14,6 +14,6 @@
 
         public decimal Price { get; set; }
 
-        public byte Status { get; set; }
+        public TicketStatuses Status { get; set; }
     }
 }

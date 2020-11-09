@@ -52,12 +52,12 @@ namespace TicketsResale.Test
 
             var Tickets = new List<Ticket>()
             {
-                new Ticket { Event = Events[0], Price = 15, SellerId = Users[0].Id, Status = (byte)TicketStatuses.selling },
+                new Ticket { Event = Events[0], Price = 15, SellerId = Users[0].Id, Status = TicketStatuses.selling },
             };
 
             var cartItems = new List<CartItem>()
             {
-                new CartItem { Ticket = Tickets[0], TicketId = Tickets[0].Id, Count = 1, Status = 1, TicketsCart = TicketsCarts[0], TicketsCartId = TicketsCarts[0].Id, TrackNumber = "SN23423423RR" }
+                new CartItem { Ticket = Tickets[0], TicketId = Tickets[0].Id, Count = 1, Status = CartItemStatuses.waiting, TicketsCart = TicketsCarts[0], TicketsCartId = TicketsCarts[0].Id, TrackNumber = "SN23423423RR" }
             };
 
 

@@ -19,15 +19,17 @@ namespace TicketsResale.Controllers
         private readonly IStringLocalizer<TicketsController> localizer;
         private readonly ITicketsService ticketsService;
         private readonly ITicketsCartService ticketsCartService;
+        private readonly IEventsService eventsService;
         private readonly ITakeDataService takeDataService;
         private readonly IAddDataService addDataService;
         private readonly ILogger<TicketsController> logger;
 
-        public TicketsController(ITicketsService ticketsService, ITicketsCartService ticketsCartService, ITakeDataService takeDataService, IAddDataService addDataService, IStringLocalizer<TicketsController> localizer, ILogger<TicketsController> logger)
+        public TicketsController(ITicketsService ticketsService, ITicketsCartService ticketsCartService, IEventsService eventsService, ITakeDataService takeDataService, IAddDataService addDataService, IStringLocalizer<TicketsController> localizer, ILogger<TicketsController> logger)
         {
             this.localizer = localizer;
             this.ticketsService = ticketsService;
             this.ticketsCartService = ticketsCartService;
+            this.eventsService = eventsService;
             this.takeDataService = takeDataService;
             this.addDataService = addDataService;
             this.logger = logger;
@@ -37,7 +39,7 @@ namespace TicketsResale.Controllers
         {
             ViewData["Title"] = localizer["title"];
 
-            var eventTickets = await ticketsService.GetEventWithTickets(eventId);
+            var eventTickets = await eventsService.GetEventWithTickets(eventId);
 
             Dictionary<byte, string> statusesDic = new Dictionary<byte, string>();
             foreach (TicketStatuses statuses in Enum.GetValues(typeof(TicketStatuses)))
@@ -52,15 +54,15 @@ namespace TicketsResale.Controllers
 
 
         [Authorize]
-        public async Task<IActionResult> MyTickets(byte ticketStatus, byte orderStatus, string userName)
+        public async Task<IActionResult> MyTickets(TicketStatuses ticketStatus, CartItemStatuses orderStatus, string userName)
         {
             ViewData["Title"] = localizer["My tickets"];
 
             var model = new MyTicketsViewModel
             {
-                Tickets = (await ticketsService.GetTickets(ticketStatus, orderStatus, userName)).ToArray(),
-                Events = (await takeDataService.GetEvents()).ToArray(),
-                Users = (await takeDataService.GetUsers()).ToArray(),
+                Tickets = await ticketsService.GetTicketsByStatusesAndUserName(ticketStatus, orderStatus, userName),
+                Events = await takeDataService.GetEvents(),
+                Users = await takeDataService.GetUsers(),
                 ticketStatus = ticketStatus
             };
             return View(model);
@@ -71,7 +73,7 @@ namespace TicketsResale.Controllers
         {
             var ticket = await ticketsService.GetTicketById(id);
             await ticketsCartService.AddItemToCart(HttpContext.GetTicketsCartId(), ticket, 1);
-            ticket.Status = 2;
+            ticket.Status = TicketStatuses.sold;
             await addDataService.UpdTicketToDb(ticket);
             return RedirectToAction("Index", "Cart", ticket);
         }
@@ -153,22 +155,22 @@ namespace TicketsResale.Controllers
         [Authorize]
         public async Task<IActionResult> ConfirmTicket(ConfirmRejectTicketViewModel model, int ticketId)
         {
-            var AllCartItems = (await takeDataService.GetCartsItems()).ToArray();
+            var AllCartItems = await takeDataService.GetCartsItems();
 
             var needCartItems = AllCartItems.Where(ci => ci.TicketId == ticketId).ToList();
 
-            var needTicket = (await takeDataService.GetTickets()).ToArray().Where(ci => ci.Id == ticketId).FirstOrDefault();
+            var needTicket = (await takeDataService.GetTickets()).Where(ci => ci.Id == ticketId).FirstOrDefault();
 
             foreach (CartItem cartItem in needCartItems)
             {
-                cartItem.Status = model.Confirmation ? (byte)2 : (byte)3;
+                cartItem.Status = model.Confirmation ? CartItemStatuses.confirmed : CartItemStatuses.rejected;
 
                 await addDataService.UpdCartItemToDb(cartItem);
             }
 
             if (model.Confirmation)
             {
-                needTicket.Status = 3;
+                needTicket.Status = TicketStatuses.sold;
                 await addDataService.UpdTicketToDb(needTicket);
             }
 

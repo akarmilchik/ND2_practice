@@ -1,10 +1,11 @@
-﻿using TicketsResale.Business.Models;
+﻿using System.Collections.Generic;
+using TicketsResale.Business.Models;
 
 namespace TicketsResale.Models
 {
     public class TicketsViewModel
     {
-        public Ticket[] Tickets { get; set; }
-        public StoreUser[] Users { get; set; }
+        public List<Ticket> Tickets { get; set; }
+        public List<StoreUser> Users { get; set; }
     }
 }

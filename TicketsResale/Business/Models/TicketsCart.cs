@@ -5,7 +5,7 @@ using TicketsResale.Context;
 
 namespace TicketsResale.Business.Models
 {
-    public class TicketsCart : IEntity
+    public class TicketsCart
     {
         public int Id { get; set; }
 

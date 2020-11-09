@@ -31,7 +31,7 @@ namespace TicketsResale.Models.Service
             if (cart.CartItems.Any(ci => ci.TicketId == item.Id))
                 cart.CartItems.Single(ci => ci.TicketId == item.Id).Count += count;
             else
-                cart.CartItems.Add(new CartItem { TicketId = item.Id, Status = 1, Count = count });
+                cart.CartItems.Add(new CartItem { TicketId = item.Id, Status = CartItemStatuses.confirmed, Count = count });
             context.Update(cart);
             await context.SaveChangesAsync();
         }

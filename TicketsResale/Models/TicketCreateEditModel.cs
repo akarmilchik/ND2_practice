@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TicketsResale.Business.Models;
+﻿using TicketsResale.Business.Models;
 
 namespace TicketsResale.Models
 {
@@ -14,7 +10,7 @@ namespace TicketsResale.Models
 
         public decimal Price { get; set; }
 
-        public byte Status { get; set; } = 1;
+        public TicketStatuses Status { get; set; } = TicketStatuses.selling;
 
         public string SellerName { get; set; }
 

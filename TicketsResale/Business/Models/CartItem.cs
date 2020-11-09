@@ -12,7 +12,7 @@
 
         public int Count { get; set; }
 
-        public byte Status { get; set; }
+        public CartItemStatuses Status { get; set; }
 
         public string TrackNumber { get; set; }
     }

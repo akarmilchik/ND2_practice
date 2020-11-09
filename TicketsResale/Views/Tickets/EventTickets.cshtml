@@ -29,7 +29,7 @@
                             </h4>
                             <h4>$@ticket.Price</h4>
                             <p><strong>@ViewBag.ticketStatuses[ticket.Status]</strong></p>
-                            @if (ticket.Status == 3) disableState = "btn btn-primary disabled";
+                            @if (ticket.Status == TicketsResale.Business.Models.TicketStatuses.sold) disableState = "btn btn-primary disabled";
                             else disableState = "btn btn-primary";
                             @Html.ActionLink(localizer["Buy"].Value, "Buy", "Tickets", new { id = @ticket.Id }, new { @class = disableState})
                         </div>

@@ -18,14 +18,33 @@ namespace TicketsResale.Models.Service
             this.context = storeContext;
         }
 
-        public async Task<IEnumerable<CartItem>> GetCartItems()
-        {
-            return await context.CartItems.ToListAsync();
-        }
 
         public async Task<Event> GetEventById(int id)
         {
             return await context.Events.FindAsync(id);
+        }
+
+        public async Task<EventTicketsViewModel> GetEventWithTickets(int eventId)
+        {
+            EventTicketsViewModel eventTickets = new EventTicketsViewModel();
+            Dictionary<Event, List<Ticket>> dic = new Dictionary<Event, List<Ticket>>();
+
+            var chosenEvent = await context.Events.SingleOrDefaultAsync(e => e.Id == eventId);
+            var chosenTickets = await context.Tickets.Where(p => p.EventId == eventId).Select(p => p).ToListAsync();
+            var chosenVenue = await context.Venues.SingleOrDefaultAsync(v => v.Id == chosenEvent.VenueId);
+            var chosenCity = await context.Cities.SingleOrDefaultAsync(v => v.Id == chosenVenue.CityId);
+            var sellers = await context.Users.ToListAsync();
+            var cartItems = await context.CartItems.ToListAsync();
+
+            dic.Add(chosenEvent, chosenTickets);
+
+            eventTickets.eventTickets = dic;
+            eventTickets.Venue = chosenVenue;
+            eventTickets.City = chosenCity;
+            eventTickets.Sellers = sellers;
+            eventTickets.CartItems = cartItems;
+
+            return eventTickets;
         }
 
     }

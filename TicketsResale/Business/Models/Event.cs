@@ -4,7 +4,7 @@ using TicketsResale.Context;
 
 namespace TicketsResale.Business.Models
 {
-    public class Event : IEntity
+    public class Event
     {
         public int Id { get; set; }
 

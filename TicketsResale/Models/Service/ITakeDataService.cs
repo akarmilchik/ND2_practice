@@ -7,13 +7,13 @@ namespace TicketsResale.Models.Service
 {
     public interface ITakeDataService
     {
-        Task<IEnumerable<City>> GetCities();
-        Task<IEnumerable<Event>> GetEvents();
-        Task<IEnumerable<Ticket>> GetTickets();
-        Task<IEnumerable<StoreUser>> GetUsers();
-        Task<IEnumerable<IdentityRole>> GetRoles();
-        Task<IEnumerable<IdentityUserRole<string>>> GetUsersRoles();
-        Task<IEnumerable<Venue>> GetVenues();
-        Task<IEnumerable<CartItem>> GetCartsItems();
+        Task<List<Event>> GetEvents();
+        Task<List<Venue>> GetVenues();
+        Task<List<City>> GetCities();
+        Task<List<StoreUser>> GetUsers();
+        Task<List<IdentityRole>> GetRoles();
+        Task<List<IdentityUserRole<string>>> GetUsersRoles();
+        Task<List<Ticket>> GetTickets();
+        Task<List<CartItem>> GetCartsItems();
     }
 }

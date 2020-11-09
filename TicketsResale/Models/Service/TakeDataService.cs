@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TicketsResale.Business.Models;
 using TicketsResale.Context;
@@ -17,36 +15,36 @@ namespace TicketsResale.Models.Service
         {
             this.context = storeContext;
         }
-        public async Task<IEnumerable<Event>> GetEvents()
+        public async Task<List<Event>> GetEvents()
         {
             return await context.Events.ToListAsync();
         }
-        public async Task<IEnumerable<Venue>> GetVenues()
+        public async Task<List<Venue>> GetVenues()
         {
             return await context.Venues.ToListAsync();
         }
-        public async Task<IEnumerable<City>> GetCities()
+        public async Task<List<City>> GetCities()
         {
             return await context.Cities.ToListAsync();
         }
-        public async Task<IEnumerable<StoreUser>> GetUsers()
+        public async Task<List<StoreUser>> GetUsers()
         {
             return await context.Users.ToListAsync();
         }
-        public async Task<IEnumerable<IdentityRole>> GetRoles()
+        public async Task<List<IdentityRole>> GetRoles()
         {
             return await context.Roles.ToListAsync();
         }
-        public async Task<IEnumerable<IdentityUserRole<string>>> GetUsersRoles()
+        public async Task<List<IdentityUserRole<string>>> GetUsersRoles()
         {
             return await context.UserRoles.ToListAsync();
         }
-        public async Task<IEnumerable<Ticket>> GetTickets()
+        public async Task<List<Ticket>> GetTickets()
         {
             return await context.Tickets.ToListAsync();
         }
 
-        public async Task<IEnumerable<CartItem>> GetCartsItems()
+        public async Task<List<CartItem>> GetCartsItems()
         {
             return await context.CartItems.ToListAsync();
         }

@@ -44,10 +44,10 @@ namespace TicketsResale.Controllers
 
             var model =  new TicketsCartViewModel
             {
-               Events = events.ToArray(),
+               Events = events,
                CartItems = cart.CartItems,
-               Tickets = tickets.ToArray(),
-               Sellers = sellers.ToArray()
+               Tickets = tickets,
+               Sellers = sellers
             };
 
             return View(model);

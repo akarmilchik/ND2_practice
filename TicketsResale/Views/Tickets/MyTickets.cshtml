@@ -64,7 +64,7 @@
                 <td>
                     @Model.Users.Where(u => u.Id == ticket.SellerId.ToString()).Select(u => u.FirstName).FirstOrDefault() @Model.Users.Where(u => u.Id == ticket.SellerId.ToString()).Select(u => u.LastName).FirstOrDefault()
                 </td>
-                @if (Model.ticketStatus == 2)
+                @if (Model.ticketStatus == TicketsResale.Business.Models.TicketStatuses.waiting)
                 {
                     <td>
                         <ul class="nav flex-column bg-dark">

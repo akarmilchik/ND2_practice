@@ -24,9 +24,9 @@ namespace TicketsResale.Business.Models
 
             var model = new EventsViewModel
             {
-                Events = (await takeDataService.GetEvents()).ToArray(),
-                Venues = (await takeDataService.GetVenues()).ToArray(),
-                Cities = (await takeDataService.GetCities()).ToArray(),
+                Events = await takeDataService.GetEvents(),
+                Venues = await takeDataService.GetVenues(),
+                Cities = await takeDataService.GetCities(),
             };
 
             return View(model);
