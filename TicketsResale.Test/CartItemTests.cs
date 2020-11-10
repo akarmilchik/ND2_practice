@@ -51,9 +51,9 @@ namespace TicketsResale.Test
                 new Ticket { Event = Events[0], Price = 15, SellerId = Users[0].Id, Status = TicketStatuses.selling },
             };
 
-            var cartItems = new List<Order>()
+            var orders = new List<Order>()
             {
-                new Order { Ticket = Tickets[0], TicketId = Tickets[0].Id, Status = OrderStatuses.waiting, Buyer = Users[0], TrackNumber = "SN23423423RR" }
+                new Order { Buyer = Users[0], Ticket = Tickets[0], Status = OrderStatuses.waiting, TrackNumber = "SN23423423RR" }
             };
 
 
