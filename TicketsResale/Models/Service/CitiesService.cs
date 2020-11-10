@@ -26,6 +26,11 @@ namespace TicketsResale.Models.Service
             return await context.Cities.Where(c => c.Id == id).FirstOrDefaultAsync();
         }
 
+        public async Task<string> GetCityNameById(int id)
+        {
+            return await context.Cities.Where(c => c.Id == id).Select(c => c.Name).FirstOrDefaultAsync();
+        }
+
 
         public async Task AddCityToDb(City item)
         {

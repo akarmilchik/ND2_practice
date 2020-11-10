@@ -9,6 +9,7 @@ namespace TicketsResale.Models.Service
         Task AddCityToDb(City item);
         Task<List<City>> GetCities();
         Task<City> GetCityById(int id);
+        Task<string> GetCityNameById(int id);
         Task RemoveCityFromDb(City item);
         Task UpdCityToDb(City item);
     }

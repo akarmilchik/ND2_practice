@@ -106,13 +106,11 @@ namespace TicketsResale.Controllers
 
         public async Task<IActionResult> EditCity(int id)
         {
-            if (id != null)
-            {
-                var city = await citiesService.GetCityById(id);
+            var city = await citiesService.GetCityById(id);
 
-                if (city != null)
-                    return View(city);
-            }
+            if (city != null)
+                return View(city);
+
             return NotFound();
         }
 
@@ -126,13 +124,11 @@ namespace TicketsResale.Controllers
 
         public async Task<IActionResult> DeleteCity(int id)
         {
-            if (id != null)
-            {
-                var city = await citiesService.GetCityById(id);
+            var city = await citiesService.GetCityById(id);
 
-                if (city != null)
-                    return View(city);
-            }
+            if (city != null)
+                return View(city);
+            
             return NotFound();
         }
 
@@ -194,35 +190,31 @@ namespace TicketsResale.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditEvent(Event eevent)
+        public async Task<IActionResult> EditEvent(Event @event)
         {
-            await eventsService.UpdEventToDb(eevent);
+            await eventsService.UpdEventToDb(@event);
 
             return RedirectToAction("Events");
         }
 
-        public async Task<IActionResult> DeleteEvent(int? id)
+        public async Task<IActionResult> DeleteEvent(int id)
         {
-            if (id != null)
-            {
-                var events = await eventsService.GetEvents();
-                var venues = await venuesService.GetVenues();
-                
-                Event eevent = events.FirstOrDefault(p => p.Id == id);
+            var @event = await eventsService.GetEventById(id);
+            var venueName = venuesService.GetVenueNameById(@event.VenueId);
 
-                if (eevent != null)
-                {
-                    ViewBag.VenueName = venues.Where(v => v.Id == eevent.VenueId).Select(v=> v.Name).FirstOrDefault();
-                    return View(eevent);
-                }
+            if (@event != null)
+            {
+                ViewBag.VenueName = venueName;
+                return View(@event);
             }
+           
             return NotFound();
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteEvent(Event eevent)
+        public async Task<IActionResult> DeleteEvent(Event @event)
         {
-            await eventsService.RemoveEventFromDb(eevent);
+            await eventsService.RemoveEventFromDb(@event);
 
             return RedirectToAction("Events");
         }
@@ -248,23 +240,18 @@ namespace TicketsResale.Controllers
             return RedirectToAction("Venues");
         }
 
-        public async Task<IActionResult> EditVenue(int? id)
+        public async Task<IActionResult> EditVenue(int id)
         {
-            if (id != null)
-            {
-                var venues = await venuesService.GetVenues();
-                var cities = await citiesService.GetCities();
+            var venue = await venuesService.GetVenueById(id);
+            var cities = await citiesService.GetCities();
 
+            var list = new SelectList(cities, "Id", "Name");
 
-                var list = new SelectList(cities, "Id", "Name");
+            ViewBag.Cities = list;
 
-                ViewBag.Cities = list;
-
-                Venue venue = venues.FirstOrDefault(p => p.Id == id);
-
-                if (venue != null)
-                    return View(venue);
-            }
+            if (venue != null)
+                return View(venue);
+            
             return NotFound();
         }
 
@@ -276,21 +263,17 @@ namespace TicketsResale.Controllers
             return RedirectToAction("Venues");
         }
 
-        public async Task<IActionResult> DeleteVenue(int? id)
+        public async Task<IActionResult> DeleteVenue(int id)
         {
-            if (id != null)
+            var venue = await venuesService.GetVenueById(id);
+            var cityName = await citiesService.GetCityNameById(venue.CityId);
+
+            if (venue != null)
             {
-                var venues = await venuesService.GetVenues();
-                var cities = await citiesService.GetCities();
-
-                Venue venue = venues.FirstOrDefault(p => p.Id == id);
-
-                if (venue != null)
-                {
-                    ViewBag.CityName = cities.Where(v => v.Id == venue.CityId).Select(v => v.Name).FirstOrDefault();
-                    return View(venue);
-                }
+                ViewBag.CityName = cityName;
+                return View(venue);
             }
+           
             return NotFound();
         }
 
@@ -308,24 +291,21 @@ namespace TicketsResale.Controllers
         {
             if (id != null && id != "")
             {
-                var users = await usersAndRolesService.GetUsers();
-                var usersRoles = await usersAndRolesService.GetUsersRolesByUsers(users);
-                var roles = await usersAndRolesService.GetRolesByUsersRoles(usersRoles);
-
-
+                var user = await usersAndRolesService.GetUserById(id);
+                var userRole = await usersAndRolesService.GetUserRoleByUser(user);
+                var role = await usersAndRolesService.GetRoleByUserRole(userRole);
+                var roles = await usersAndRolesService.GetRoles();
                 var list = new SelectList(roles, "Id", "Name");
 
                 ViewBag.Roles = list;
 
-                StoreUser user = users.FirstOrDefault(p => p.Id == id);
-
                 var model = new UsersRolesViewModel
                 {
                     User = user,
-                    Role = roles.Where(r => r.Id == usersRoles.Where(ur => ur.UserId == id).Select(ur => ur.RoleId).FirstOrDefault()).FirstOrDefault(),
-                    UserRole = usersRoles.Where(ur => ur.UserId == id).Select(ur => ur).FirstOrDefault(),
+                    Role = role,
+                    UserRole = userRole,
                     UserId = id,
-                    FirstRoleId = usersRoles.Where(ur => ur.UserId == id).Select(ur => ur.RoleId).FirstOrDefault()
+                    FirstRoleId = role.Id
                 };
 
 
@@ -338,17 +318,13 @@ namespace TicketsResale.Controllers
         [HttpPost]
         public async Task<IActionResult> EditUser(UsersRolesViewModel model)
         {
+            var user = await usersAndRolesService.GetUserById(model.UserId);
+            var userRole = await usersAndRolesService.GetUserRoleByUser(user);
+            var oldRole = await usersAndRolesService.GetRoleByUserRole(userRole);
+            var newRole = await usersAndRolesService.GetRoleByUserRoleId(model.Role.Id);
 
-            var users = await usersAndRolesService.GetUsers();
-            var usersRoles = await usersAndRolesService.GetUsersRolesByUsers(users);
-            var roles = await usersAndRolesService.GetRolesByUsersRoles(usersRoles);
-
-            var user = users.Where(u => u.Id == model.UserId).Select(u => u).FirstOrDefault();
-            var oldRole = roles.Where(r => r.Id == usersRoles.Where(ur => ur.UserId == model.UserId).Select(ur => ur).FirstOrDefault().RoleId).Select(r => r.Name).FirstOrDefault();
-            var newRole = roles.Where(r => r.Id == model.Role.Id).Select(r => r.Name).FirstOrDefault();
-            
-            await _userManager.RemoveFromRoleAsync(user, oldRole);
-            await _userManager.AddToRoleAsync(user, newRole);
+            await _userManager.RemoveFromRoleAsync(user, oldRole.Name);
+            await _userManager.AddToRoleAsync(user, newRole.Name);
            
             return RedirectToAction("Users");
         }

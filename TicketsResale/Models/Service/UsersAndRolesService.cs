@@ -23,6 +23,11 @@ namespace TicketsResale.Models
             return await context.Users.ToListAsync();
         }
 
+        public async Task<List<IdentityRole>> GetRoles()
+        {
+            return await context.Roles.ToListAsync();
+        }
+
         public async Task UpdUserToDb(UsersRolesViewModel item)
         {
             context.Database.EnsureCreated();
@@ -35,6 +40,17 @@ namespace TicketsResale.Models
         public async Task<StoreUser> GetUserByUserName(string userName)
         {
             return await context.Users.Where(u => u.UserName == userName).FirstOrDefaultAsync();
+        }
+
+        
+        public async Task<IdentityUserRole<string>> GetUserRoleByUser(StoreUser user)
+        {
+            return await context.UserRoles.Where(u => u.UserId == user.Id).FirstOrDefaultAsync();
+        }
+
+        public async Task<StoreUser> GetUserById(string userId)
+        {
+            return await context.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
         }
 
         public async Task<List<IdentityUserRole<string>>> GetUsersRolesByUsers(List<StoreUser> users)
@@ -64,5 +80,16 @@ namespace TicketsResale.Models
 
             return resRoles;
         }
+
+        public async Task<IdentityRole> GetRoleByUserRole(IdentityUserRole<string> userRole)
+        {
+             return await context.Roles.Where(r => r.Id == userRole.RoleId).FirstOrDefaultAsync();
+        }
+
+        public async Task<IdentityRole> GetRoleByUserRoleId(string roleId)
+        {
+            return await context.Roles.Where(r => r.Id == roleId).FirstOrDefaultAsync();
+        }
+
     }
 }

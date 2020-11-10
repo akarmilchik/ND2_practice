@@ -52,5 +52,10 @@ namespace TicketsResale.Models.Service
         {
             return await context.Venues.Where(v => v.Id == Id).FirstOrDefaultAsync();
         }
+
+        public async Task<string> GetVenueNameById(int Id)
+        {
+            return await context.Venues.Where(v => v.Id == Id).Select(v => v.Name).FirstOrDefaultAsync();
+        }
     }
 }
