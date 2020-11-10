@@ -1,26 +1,18 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-using TicketsResale.Business;
 using TicketsResale.Models;
 
 namespace TicketsResale.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ShopRepository shopRepository;
-        private readonly ILogger<HomeController> _logger;
         private readonly IStringLocalizer<HomeController> localizer;
-        private readonly UserManager userManager;
 
-        public HomeController(ILogger<HomeController> logger, IStringLocalizer<HomeController> localizer, ShopRepository shopRepository, UserManager userManager)
+        public HomeController(IStringLocalizer<HomeController> localizer)
         {
-            this.shopRepository = shopRepository;
-            _logger = logger;
             this.localizer = localizer;
-            this.userManager = userManager;
+
         }
 
         public IActionResult Index()
@@ -28,21 +20,6 @@ namespace TicketsResale.Controllers
             ViewData["Title"] = localizer["homepagetitle"];
 
             return View();
-        }
-
-        [Authorize]
-        public IActionResult UserInfo(string userName)
-        {
-            ViewData["Title"] = localizer["User info"];
-
-            var userObj = shopRepository.GetUserByName(userName);
-
-            var model = new ShopViewModel
-            {
-                User = userObj
-            };
-
-            return View(model);
         }
 
         public IActionResult Privacy()

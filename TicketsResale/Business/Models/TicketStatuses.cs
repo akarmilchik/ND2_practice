@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace TicketsResale.Business.Models
+﻿namespace TicketsResale.Business.Models
 {
     public enum TicketStatuses : byte
     {
-        selling,
+        selling = 1,
         waiting,
         sold
     }

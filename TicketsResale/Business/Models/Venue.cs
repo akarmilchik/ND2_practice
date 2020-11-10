@@ -1,4 +1,7 @@
-﻿namespace TicketsResale.Business.Models
+﻿using System.Collections.Generic;
+using TicketsResale.Context;
+
+namespace TicketsResale.Business.Models
 {
     public class Venue
     {
@@ -8,7 +11,12 @@
 
         public string Address { get; set; }
 
+        public int CityId { get; set; }
+
         public City City { get; set; }
+
+        public ICollection<Event> Events { get; set; }
+
 
     }
 }

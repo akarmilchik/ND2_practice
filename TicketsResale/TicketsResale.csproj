@@ -5,8 +5,113 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Context\Ado\**" />
+    <Compile Remove="Views\Roles\**" />
+    <Compile Remove="Views\User\**" />
+    <Content Remove="Context\Ado\**" />
+    <Content Remove="Views\Roles\**" />
+    <Content Remove="Views\User\**" />
+    <EmbeddedResource Remove="Context\Ado\**" />
+    <EmbeddedResource Remove="Views\Roles\**" />
+    <EmbeddedResource Remove="Views\User\**" />
+    <None Remove="Context\Ado\**" />
+    <None Remove="Views\Roles\**" />
+    <None Remove="Views\User\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Business\Models\User.cs" />
+    <Compile Remove="Context\IRepository.cs" />
+    <Compile Remove="Context\UnitOfWork.cs" />
+    <Compile Remove="Controllers\MyOrdersController.cs" />
+    <Compile Remove="Controllers\UserController.cs" />
+    <Compile Remove="Migrations\20201023060704_Initial.cs" />
+    <Compile Remove="Migrations\20201023060704_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20201023060748_Initial.cs" />
+    <Compile Remove="Migrations\20201023060748_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20201023072207_Initial.cs" />
+    <Compile Remove="Migrations\20201023072207_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20201023075257_Initial.cs" />
+    <Compile Remove="Migrations\20201023075257_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20201023101135_Identity.cs" />
+    <Compile Remove="Migrations\20201023101135_Identity.Designer.cs" />
+    <Compile Remove="Migrations\20201024094905_StoreUser.cs" />
+    <Compile Remove="Migrations\20201024094905_StoreUser.Designer.cs" />
+    <Compile Remove="Migrations\20201024095321_StoreUser.cs" />
+    <Compile Remove="Migrations\20201024095321_StoreUser.Designer.cs" />
+    <Compile Remove="Migrations\20201024111551_StoreUser.cs" />
+    <Compile Remove="Migrations\20201024111551_StoreUser.Designer.cs" />
+    <Compile Remove="Migrations\20201025162558_FinalIdentity.cs" />
+    <Compile Remove="Migrations\20201025162558_FinalIdentity.Designer.cs" />
+    <Compile Remove="Migrations\20201025180014_Identity.cs" />
+    <Compile Remove="Migrations\20201025180014_Identity.Designer.cs" />
+    <Compile Remove="Migrations\20201025192332_StoreUser_Expand.cs" />
+    <Compile Remove="Migrations\20201025192332_StoreUser_Expand.Designer.cs" />
+    <Compile Remove="Migrations\20201025210253_AddRoles.cs" />
+    <Compile Remove="Migrations\20201025210253_AddRoles.Designer.cs" />
+    <Compile Remove="Migrations\20201026043322_BackStoreUser.cs" />
+    <Compile Remove="Migrations\20201026043322_BackStoreUser.Designer.cs" />
+    <Compile Remove="Migrations\20201026071909_ChangeModelsKeys.cs" />
+    <Compile Remove="Migrations\20201026071909_ChangeModelsKeys.Designer.cs" />
+    <Compile Remove="Migrations\20201026071949_ChangeModelsKeys.cs" />
+    <Compile Remove="Migrations\20201026071949_ChangeModelsKeys.Designer.cs" />
+    <Compile Remove="Migrations\20201026072542_ChangeModelsKeys.cs" />
+    <Compile Remove="Migrations\20201026072542_ChangeModelsKeys.Designer.cs" />
+    <Compile Remove="Migrations\20201026072710_ChangeModelsKeys.cs" />
+    <Compile Remove="Migrations\20201026072710_ChangeModelsKeys.Designer.cs" />
+    <Compile Remove="Migrations\20201026073501_Identity_ChangeModels_Roles.cs" />
+    <Compile Remove="Migrations\20201026073501_Identity_ChangeModels_Roles.Designer.cs" />
+    <Compile Remove="Migrations\20201026074013_Identity_ChangeModels_Roles.cs" />
+    <Compile Remove="Migrations\20201026074013_Identity_ChangeModels_Roles.Designer.cs" />
+    <Compile Remove="Migrations\20201027161748_ExpandModels.cs" />
+    <Compile Remove="Migrations\20201027161748_ExpandModels.Designer.cs" />
+    <Compile Remove="Migrations\20201027170352_ExpandModels2.cs" />
+    <Compile Remove="Migrations\20201027170352_ExpandModels2.Designer.cs" />
+    <Compile Remove="Migrations\20201027215935_ExpandModels3.cs" />
+    <Compile Remove="Migrations\20201027215935_ExpandModels3.Designer.cs" />
+    <Compile Remove="Migrations\20201028061819_ExpandModels.cs" />
+    <Compile Remove="Migrations\20201028061819_ExpandModels.Designer.cs" />
+    <Compile Remove="Migrations\20201028065238_ExpandModels.cs" />
+    <Compile Remove="Migrations\20201028065238_ExpandModels.Designer.cs" />
+    <Compile Remove="Migrations\20201028070635_ExpandModels.cs" />
+    <Compile Remove="Migrations\20201028070635_ExpandModels.Designer.cs" />
+    <Compile Remove="Migrations\20201028071249_ExpandModels.cs" />
+    <Compile Remove="Migrations\20201028071249_ExpandModels.Designer.cs" />
+    <Compile Remove="Migrations\20201028071405_ExpandModels.cs" />
+    <Compile Remove="Migrations\20201028071405_ExpandModels.Designer.cs" />
+    <Compile Remove="Migrations\20201028072517_ExpandModels.cs" />
+    <Compile Remove="Migrations\20201028072517_ExpandModels.Designer.cs" />
+    <Compile Remove="Migrations\20201101214407_ChangeCartItem.cs" />
+    <Compile Remove="Migrations\20201101214407_ChangeCartItem.Designer.cs" />
+    <Compile Remove="Migrations\20201109111733_ChangeEnums.cs" />
+    <Compile Remove="Migrations\20201109111733_ChangeEnums.Designer.cs" />
+    <Compile Remove="Models\LoginViewModel.cs" />
+    <Compile Remove="Models\UserManager.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="9.3.0-preview3" />
     <PackageReference Include="FontAwesome" Version="4.7.0" />
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.9" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,9 +131,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Controllers\EventsController.ru-RU.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Controllers\HomeController.be-BY.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Controllers\HomeController.en-US.resx">
@@ -62,15 +164,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Models\LoginViewModel.ru-RU.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\UserManager.be-BY.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\UserManager.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\UserManager.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\User\Login.be-BY.resx">

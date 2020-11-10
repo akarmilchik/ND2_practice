@@ -1,28 +1,36 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Operations;
 using Microsoft.Extensions.Localization;
-using TicketsResale.Business;
+using System.Linq;
+using System.Threading.Tasks;
 using TicketsResale.Models;
+using TicketsResale.Models.Service;
 
 namespace TicketsResale.Business.Models
 {
     public class EventsController : Controller
     {
-        private readonly ShopRepository shopRepository;
         private readonly IStringLocalizer<EventsController> localizer;
+        private readonly IEventsService eventsService;
+        private readonly IVenuesService venuesService;
+        private readonly ICitiesService citiesService;
 
-        public EventsController(ShopRepository shopRepository, IStringLocalizer<EventsController> localizer)
+        public EventsController(IStringLocalizer<EventsController> localizer, IEventsService eventsService, IVenuesService venuesService, ICitiesService citiesService)
         {
-            this.shopRepository = shopRepository;
+
             this.localizer = localizer;
+            this.eventsService = eventsService;
+            this.venuesService = venuesService;
+            this.citiesService = citiesService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()  
         {
-            ViewData["Title"] = localizer["eventstitle"];
+            ViewData["Title"] = "Events";
 
-            var model = new ShopViewModel
-            { 
-                Events = shopRepository.GetEvents() 
+            var model = new EventsViewModel
+            {
+                Events = await eventsService.GetEvents(),
+                Venues = await venuesService.GetVenues(),
+                Cities = await citiesService.GetCities(),
             };
 
             return View(model);

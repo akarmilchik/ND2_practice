@@ -1,0 +1,54 @@
+﻿@model IEnumerable<TicketsResale.Business.Models.City>
+
+@{
+    ViewData["Title"] = "Cities";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1>Cities</h1>
+<ul class="nav nav-tabs bg-dark">
+    <li class="nav-item">
+        <a class="nav-link text-light" asp-action="Index">
+            Back
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-light" asp-action="CreateCity">
+            Create new
+        </a>
+    </li>
+</ul>
+<table class="table bg-dark text-light">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <ul class="nav d-sm-flex float-right bg-dark">
+                        <li class="nav-item bg-primary">   
+                            <a class="nav-link text-light" asp-action="EditCity" asp-route-id="@item.Id">
+                                Edit
+                            </a>
+                        </li>
+
+                        <li class="nav-item bg-danger">
+                            <a class="nav-link text-light" asp-action="DeleteCity" asp-route-id="@item.Id">
+                                Delete
+                            </a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

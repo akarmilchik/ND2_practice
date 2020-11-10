@@ -1,0 +1,49 @@
+﻿@model UsersViewModel
+
+@{
+    ViewData["Title"] = "Events";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Users</h2>
+<ul class="nav nav-tabs bg-dark">
+    <li class="nav-item">
+        <a class="nav-link text-light" asp-action="Index">
+            Back
+        </a>
+    </li>
+</ul>
+<table class="table bg-dark text-light">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Users[0].UserName)
+            </th>
+            <th>
+                Role
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Users)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Model.Roles.Where(r => r.Id == Model.UsersRoles.Where(ur => ur.UserId == item.Id).Select(ur => ur.RoleId).FirstOrDefault()).Select(r => r.Name).FirstOrDefault()
+                </td>
+                <td>
+                    <ul class="nav d-sm-flex float-right bg-dark text-center">
+                        <li class="nav-item bg-primary">
+                            <a class="nav-link text-light" asp-action="EditUser" asp-controller="Admin" asp-route-id="@item.Id">
+                                Edit
+                            </a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
