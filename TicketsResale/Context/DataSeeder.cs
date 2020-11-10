@@ -30,18 +30,11 @@ namespace TicketsResale.Context
             new City { Name = "Dubai" }
         };
 
-        private static readonly List<TicketsCart> TicketsCarts = new List<TicketsCart>
-        {
-            new TicketsCart { Id = 1 },
-            new TicketsCart { Id = 2 },
-            new TicketsCart { Id = 3 }
-        };
-
         private static readonly List<StoreUser> Users = new List<StoreUser>
         {
-            new StoreUser { FirstName = "Alexey", LastName = "Karm", Address = "15, Kosmonavtov Av., Grodno, BLR", Localization = "rus", PhoneNumber = "228228", UserName = "alexey.karm@mail.ru", Email = "alexey.karm@mail.ru", TicketsCartId = 1 },
-            new StoreUser { FirstName = "Jominez", LastName = "Maxwell", Address = "132/1, Sunlight Av., Barselona, SPA", Localization = "bel", PhoneNumber = "345124", UserName = "j@mail.ru", Email = "j@mail.ru", TicketsCartId = 2 },
-            new StoreUser { FirstName = "Alibaba", LastName = "Bestseller", Address = "6/1, 123 Av., New York, USA", Localization = "eng", PhoneNumber = "777777", UserName = "a@mail.ru", Email = "a@mail.ru", TicketsCartId = 3 }
+            new StoreUser { FirstName = "Alexey", LastName = "Karm", Address = "15, Kosmonavtov Av., Grodno, BLR", Localization = "rus", PhoneNumber = "228228", UserName = "alexey.karm@mail.ru", Email = "alexey.karm@mail.ru" },
+            new StoreUser { FirstName = "Jominez", LastName = "Maxwell", Address = "132/1, Sunlight Av., Barselona, SPA", Localization = "bel", PhoneNumber = "345124", UserName = "j@mail.ru", Email = "j@mail.ru" },
+            new StoreUser { FirstName = "Alibaba", LastName = "Bestseller", Address = "6/1, 123 Av., New York, USA", Localization = "eng", PhoneNumber = "777777", UserName = "a@mail.ru", Email = "a@mail.ru" }
         };
 
         private static readonly List<IdentityRole> Roles = new List<IdentityRole>
@@ -82,134 +75,124 @@ namespace TicketsResale.Context
 
          private static readonly List<Ticket> Tickets = new List<Ticket>
         {
-            new Ticket { Event = Events[0], Price = 15, SellerId = Users[0].Id, Status = TicketStatuses.selling },
-            new Ticket { Event = Events[0], Price = 20, SellerId = Users[0].Id, Status = TicketStatuses.sold },
-            new Ticket { Event = Events[1], Price = 35, SellerId = Users[0].Id, Status = TicketStatuses.waiting },
-            new Ticket { Event = Events[2], Price = 100, SellerId = Users[1].Id, Status = TicketStatuses.selling },
-            new Ticket { Event = Events[2], Price = 105, SellerId = Users[1].Id, Status = TicketStatuses.waiting },
-            new Ticket { Event = Events[2], Price = 170, SellerId = Users[1].Id, Status = TicketStatuses.waiting },
-            new Ticket { Event = Events[3], Price = 10, SellerId = Users[0].Id, Status = TicketStatuses.selling },
-            new Ticket { Event = Events[3], Price = 6, SellerId = Users[0].Id, Status = TicketStatuses.sold },
-            new Ticket { Event = Events[4], Price = 200, SellerId = Users[2].Id, Status = TicketStatuses.selling },
-            new Ticket { Event = Events[4], Price = 240, SellerId = Users[2].Id, Status = TicketStatuses.sold },
-            new Ticket { Event = Events[4], Price = 260, SellerId = Users[2].Id, Status = TicketStatuses.sold },
-            new Ticket { Event = Events[4], Price = 210, SellerId = Users[0].Id, Status = TicketStatuses.waiting },
-            new Ticket { Event = Events[5], Price = 70, SellerId = Users[2].Id, Status = TicketStatuses.selling },
-            new Ticket { Event = Events[5], Price = 90, SellerId = Users[2].Id, Status = TicketStatuses.sold },
-            new Ticket { Event = Events[5], Price = 150, SellerId = Users[2].Id, Status = TicketStatuses.selling },
-            new Ticket { Event = Events[5], Price = 200, SellerId = Users[2].Id, Status = TicketStatuses.waiting },
-            new Ticket { Event = Events[6], Price = 800, SellerId = Users[2].Id, Status = TicketStatuses.sold },
-            new Ticket { Event = Events[6], Price = 750, SellerId = Users[1].Id, Status = TicketStatuses.selling },
-            new Ticket { Event = Events[6], Price = 780, SellerId = Users[2].Id, Status = TicketStatuses.sold },
-            new Ticket { Event = Events[7], Price = 130, SellerId = Users[2].Id, Status = TicketStatuses.sold },
-            new Ticket { Event = Events[7], Price = 200, SellerId = Users[2].Id, Status = TicketStatuses.selling },
-            new Ticket { Event = Events[8], Price = 80, SellerId = Users[2].Id, Status = TicketStatuses.selling },
-            new Ticket { Event = Events[9], Price = 1500, SellerId = Users[2].Id, Status = TicketStatuses.waiting }
+            new Ticket { Event = Events[0], Price = 15, Seller = Users[0], Status = TicketStatuses.selling },
+            new Ticket { Event = Events[0], Price = 20, Seller = Users[0], Status = TicketStatuses.sold },
+            new Ticket { Event = Events[1], Price = 35, Seller = Users[0], Status = TicketStatuses.waiting },
+            new Ticket { Event = Events[2], Price = 100, Seller = Users[1], Status = TicketStatuses.selling },
+            new Ticket { Event = Events[2], Price = 105, Seller = Users[1], Status = TicketStatuses.waiting },
+            new Ticket { Event = Events[2], Price = 170, Seller = Users[1], Status = TicketStatuses.waiting },
+            new Ticket { Event = Events[3], Price = 10, Seller = Users[0], Status = TicketStatuses.selling },
+            new Ticket { Event = Events[3], Price = 6, Seller = Users[0], Status = TicketStatuses.sold },
+            new Ticket { Event = Events[4], Price = 200, Seller = Users[2], Status = TicketStatuses.selling },
+            new Ticket { Event = Events[4], Price = 240, Seller = Users[2], Status = TicketStatuses.sold },
+            new Ticket { Event = Events[4], Price = 260, Seller = Users[2], Status = TicketStatuses.sold },
+            new Ticket { Event = Events[4], Price = 210, Seller = Users[0], Status = TicketStatuses.waiting },
+            new Ticket { Event = Events[5], Price = 70, Seller = Users[2], Status = TicketStatuses.selling },
+            new Ticket { Event = Events[5], Price = 90, Seller = Users[2], Status = TicketStatuses.sold },
+            new Ticket { Event = Events[5], Price = 150, Seller = Users[2], Status = TicketStatuses.selling },
+            new Ticket { Event = Events[5], Price = 200, Seller = Users[2], Status = TicketStatuses.waiting },
+            new Ticket { Event = Events[6], Price = 800, Seller = Users[2], Status = TicketStatuses.sold },
+            new Ticket { Event = Events[6], Price = 750, Seller = Users[1], Status = TicketStatuses.selling },
+            new Ticket { Event = Events[6], Price = 780, Seller = Users[2], Status = TicketStatuses.sold },
+            new Ticket { Event = Events[7], Price = 130, Seller = Users[2], Status = TicketStatuses.sold },
+            new Ticket { Event = Events[7], Price = 200, Seller = Users[2], Status = TicketStatuses.selling },
+            new Ticket { Event = Events[8], Price = 80, Seller = Users[2], Status = TicketStatuses.selling },
+            new Ticket { Event = Events[9], Price = 1500, Seller = Users[2], Status = TicketStatuses.waiting }
         };
 
         //Orders of Users
-        private static readonly List<CartItem> CartItems = new List<CartItem>
+        private static readonly List<Order> Orders = new List<Order>
         {
-            new CartItem { Status = CartItemStatuses.confirmed, Ticket = Tickets[0], TrackNumber = "SN53245AB21", TicketsCartId = TicketsCarts[2].Id, Count = 1 },
-            new CartItem { Status = CartItemStatuses.rejected, Ticket = Tickets[2], TrackNumber = "SN34535AB98", TicketsCartId = TicketsCarts[1].Id, Count = 1},
-            new CartItem { Status = CartItemStatuses.rejected, Ticket = Tickets[6], TrackNumber = "SN18175AB74", TicketsCartId = TicketsCarts[2].Id, Count = 1 },
-            new CartItem { Status = CartItemStatuses.waiting, Ticket = Tickets[9], TrackNumber = "SN77756AB13", TicketsCartId = TicketsCarts[1].Id, Count = 1 },
-            new CartItem { Status = CartItemStatuses.confirmed, Ticket = Tickets[12], TrackNumber = "SN22467AB21", TicketsCartId = TicketsCarts[0].Id, Count = 1 },
-            new CartItem { Status = CartItemStatuses.waiting, Ticket = Tickets[15], TrackNumber = "SN34563AB67", TicketsCartId = TicketsCarts[0].Id, Count = 1 },
-            new CartItem { Status = CartItemStatuses.rejected, Ticket = Tickets[18], TrackNumber = "SN34442AB67", TicketsCartId = TicketsCarts[1].Id, Count = 1 },
-            new CartItem { Status = CartItemStatuses.waiting, Ticket = Tickets[20], TrackNumber = "SN53245AB76", TicketsCartId = TicketsCarts[2].Id, Count = 1 },
-            new CartItem { Status = CartItemStatuses.confirmed, Ticket = Tickets[4], TrackNumber = "SN98762AB21", TicketsCartId = TicketsCarts[0].Id, Count = 1 },
-            new CartItem { Status = CartItemStatuses.rejected, Ticket = Tickets[22], TrackNumber = "SN23421AB33", TicketsCartId = TicketsCarts[1].Id, Count = 1 }
+            new Order { Buyer = Users[2], Status = OrderStatuses.confirmed, Ticket = Tickets[0], TrackNumber = "SN53245AB21" },
+            new Order { Buyer = Users[1], Status = OrderStatuses.rejected, Ticket = Tickets[2], TrackNumber = "just simple" },
+            new Order { Buyer = Users[2], Status = OrderStatuses.rejected, Ticket = Tickets[6], TrackNumber = "test attempt" },
+            new Order { Buyer = Users[1], Status = OrderStatuses.waiting, Ticket = Tickets[9], TrackNumber = "" },
+            new Order { Buyer = Users[0], Status = OrderStatuses.confirmed, Ticket = Tickets[12], TrackNumber = "SN22467AB21" },
+            new Order { Buyer = Users[0], Status = OrderStatuses.waiting, Ticket = Tickets[15], TrackNumber = "" },
+            new Order { Buyer = Users[1], Status = OrderStatuses.rejected, Ticket = Tickets[18], TrackNumber = "don't liked" },
+            new Order { Buyer = Users[2], Status = OrderStatuses.waiting, Ticket = Tickets[20], TrackNumber = "" },
+            new Order { Buyer = Users[0], Status = OrderStatuses.confirmed, Ticket = Tickets[4], TrackNumber = "SN98762AB21" },
+            new Order { Buyer = Users[1], Status = OrderStatuses.rejected, Ticket = Tickets[22], TrackNumber = "too small" }
         };
 
 
         public async Task SeedDataAsync()
         {
-            await context.Database.EnsureCreatedAsync();
-
-            // Roles
-            foreach (IdentityRole role in Roles)
+            if (await context.Database.CanConnectAsync())
             {
-                if (!await roleManager.RoleExistsAsync(role.Name))
-                { 
-                    await roleManager.CreateAsync(role); 
-                }
-            }
-            await context.SaveChangesAsync();
-            
-            // TicketsCarts
-            foreach (TicketsCart cart in TicketsCarts)
-            {
-                if (!context.TicketsCarts.Contains(cart))
+                // Roles
+                foreach (IdentityRole role in Roles)
                 {
-                    await context.TicketsCarts.AddAsync(new TicketsCart { });
+                    if (!await roleManager.RoleExistsAsync(role.Name))
+                    {
+                        await roleManager.CreateAsync(role);
+                    }
                 }
-            }
-            await context.SaveChangesAsync();
+                await context.SaveChangesAsync();
 
-            
 
-            // Create Users and sync with Roles
-            if (await userManager.FindByNameAsync(Users[0].UserName) == null)
-            {
-                IdentityResult result = userManager.CreateAsync(Users[0], "admin111").Result;
-
-                if (result.Succeeded)
+                // Create Users and sync with Roles
+                if (await userManager.FindByNameAsync(Users[0].UserName) == null)
                 {
-                    await userManager.AddToRoleAsync(Users[0], Roles[0].Name);
+                    IdentityResult result = userManager.CreateAsync(Users[0], "admin111").Result;
+
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(Users[0], Roles[0].Name);
+                    }
+
                 }
 
-            }
-
-            if (await userManager.FindByNameAsync(Users[1].UserName) == null)
-            {
-                IdentityResult result = userManager.CreateAsync(Users[1], "user222").Result;
-
-                if (result.Succeeded)
+                if (await userManager.FindByNameAsync(Users[1].UserName) == null)
                 {
-                    await userManager.AddToRoleAsync(Users[1], Roles[1].Name);
+                    IdentityResult result = userManager.CreateAsync(Users[1], "user222").Result;
+
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(Users[1], Roles[1].Name);
+                    }
                 }
-            }
 
-            if (await userManager.FindByNameAsync(Users[2].UserName) == null)
-            {
-                IdentityResult result = userManager.CreateAsync(Users[2], "user333").Result;
-
-
-                if (result.Succeeded)
+                if (await userManager.FindByNameAsync(Users[2].UserName) == null)
                 {
-                    await userManager.AddToRoleAsync(Users[2], Roles[1].Name);
+                    IdentityResult result = userManager.CreateAsync(Users[2], "user333").Result;
+
+
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(Users[2], Roles[1].Name);
+                    }
                 }
-            }
 
-            await context.SaveChangesAsync();
+                await context.SaveChangesAsync();
 
-            if (!context.Cities.Any())
-            {
-                await context.Cities.AddRangeAsync(Cities);
-            }
+                if (!context.Cities.Any())
+                {
+                    await context.Cities.AddRangeAsync(Cities);
+                }
 
-            if (!context.Venues.Any())
-            {
-                await context.Venues.AddRangeAsync(Venues);
-            }
+                if (!context.Venues.Any())
+                {
+                    await context.Venues.AddRangeAsync(Venues);
+                }
 
-            if (!context.Events.Any())
-            {
-                await context.Events.AddRangeAsync(Events);
-            }
+                if (!context.Events.Any())
+                {
+                    await context.Events.AddRangeAsync(Events);
+                }
 
-            if (!context.Tickets.Any())
-            {
-                await context.Tickets.AddRangeAsync(Tickets);
+                if (!context.Tickets.Any())
+                {
+                    await context.Tickets.AddRangeAsync(Tickets);
+                }
+
+                if (!context.Orders.Any())
+                {
+                    await context.Orders.AddRangeAsync(Orders);
+                }
+
+                await context.SaveChangesAsync();
             }
-            
-            if (!context.CartItems.Any())
-            {
-                await context.CartItems.AddRangeAsync(CartItems);
-            }
-            
-            await context.SaveChangesAsync();
         }
     }
 }

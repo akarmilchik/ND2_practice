@@ -10,13 +10,17 @@ namespace TicketsResale.Business.Models
     public class EventsController : Controller
     {
         private readonly IStringLocalizer<EventsController> localizer;
-        private readonly ITakeDataService takeDataService;
+        private readonly IEventsService eventsService;
+        private readonly IVenuesService venuesService;
+        private readonly ICitiesService citiesService;
 
-        public EventsController(IStringLocalizer<EventsController> localizer, ITakeDataService takeDataService)
+        public EventsController(IStringLocalizer<EventsController> localizer, IEventsService eventsService, IVenuesService venuesService, ICitiesService citiesService)
         {
 
             this.localizer = localizer;
-            this.takeDataService = takeDataService;
+            this.eventsService = eventsService;
+            this.venuesService = venuesService;
+            this.citiesService = citiesService;
         }
         public async Task<IActionResult> Index()  
         {
@@ -24,9 +28,9 @@ namespace TicketsResale.Business.Models
 
             var model = new EventsViewModel
             {
-                Events = await takeDataService.GetEvents(),
-                Venues = await takeDataService.GetVenues(),
-                Cities = await takeDataService.GetCities(),
+                Events = await eventsService.GetEvents(),
+                Venues = await venuesService.GetVenues(),
+                Cities = await citiesService.GetCities(),
             };
 
             return View(model);

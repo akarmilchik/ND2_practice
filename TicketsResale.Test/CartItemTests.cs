@@ -10,7 +10,7 @@ namespace TicketsResale.Test
     [TestFixture]
     class CartItemTests
     {
-        private CartItem cartItem;
+        //private Order order;
         //private Ticket ticket;
         //private TicketsCart ticketsCart;
 
@@ -18,14 +18,10 @@ namespace TicketsResale.Test
         [OneTimeSetUp]
         public void Setup()
         {
-            var TicketsCarts = new List<TicketsCart>()
-            {
-                new TicketsCart { Id = 1 }
-            };
 
             var Users = new List<StoreUser>()
             {
-                new StoreUser { FirstName = "Alexey", LastName = "Karm", Address = "15, Kosmonavtov Av., Grodno, BLR", Localization = "rus", PhoneNumber = "228228", UserName = "alexey.karm@mail.ru", Email = "alexey.karm@mail.ru", TicketsCartId = 1 }
+                new StoreUser { FirstName = "Alexey", LastName = "Karm", Address = "15, Kosmonavtov Av., Grodno, BLR", Localization = "rus", PhoneNumber = "228228", UserName = "alexey.karm@mail.ru", Email = "alexey.karm@mail.ru"}
             };
 
             var Cities = new List<City>
@@ -55,9 +51,9 @@ namespace TicketsResale.Test
                 new Ticket { Event = Events[0], Price = 15, SellerId = Users[0].Id, Status = TicketStatuses.selling },
             };
 
-            var cartItems = new List<CartItem>()
+            var cartItems = new List<Order>()
             {
-                new CartItem { Ticket = Tickets[0], TicketId = Tickets[0].Id, Count = 1, Status = CartItemStatuses.waiting, TicketsCart = TicketsCarts[0], TicketsCartId = TicketsCarts[0].Id, TrackNumber = "SN23423423RR" }
+                new Order { Ticket = Tickets[0], TicketId = Tickets[0].Id, Status = OrderStatuses.waiting, Buyer = Users[0], TrackNumber = "SN23423423RR" }
             };
 
 

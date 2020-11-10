@@ -7,11 +7,13 @@ using TicketsResale.Business.Models;
 
 namespace TicketsResale.Models
 {
-    public class TicketsCartViewModel
+    public class OrdersViewModel
     {
         public ICollection<Event> Events{ get; set; }
-        public ICollection<CartItem> CartItems{ get; set; }
+        public ICollection<Order> Orders{ get; set; }
         public ICollection<Ticket> Tickets { get; set; }
         public ICollection<StoreUser> Sellers { get; set; }
+
+
     }
 }

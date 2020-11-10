@@ -9,7 +9,7 @@ namespace TicketsResale.Models
 
         public List<StoreUser> Sellers { get; set; }
 
-        public List<CartItem> CartItems { get; set; }
+        public List<Order> Orders { get; set; }
 
         public Event Event { get; set; }
 

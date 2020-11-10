@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using TicketsResale.Business.Models;
 
 namespace TicketsResale.Models
@@ -15,13 +12,11 @@ namespace TicketsResale.Models
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+
         public DateTime Date { get; set; }
         public int VenueId { get; set; }
         public Venue Venue { get; set; }
-
-
         public string Description { get; set; }
-
         public IFormFile Banner { get; set; }
     }
 }

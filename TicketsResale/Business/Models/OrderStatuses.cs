@@ -1,6 +1,6 @@
 ﻿namespace TicketsResale.Business.Models
 {
-    public enum CartItemStatuses : byte
+    public enum OrderStatuses : byte
     {
         waiting = 1,
         confirmed,

@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Business\Models\Order.cs" />
     <Compile Remove="Business\Models\User.cs" />
     <Compile Remove="Context\IRepository.cs" />
     <Compile Remove="Context\UnitOfWork.cs" />
@@ -87,10 +86,6 @@
     <Compile Remove="Migrations\20201109111733_ChangeEnums.cs" />
     <Compile Remove="Migrations\20201109111733_ChangeEnums.Designer.cs" />
     <Compile Remove="Models\LoginViewModel.cs" />
-    <Compile Remove="Models\Service\IOrdersService.cs" />
-    <Compile Remove="Models\Service\IUsersService.cs" />
-    <Compile Remove="Models\Service\OrdersService.cs" />
-    <Compile Remove="Models\Service\UsersService.cs" />
     <Compile Remove="Models\UserManager.cs" />
   </ItemGroup>
 

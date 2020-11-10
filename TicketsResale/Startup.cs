@@ -39,11 +39,11 @@ namespace TicketsResale
             });
             
             services.AddScoped<ITicketsService, TicketsService>();
-            services.AddScoped<ITicketsCartService, TicketsCartService>();
+            services.AddScoped<IOrdersService, OrdersService>();
             services.AddScoped<IEventsService, EventsService>();
-            services.AddScoped<ITakeDataService, TakeDataService>();
-            services.AddScoped<IAddDataService, AddDataService>();
-            services.AddScoped<CartIdHandler>();
+            services.AddScoped<ICitiesService, CitiesService>();
+            services.AddScoped<IVenuesService, VenuesService>();
+            services.AddScoped<IUsersAndRolesService, UsersAndRolesService>();
 
             services.AddDbContext<StoreContext>(o =>
             {
@@ -125,8 +125,6 @@ namespace TicketsResale
             app.UseAuthentication();
             
             app.UseAuthorization();
-
-            app.UseMiddleware<CartIdHandler>();
 
             app.UseEndpoints(endpoints =>
             {

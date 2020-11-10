@@ -18,21 +18,21 @@ namespace TicketsResale.Controllers
     {
         private readonly IStringLocalizer<TicketsController> localizer;
         private readonly ITicketsService ticketsService;
-        private readonly ITicketsCartService ticketsCartService;
         private readonly IEventsService eventsService;
-        private readonly ITakeDataService takeDataService;
-        private readonly IAddDataService addDataService;
-        private readonly ILogger<TicketsController> logger;
+        private readonly IVenuesService venuesService;
+        private readonly ICitiesService citiesService;
+        private readonly IUsersAndRolesService usersAndRolesService;
+        private readonly IOrdersService ordersService;
 
-        public TicketsController(ITicketsService ticketsService, ITicketsCartService ticketsCartService, IEventsService eventsService, ITakeDataService takeDataService, IAddDataService addDataService, IStringLocalizer<TicketsController> localizer, ILogger<TicketsController> logger)
+        public TicketsController(ITicketsService ticketsService, IOrdersService ticketsCartService, IEventsService eventsService, IVenuesService venuesService, ICitiesService citiesService, IUsersAndRolesService usersAndRolesService, IOrdersService ordersService, IStringLocalizer<TicketsController> localizer)
         {
             this.localizer = localizer;
             this.ticketsService = ticketsService;
-            this.ticketsCartService = ticketsCartService;
             this.eventsService = eventsService;
-            this.takeDataService = takeDataService;
-            this.addDataService = addDataService;
-            this.logger = logger;
+            this.venuesService = venuesService;
+            this.citiesService = citiesService;
+            this.usersAndRolesService = usersAndRolesService;
+            this.ordersService = ordersService;
         }
 
         public async Task<IActionResult> GetEventTickets(int eventId)
@@ -41,28 +41,22 @@ namespace TicketsResale.Controllers
 
             var eventTickets = await eventsService.GetEventWithTickets(eventId);
 
-            Dictionary<byte, string> statusesDic = new Dictionary<byte, string>();
-            foreach (TicketStatuses statuses in Enum.GetValues(typeof(TicketStatuses)))
-            {
-                statusesDic.Add((byte)statuses, statuses.ToString());
-            }
-
-            ViewBag.ticketStatuses = statusesDic;
-
             return View("EventTickets", eventTickets);
         }
 
 
         [Authorize]
-        public async Task<IActionResult> MyTickets(TicketStatuses ticketStatus, CartItemStatuses orderStatus, string userName)
+        public async Task<IActionResult> MyTickets(TicketStatuses ticketStatus, OrderStatuses orderStatus, string userName)
         {
             ViewData["Title"] = localizer["My tickets"];
 
+            var tickets = await ticketsService.GetTicketsByStatusesAndUserName(ticketStatus, orderStatus, userName);
+
             var model = new MyTicketsViewModel
             {
-                Tickets = await ticketsService.GetTicketsByStatusesAndUserName(ticketStatus, orderStatus, userName),
-                Events = await takeDataService.GetEvents(),
-                Users = await takeDataService.GetUsers(),
+                Tickets = tickets,
+                Events = await eventsService.GetEventsByTickets(tickets),
+                Users = await usersAndRolesService.GetUsers(),
                 ticketStatus = ticketStatus
             };
             return View(model);
@@ -72,10 +66,14 @@ namespace TicketsResale.Controllers
         public async Task<IActionResult> Buy([FromRoute] int id)
         {
             var ticket = await ticketsService.GetTicketById(id);
-            await ticketsCartService.AddItemToCart(HttpContext.GetTicketsCartId(), ticket, 1);
+
+            await ordersService.AddTicketToOrder(User.Identity.Name, ticket);
+
             ticket.Status = TicketStatuses.sold;
-            await addDataService.UpdTicketToDb(ticket);
-            return RedirectToAction("Index", "Cart", ticket);
+
+            await ticketsService.UpdTicketToDb(ticket);
+
+            return RedirectToAction("Index", "Orders", ticket);
         }
 
 
@@ -84,7 +82,7 @@ namespace TicketsResale.Controllers
         {
             ViewData["Title"] = "Create ticket";
 
-            var events = await takeDataService.GetEvents();
+            var events = await eventsService.GetEvents();
 
             var listEvents = new SelectList(events, "Id", "Name");
 
@@ -97,29 +95,29 @@ namespace TicketsResale.Controllers
         [Authorize]
         public async Task<IActionResult> CreateTicket(TicketCreateEditModel model)
         {
-            var user = (await takeDataService.GetUsers()).ToArray().Where(u => u.UserName == User.Identity.Name).Select(u => u).FirstOrDefault();
+            var user = await usersAndRolesService.GetUserByUserName(User.Identity.Name);
 
-            var eevent = (await takeDataService.GetEvents()).ToArray().Where(e => e.Id == model.Event.Id).Select(u => u).FirstOrDefault();
-            
-            var venue = (await takeDataService.GetVenues()).ToArray().Where(e => e.Id == eevent.VenueId).Select(u => u).FirstOrDefault();
+            var @event = await eventsService.GetEventById(model.Event.Id);
 
-            var city = (await takeDataService.GetCities()).ToArray().Where(e => e.Id == venue.CityId).Select(u => u).FirstOrDefault();
+            var venue = await venuesService.GetVenueById(@event.VenueId);
+
+            var city = await citiesService.GetCityById(venue.CityId);
 
             if (venue != null)
-                eevent.Venue = venue;
+                @event.Venue = venue;
 
             if (city != null)
-                eevent.Venue.City = city;
+                @event.Venue.City = city;
 
             if (user != null)
                 model.Seller = user;
 
-            if (eevent != null)
-                model.Event = eevent;
+            if (@event != null)
+                model.Event = @event;
 
             Ticket ticket = new Ticket() { EventId = model.Event.Id, Event = model.Event, SellerId = model.Seller.Id, Seller = model.Seller, Price = model.Price, Status = model.Status };
 
-            await addDataService.AddTicketToDb(ticket);
+            await ticketsService.AddTicketToDb(ticket);
 
             return RedirectToAction("MyTickets", new { ticketStatus = 1, orderStatus = 0, userName = User.Identity.Name });
 
@@ -127,27 +125,22 @@ namespace TicketsResale.Controllers
 
 
         [Authorize]
-        public async Task<IActionResult> ConfirmTicket(int? id)
+        public async Task<IActionResult> ConfirmTicket(int id)
         {
-            if (id != null)
+            var ticket = await ticketsService.GetTicketById(id);
+            var @event = await eventsService.GetEventById(ticket.EventId);
+
+            if (ticket != null)
             {
-                var tickets = (await takeDataService.GetTickets()).ToArray();
-                var events = (await takeDataService.GetEvents()).ToArray();
-
-                Ticket ticket = tickets.FirstOrDefault(p => p.Id == id);
-
-                if (ticket != null)
+                var model = new ConfirmRejectTicketViewModel
                 {
-                    Event eevent = events.FirstOrDefault(p => p.Id == ticket.EventId);
-                    var model = new ConfirmRejectTicketViewModel
-                    {
-                        Ticket = ticket,
-                        Event = eevent
-                    };
+                    Ticket = ticket,
+                    Event = @event
+                };
 
-                    return View(model);
-                }
+                return View(model);
             }
+           
             return NotFound();
         }
 
@@ -155,23 +148,23 @@ namespace TicketsResale.Controllers
         [Authorize]
         public async Task<IActionResult> ConfirmTicket(ConfirmRejectTicketViewModel model, int ticketId)
         {
-            var AllCartItems = await takeDataService.GetCartsItems();
+            var allOrders = await ordersService.GetOrders();
 
-            var needCartItems = AllCartItems.Where(ci => ci.TicketId == ticketId).ToList();
+            var needOrders = allOrders.Where(ci => ci.TicketId == ticketId).ToList();
 
-            var needTicket = (await takeDataService.GetTickets()).Where(ci => ci.Id == ticketId).FirstOrDefault();
+            var needTicket = await ticketsService.GetTicketById(ticketId);
 
-            foreach (CartItem cartItem in needCartItems)
+            foreach (Order order in needOrders)
             {
-                cartItem.Status = model.Confirmation ? CartItemStatuses.confirmed : CartItemStatuses.rejected;
+                order.Status = model.Confirmation ? OrderStatuses.confirmed : OrderStatuses.rejected;
 
-                await addDataService.UpdCartItemToDb(cartItem);
+                await ordersService.UpdOrderToDb(order);
             }
 
             if (model.Confirmation)
             {
                 needTicket.Status = TicketStatuses.sold;
-                await addDataService.UpdTicketToDb(needTicket);
+                await ticketsService.UpdTicketToDb(needTicket);
             }
 
             return RedirectToAction("MyTickets", new { ticketStatus = 1, orderStatus = 0, userName = User.Identity.Name });

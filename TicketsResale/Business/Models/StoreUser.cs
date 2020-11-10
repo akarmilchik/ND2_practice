@@ -4,10 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace TicketsResale.Business.Models
 {
     public class StoreUser : IdentityUser
-    {
-        public int TicketsCartId { get; set; }
-
-        public TicketsCart TicketsCart { get; set; }
+    { 
 
         public string FirstName { get; set; }
 
