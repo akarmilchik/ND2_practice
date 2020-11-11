@@ -27,7 +27,7 @@ namespace TicketsResale.Models
         {
             return await context.Roles.ToListAsync();
         }
-
+        /*
         public async Task UpdUserToDb(UsersRolesViewModel item)
         {
             context.Database.EnsureCreated();
@@ -35,14 +35,71 @@ namespace TicketsResale.Models
             context.UserRoles.Update(new IdentityUserRole<string> { UserId = item.UserId, RoleId = item.Role.Id });
 
             await context.SaveChangesAsync();
-        }
+        }*/
 
-        public async Task<StoreUser> GetUserByUserName(string userName)
+        public async Task UpdUserFirstName(StoreUser user, string firstName)
         {
-            return await context.Users.Where(u => u.UserName == userName).FirstOrDefaultAsync();
+            if (await context.Database.CanConnectAsync())
+            {
+                user.FirstName = firstName;
+                context.Users.Update(user);
+
+                await context.SaveChangesAsync();
+            }
+        }
+        public async Task UpdUserLastName(StoreUser user, string lastName)
+        {
+            if (await context.Database.CanConnectAsync())
+            {
+                user.LastName = lastName;
+                context.Users.Update(user);
+
+                await context.SaveChangesAsync();
+            }
+        }
+        public async Task UpdUserAddress(StoreUser user, string address)
+        {
+            if (await context.Database.CanConnectAsync())
+            {
+                user.Address = address;
+                context.Users.Update(user);
+
+                await context.SaveChangesAsync();
+            }
+        }
+        public async Task UpdUserLocalization(StoreUser user, Localizations localization)
+        {
+            if (await context.Database.CanConnectAsync())
+            {
+                user.Localization = localization;
+                context.Users.Update(user);
+
+                await context.SaveChangesAsync();
+            }
         }
 
-        
+        public async Task<string> GetUserFirstNameByUserName(string userName)
+        {
+            return await context.Users.Where(u => u.UserName == userName).Select(u => u.FirstName).FirstOrDefaultAsync();
+        }
+
+        public async Task<string> GetUserLastNameByUserName(string userName)
+        {
+            return await context.Users.Where(u => u.UserName == userName).Select(u => u.LastName).FirstOrDefaultAsync();
+        }
+
+
+        public async Task<string> GetUserAddressByUserName(string userName)
+        {
+            return await context.Users.Where(u => u.UserName == userName).Select(u => u.Address).FirstOrDefaultAsync();
+        }
+
+        public async Task<Localizations> GetUserLocalizationByUserName(string userName)
+        {
+            return await context.Users.Where(u => u.UserName == userName).Select(u => u.Localization).FirstOrDefaultAsync();
+        }
+
+
         public async Task<IdentityUserRole<string>> GetUserRoleByUser(StoreUser user)
         {
             return await context.UserRoles.Where(u => u.UserId == user.Id).FirstOrDefaultAsync();
@@ -51,6 +108,11 @@ namespace TicketsResale.Models
         public async Task<StoreUser> GetUserById(string userId)
         {
             return await context.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
+        }
+
+        public async Task<StoreUser> GetUserByUserName(string userName)
+        {
+            return await context.Users.Where(u => u.UserName == userName).FirstOrDefaultAsync();
         }
 
         public async Task<List<IdentityUserRole<string>>> GetUsersRolesByUsers(List<StoreUser> users)
@@ -89,6 +151,12 @@ namespace TicketsResale.Models
         public async Task<IdentityRole> GetRoleByUserRoleId(string roleId)
         {
             return await context.Roles.Where(r => r.Id == roleId).FirstOrDefaultAsync();
+        }
+
+
+        public async Task<StoreUser> GetUserDataAsync(StoreUser user)
+        {
+            return await context.Users.Where(u => u.UserName == user.UserName).FirstOrDefaultAsync();
         }
 
     }

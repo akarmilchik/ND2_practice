@@ -32,9 +32,9 @@ namespace TicketsResale.Context
 
         private static readonly List<StoreUser> Users = new List<StoreUser>
         {
-            new StoreUser { FirstName = "Alexey", LastName = "Karm", Address = "15, Kosmonavtov Av., Grodno, BLR", Localization = "rus", PhoneNumber = "228228", UserName = "alexey.karm@mail.ru", Email = "alexey.karm@mail.ru" },
-            new StoreUser { FirstName = "Jominez", LastName = "Maxwell", Address = "132/1, Sunlight Av., Barselona, SPA", Localization = "bel", PhoneNumber = "345124", UserName = "j@mail.ru", Email = "j@mail.ru" },
-            new StoreUser { FirstName = "Alibaba", LastName = "Bestseller", Address = "6/1, 123 Av., New York, USA", Localization = "eng", PhoneNumber = "777777", UserName = "a@mail.ru", Email = "a@mail.ru" }
+            new StoreUser { FirstName = "Alexey", LastName = "Karm", Address = "15, Kosmonavtov Av., Grodno, BLR", Localization = Localizations.rus, PhoneNumber = "228228", UserName = "alexey.karm@mail.ru", Email = "alexey.karm@mail.ru" },
+            new StoreUser { FirstName = "Jominez", LastName = "Maxwell", Address = "132/1, Sunlight Av., Barselona, SPA", Localization = Localizations.bel, PhoneNumber = "345124", UserName = "j@mail.ru", Email = "j@mail.ru" },
+            new StoreUser { FirstName = "Alibaba", LastName = "Bestseller", Address = "6/1, 123 Av., New York, USA", Localization = Localizations.eng, PhoneNumber = "777777", UserName = "a@mail.ru", Email = "a@mail.ru" }
         };
 
         private static readonly List<IdentityRole> Roles = new List<IdentityRole>
