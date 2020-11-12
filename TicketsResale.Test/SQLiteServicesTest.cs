@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
+using Moq;
 using NUnit.Framework;
-using TicketsResale.Business.Models;
-using Microsoft.AspNetCore.Identity;
-using TicketsResale.Models.Service;
-using TicketsResale.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using TicketsResale.Business.Models;
+using TicketsResale.Models;
+using TicketsResale.Models.Service;
 
 namespace TicketsResale.Test
 {
@@ -141,10 +141,10 @@ namespace TicketsResale.Test
             var context = factory.CreateContextForSQLite();
 
             foreach (City city in Cities)
-            { 
-                context.Cities.Add(city); 
+            {
+                await context.Cities.AddAsync(city); 
             }
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
             var service = new CitiesService(context);
 
@@ -182,9 +182,9 @@ namespace TicketsResale.Test
 
             foreach (City city in Cities)
             {
-                context.Cities.Add(city);
+                await context.Cities.AddAsync(city);
             }
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
             var service = new CitiesService(context);
 
@@ -214,7 +214,6 @@ namespace TicketsResale.Test
            
         }
 
-
         [Test]
         public async Task GetCityNameById_CorrectCityProvided_CorrecCityReturned()
         {
@@ -225,9 +224,9 @@ namespace TicketsResale.Test
 
             foreach (City city in Cities)
             {
-                context.Cities.Add(city);
+                await context.Cities.AddAsync(city);
             }
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
             var service = new CitiesService(context);
 
@@ -327,6 +326,55 @@ namespace TicketsResale.Test
             // Assert
             Assert.AreEqual(5, context.Cities.Count());
             Assert.IsNull(await context.Cities.Where(c => c.Name == "NewYork").FirstOrDefaultAsync());
+        }
+
+        [Test]
+        public async Task GetEvents_CorrectListProvided_CorrectTotalReturned()
+        {
+            // Arrange
+            var factory = new ConnectionFactory();
+
+            var context = factory.CreateContextForSQLite();
+
+
+             await context.Events.AddRangeAsync(Events);
+            
+            await context.SaveChangesAsync();
+
+            var service = new EventsService(context);
+
+            // Act
+            var events = await service.GetEvents();
+
+            // Assert
+            Assert.IsNotNull(events);
+            Assert.IsTrue(events.Count > 0);
+        }
+
+        [Test]
+        public async Task GetEventsByTickets_CorrectListOfTicketsProvided_CorrectListOfEventsReturned()
+        {
+            // Arrange
+            var factory = new ConnectionFactory();
+
+            var context = factory.CreateContextForSQLite();
+
+            await context.Events.AddRangeAsync(Events);
+
+            await context.Tickets.AddRangeAsync(Tickets);
+           
+            await context.SaveChangesAsync();
+
+            var service = new EventsService(context);
+
+            List<Ticket> SomeTickets = new List<Ticket>() { Tickets[0], Tickets[5], Tickets[9] };
+
+            // Act
+            var events = await service.GetEventsByTickets(SomeTickets);
+
+            // Assert
+            Assert.IsNotNull(events);
+            Assert.IsTrue(events.Count > 0);
         }
 
     }
