@@ -87,7 +87,9 @@ namespace TicketsResale.Models.Service
 
             var AllOrders = await context.Orders.Where(t => t.BuyerId == UserId).ToListAsync();
 
-            var AllTickets = await context.Tickets.ToListAsync();
+            var ordersTicketsIds = AllOrders.Select(o => o.TicketId).ToList();
+
+            var AllTickets = await context.Tickets.Where(t => ordersTicketsIds.Contains(t.Id)) .ToListAsync();
 
             List<Ticket> resTickets = new List<Ticket>();
 
