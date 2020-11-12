@@ -64,7 +64,6 @@ body {
     background-image: url(../img/body-flowers.jpg);
     background-repeat: repeat;
     background-size: contain;
-   /* background-color: darkgray;*/
 }
 .footer {
   position: absolute;

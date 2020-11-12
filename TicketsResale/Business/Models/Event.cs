@@ -18,6 +18,10 @@ namespace TicketsResale.Business.Models
 
         public Venue Venue { get; set; }
 
+        public int EventCategoryId { get; set; }
+
+        public EventCategory EventCategory { get; set; }
+
         public string Banner { get; set; }
 
         public string Description { get; set; }
