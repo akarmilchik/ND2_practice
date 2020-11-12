@@ -258,7 +258,7 @@ namespace TicketsResale.Test
         }
 
         [Test]
-        public async Task AddCityToDb_NullProvided_NullReturned()
+        public async Task AddCityToDb_CorrectAdding()
         {
             // Arrange
             var factory = new ConnectionFactory();
@@ -270,11 +270,63 @@ namespace TicketsResale.Test
             // Act
             await service.AddCityToDb(Cities[1]);
 
-            var city = context.Cities.FirstOrDefault();
+            var city = await context.Cities.FirstOrDefaultAsync();
 
             // Assert
             Assert.AreEqual("Minsk", city.Name);
 
+        }
+
+        [Test]
+        public async Task UpdCityToDb_CorrectUpdate()
+        {
+            // Arrange
+            var factory = new ConnectionFactory();
+
+            var context = factory.CreateContextForSQLite();
+
+            foreach (City city in Cities)
+            {
+                await context.Cities.AddAsync(city);
+            }
+            await context.SaveChangesAsync();
+
+            var service = new CitiesService(context);
+
+            Cities[1].Name = "Kamenets";
+
+            // Act
+            await service.UpdCityToDb(Cities[1]);
+
+            var resultCity = await context.Cities.Where(c => c.Name == Cities[1].Name).FirstOrDefaultAsync();
+
+            // Assert
+            Assert.IsNotNull(resultCity);
+        }
+
+        [Test]
+        public async Task RemoveCityFromDb_CorrectRemove()
+        {
+            // Arrange
+            var factory = new ConnectionFactory();
+
+            var context = factory.CreateContextForSQLite();
+
+            foreach (City city in Cities)
+            {
+                await context.Cities.AddAsync(city);
+            }
+            await context.SaveChangesAsync();
+
+            var service = new CitiesService(context);
+
+
+            // Act
+            await service.RemoveCityFromDb(Cities[3]);
+
+            // Assert
+            Assert.AreEqual(5, context.Cities.Count());
+            Assert.IsNull(await context.Cities.Where(c => c.Name == "NewYork").FirstOrDefaultAsync());
         }
 
     }

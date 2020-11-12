@@ -56,6 +56,7 @@ namespace TicketsResale.Models.Service
 
             context.Cities.Remove(item);
 
+
             await context.SaveChangesAsync();
         }
     }
