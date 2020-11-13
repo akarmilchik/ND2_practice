@@ -54,7 +54,7 @@ namespace TicketsResale.Models.Service
         {
             Dictionary<string, int> nearPages = new Dictionary<string, int>();
 
-            if (currentPage > 1 && currentPage <= pages.Count())
+            if (currentPage > 1 && currentPage < pages.Count())
             {
                 nearPages.Add("prevPage", currentPage - 1);
                 nearPages.Add("nextPage", currentPage + 1);

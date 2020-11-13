@@ -8,6 +8,7 @@ namespace TicketsResale.Models.Service
     { 
         Task AddTicketToOrder(string userName, Ticket item);
         Task<List<Order>> GetOrders();
+        Task<List<Order>> GetOrdersByTicketId(int ticketId);
         Task<List<Order>> GetOrdersByUserName(string userName);
         Task UpdOrderToDb(Order item);
     }

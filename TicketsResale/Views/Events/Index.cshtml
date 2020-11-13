@@ -4,11 +4,23 @@
 <h1>@localizer["Events"]</h1>
 
 <div class="container-fluid">
-    <div class="form-group col-sm-2">
-        Categories
-        <select asp-for="@Model.EventsCategories[0].Id" class="form-control" asp-items="@ViewBag.EventsCategories"></select>
-        @Html.ActionLink("Submit", "Index", "Events", new { eventId = 1 }, new { @class = "btn btn-primary" })
-    </div>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            Categories
+            <select asp-for="@Model.EventsCategories[0].Id" class="form-control" asp-items="@ViewBag.EventsCategories"></select>
+            @Html.ActionLink("Submit", "Index", "Events", new { eventId = 1 }, new { @class = "btn btn-primary" })
+        </li>
+        <li class="nav-item">
+            <ul class="nav nav-tabs bg-dark">
+                <li class="nav-item">
+                    <a class="nav-link text-light" asp-action="CreateTicket" asp-controller="Tickets">
+                        Create new ticket
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
     <p> </p>
     <div class="row row-cols-2">
         @foreach (var eventObj in Model.Events)

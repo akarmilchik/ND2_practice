@@ -27,6 +27,16 @@ namespace TicketsResale.Models.Service
             else return null;
         }
 
+        public async Task<List<Order>> GetOrdersByTicketId(int ticketId)
+        {
+            if (await context.Database.CanConnectAsync())
+            {
+                return await context.Orders.Where(o => o.TicketId == ticketId).ToListAsync();
+            }
+            else return null;
+        }
+        
+
         public async Task<List<Order>> GetOrdersByUserName(string userName)
         {
             var user = await context.Users.Where(u => u.UserName == userName).FirstOrDefaultAsync();

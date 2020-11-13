@@ -35,7 +35,7 @@
                 </td>
                 <td>
                     <ul class="nav d-sm-flex float-right bg-dark">
-                        <li class="nav-item bg-primary">   
+                        <li class="nav-item bg-primary">
                             <a class="nav-link text-light" asp-action="EditCity" asp-route-id="@item.Id">
                                 Edit
                             </a>
@@ -51,16 +51,13 @@
             </tr>
         }
     </tbody>
-    <tfoot>
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item"><a class="page-link" asp-action="Cities" asp-controller="Admin" asp-route-Page="@ViewBag.NearPages["prevPage"]"> @ViewBag.NearPages["prevPage"]</a></li>
-               @foreach(int pageNav in ViewBag.Pages)
-               {
-                <li class="page-item"><a class="page-link" asp-action="Cities" asp-controller="Admin" asp-route-Page="@pageNav"> @pageNav </a></li>
-               }
-                <li class="page-item"><a class="page-link" asp-action="Cities" asp-controller="Admin" asp-route-Page="@ViewBag.NearPages["nextPage"]"> @ViewBag.NearPages["nextPage"]</a></li>
-            </ul>
-        </nav>
-    </tfoot>
 </table>
+<ul class="pagination align-content-center">
+    <li class="page-item"><a class="page-link bg-dark text-light" asp-action="Cities" asp-controller="Admin" asp-route-Page="@ViewBag.NearPages["prevPage"]"> Previous</a></li>
+    @foreach (int pageNav in ViewBag.Pages)
+    {
+        <li class="page-item"><a class="page-link bg-dark text-light" asp-action="Cities" asp-controller="Admin" asp-route-Page="@pageNav"> @pageNav </a></li>
+    }
+    <li class="page-item"><a class="page-link bg-dark text-light" asp-action="Cities" asp-controller="Admin" asp-route-Page="@ViewBag.NearPages["nextPage"]"> Next</a></li>
+</ul>
+

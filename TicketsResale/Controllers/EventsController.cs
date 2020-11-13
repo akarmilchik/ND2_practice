@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Localization;
-using System.Linq;
 using System.Threading.Tasks;
 using TicketsResale.Models;
 using TicketsResale.Models.Service;

@@ -177,23 +177,19 @@ namespace TicketsResale.Controllers
             return RedirectToAction("Events");
         }
 
-        public async Task<IActionResult> EditEvent(int? id)
+        public async Task<IActionResult> EditEvent(int id)
         {
-            if (id != null)
-            {
-                var events = await eventsService.GetEvents();
+            var @event = await eventsService.GetEventById(id);
 
-                Event eevent = events.FirstOrDefault(p => p.Id == id);
+            var venues = await venuesService.GetVenues();
 
-                var venues = await venuesService.GetVenues();
+            var list = new SelectList(venues, "Id", "Name");
 
-                var list = new SelectList(venues, "Id", "Name");
+            ViewBag.Venues = list;
 
-                ViewBag.Venues = list;
-
-                if (eevent != null)
-                    return View(eevent);
-            }
+            if (@event != null)
+                return View(@event);
+            
             return NotFound();
         }
 
@@ -301,7 +297,7 @@ namespace TicketsResale.Controllers
             {
                 var user = await usersAndRolesService.GetUserById(id);
                 var userRole = await usersAndRolesService.GetUserRoleByUser(user);
-                var role = await usersAndRolesService.GetRoleByUserRole(userRole);
+                var userFirstRole = await usersAndRolesService.GetRoleByUserRole(userRole);
                 var roles = await usersAndRolesService.GetRoles();
                 var list = new SelectList(roles, "Id", "Name");
 
@@ -310,10 +306,10 @@ namespace TicketsResale.Controllers
                 var model = new UsersRolesViewModel
                 {
                     User = user,
-                    Role = role,
+                    Role = userFirstRole,
                     UserRole = userRole,
                     UserId = id,
-                    FirstRoleId = role.Id
+                    FirstRoleId = userFirstRole.Id
                 };
 
 
