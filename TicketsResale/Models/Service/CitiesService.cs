@@ -16,11 +16,6 @@ namespace TicketsResale.Models.Service
             this.context = storeContext;
         }
 
-        public IQueryable<City> GetCitiesSimple()
-        {
-            return context.Cities;
-        }
-
         public async Task<List<City>> GetCities()
         {
             return await context.Cities.ToListAsync();
@@ -53,6 +48,28 @@ namespace TicketsResale.Models.Service
             }
 
             return result;
+        }
+
+        public Dictionary<string, int> GetNearPages(List<int> pages, int currentPage)
+        {
+            Dictionary<string, int> nearPages = new Dictionary<string, int>();
+
+            if (currentPage > 1 && currentPage <= pages.Count())
+            {
+                nearPages.Add("prevPage", currentPage - 1);
+                nearPages.Add("nextPage", currentPage + 1);
+            }
+            else if (currentPage == 1)
+            {
+                nearPages.Add("prevPage", currentPage);
+                nearPages.Add("nextPage", currentPage + 1);
+            }
+            else
+            {
+                nearPages.Add("prevPage", currentPage - 1);
+                nearPages.Add("nextPage", currentPage);
+            }
+            return nearPages;
         }
 
         public async Task<City> GetCityById(int id)

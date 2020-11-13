@@ -45,8 +45,11 @@ namespace TicketsResale.Controllers
             ViewData["Title"] = "Cities";
 
             var cities = await citiesService.GetCities(page, pageSize);
+            var pages = citiesService.GetCitiesPages(pageSize);
 
-            ViewBag.Pages = citiesService.GetCitiesPages(pageSize);
+            ViewBag.Pages = pages;
+            ViewBag.CurrentPage = page;
+            ViewBag.NearPages = citiesService.GetNearPages(pages, page);
 
             return View("Cities", cities);
         }
