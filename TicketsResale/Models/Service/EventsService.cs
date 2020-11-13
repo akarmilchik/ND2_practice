@@ -45,10 +45,19 @@ namespace TicketsResale.Models.Service
             await context.SaveChangesAsync();
         }
 
-
         public async Task<List<Event>> GetEvents()
         {
             return await context.Events.ToListAsync();
+        }
+
+        public async Task<List<EventCategory>> GetEventsCategories()
+        {
+            return await context.EventCategories.ToListAsync();
+        }
+
+        public async Task<List<Event>> GetEventsByCategoryId(int categoryId)
+        {
+            return await context.Events.Where(e => e.EventCategoryId == categoryId).Select(e => e).ToListAsync();
         }
 
         public async Task<List<Event>> GetEventsByTickets(List<Ticket> tickets)

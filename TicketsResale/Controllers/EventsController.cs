@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Localization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,12 +23,19 @@ namespace TicketsResale.Business.Models
             this.venuesService = venuesService;
             this.citiesService = citiesService;
         }
-        public async Task<IActionResult> Index()  
+        public async Task<IActionResult> Index(int categoryId)  
         {
             ViewData["Title"] = "Events";
+           
+            var categories = await eventsService.GetEventsCategories();
+            var list = new SelectList(categories, "Id", "Name");
+            ViewBag.EventsCategories = list;
+
+            //Events = await eventsService.GetEventsByCategoryId(categoryId),
 
             var model = new EventsViewModel
             {
+                EventsCategories = categories,
                 Events = await eventsService.GetEvents(),
                 Venues = await venuesService.GetVenues(),
                 Cities = await citiesService.GetCities(),

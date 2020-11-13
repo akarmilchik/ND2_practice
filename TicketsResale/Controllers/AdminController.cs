@@ -39,14 +39,18 @@ namespace TicketsResale.Controllers
         {
             return View("Index");
         }
-        public async Task<IActionResult> Cities()
+
+        public async Task<IActionResult> Cities(int page, int pageSize = 5)
         {
             ViewData["Title"] = "Cities";
 
-            var cities = await citiesService.GetCities();
+            var cities = await citiesService.GetCities(page, pageSize);
+
+            ViewBag.Pages = citiesService.GetCitiesPages(pageSize);
 
             return View("Cities", cities);
         }
+
         public async Task<IActionResult> Events()
         {
 
@@ -60,6 +64,7 @@ namespace TicketsResale.Controllers
             return View("Events", model);
 
         }
+
         public async Task<IActionResult> Venues()
         {
             ViewData["Title"] = "Venues";

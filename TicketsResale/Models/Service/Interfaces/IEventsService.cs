@@ -11,7 +11,9 @@ namespace TicketsResale.Models.Service
         Task AddEventToDb(Event item);
         Task<Event> GetEventById(int id);
         Task<List<Event>> GetEvents();
+        Task<List<Event>> GetEventsByCategoryId(int categoryId);
         Task<List<Event>> GetEventsByTickets(List<Ticket> tickets);
+        Task<List<EventCategory>> GetEventsCategories();
         Task<EventTicketsViewModel> GetEventWithTickets(int eventId);
         Task RemoveEventFromDb(Event item);
         string SaveFileAndGetName(EventCreateViewModel @event);

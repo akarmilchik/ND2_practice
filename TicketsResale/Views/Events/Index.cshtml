@@ -4,6 +4,12 @@
 <h1>@localizer["Events"]</h1>
 
 <div class="container-fluid">
+    <div class="form-group col-sm-2">
+        Categories
+        <select asp-for="@Model.EventsCategories[0].Id" class="form-control" asp-items="@ViewBag.EventsCategories"></select>
+        @Html.ActionLink("Submit", "Index", "Events", new { eventId = 1 }, new { @class = "btn btn-primary" })
+    </div>
+    <p> </p>
     <div class="row row-cols-2">
         @foreach (var eventObj in Model.Events)
         {

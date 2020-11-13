@@ -16,9 +16,43 @@ namespace TicketsResale.Models.Service
             this.context = storeContext;
         }
 
+        public IQueryable<City> GetCitiesSimple()
+        {
+            return context.Cities;
+        }
+
         public async Task<List<City>> GetCities()
         {
             return await context.Cities.ToListAsync();
+        }
+
+        public async Task<List<City>> GetCities(int page, int pageSize)
+        {
+            if (pageSize <= 0)
+                pageSize = 10;
+
+            if (page <= 0)
+                page = 1;
+
+            var needCities = ((await context.Cities.ToListAsync()).Skip(pageSize * (page - 1)).Take(pageSize)).ToList();
+
+            return needCities;
+        }
+
+        public List<int> GetCitiesPages(int pageSize)
+        { 
+            var countCities = context.Cities.Count();
+
+            var res = (countCities / pageSize) + 1;
+
+            List<int> result = new List<int>();
+
+            for(int i = 1; i <= res; i++)
+            { 
+                result.Add(i); 
+            }
+
+            return result;
         }
 
         public async Task<City> GetCityById(int id)

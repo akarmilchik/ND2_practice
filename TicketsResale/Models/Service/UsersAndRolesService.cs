@@ -27,15 +27,6 @@ namespace TicketsResale.Models
         {
             return await context.Roles.ToListAsync();
         }
-        /*
-        public async Task UpdUserToDb(UsersRolesViewModel item)
-        {
-            context.Database.EnsureCreated();
-
-            context.UserRoles.Update(new IdentityUserRole<string> { UserId = item.UserId, RoleId = item.Role.Id });
-
-            await context.SaveChangesAsync();
-        }*/
 
         public async Task UpdUserFirstName(StoreUser user, string firstName)
         {
@@ -134,7 +125,7 @@ namespace TicketsResale.Models
             {
                 var role = await context.Roles.Where(r => r.Id == userRole.RoleId).FirstOrDefaultAsync();
 
-                if ((resRoles.Count > 0) && !(resRoles.Contains(role)))
+                if (!(resRoles.Contains(role)))
                 {
                     resRoles.Add(role);
                 }

@@ -46,11 +46,11 @@ namespace TicketsResale.Controllers
 
 
         [Authorize]
-        public async Task<IActionResult> MyTickets(TicketStatuses ticketStatus, OrderStatuses orderStatus, string userName)
+        public async Task<IActionResult> MyTickets(TicketStatuses ticketStatus, string userName)
         {
             ViewData["Title"] = localizer["My tickets"];
 
-            var tickets = await ticketsService.GetTicketsByStatusesAndUserName(ticketStatus, orderStatus, userName);
+            var tickets = await ticketsService.GetTicketsByStatusAndUserName(ticketStatus, userName);
 
             var model = new MyTicketsViewModel
             {
@@ -69,7 +69,7 @@ namespace TicketsResale.Controllers
 
             await ordersService.AddTicketToOrder(User.Identity.Name, ticket);
 
-            ticket.Status = TicketStatuses.sold;
+            ticket.Status = TicketStatuses.waiting;
 
             await ticketsService.UpdTicketToDb(ticket);
 
