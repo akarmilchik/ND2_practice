@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,10 +16,10 @@ namespace TicketsResale.Models.Service
         {
             this.context = storeContext;
         }
-
-        public async Task<List<City>> GetCities()
         {
             return await context.Cities.ToListAsync();
+
+        public async Task<List<City>> GetCities()
         }
 
         public async Task<List<City>> GetCities(int page, int pageSize)
@@ -38,6 +39,9 @@ namespace TicketsResale.Models.Service
         { 
             var countCities = context.Cities.Count();
 
+            if (pageSize == 0)
+                pageSize = 1;
+
             var res = (countCities / pageSize) + 1;
 
             List<int> result = new List<int>();
@@ -53,6 +57,10 @@ namespace TicketsResale.Models.Service
         public Dictionary<string, int> GetNearPages(List<int> pages, int currentPage)
         {
             Dictionary<string, int> nearPages = new Dictionary<string, int>();
+
+            if (currentPage == 0)
+                currentPage = 1;
+
 
             if (currentPage > 1 && currentPage < pages.Count())
             {
