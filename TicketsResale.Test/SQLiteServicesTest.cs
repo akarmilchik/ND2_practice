@@ -30,13 +30,12 @@ namespace TicketsResale.Test
         List<Ticket> SomeTickets;
         List<int> PagesList;
         Event UpdatedEvent;
+        Venue UpdatedVenue;
 
         [OneTimeSetUp]
         public void Setup()
         {
             factory = new ConnectionFactory();
-
-            context = factory.CreateContextForSQLite();
 
             Cities = new List<City>()
             {
@@ -81,6 +80,8 @@ namespace TicketsResale.Test
                 new Venue { Name = "Global village", Address = "Global village", City = Cities[5] }
             };
 
+            UpdatedVenue = new Venue { Name = "Some name of venue", Address = "Sovetskaya sq.", City = Cities[0] };
+
             EventCategories = new List<EventCategory>()
             {
                 new EventCategory { Name = "Street" },
@@ -88,7 +89,6 @@ namespace TicketsResale.Test
                 new EventCategory { Name = "Festivals" },
                 new EventCategory { Name = "Plays" }
             };
-
 
             Events = new List<Event>()
             {
@@ -133,7 +133,6 @@ namespace TicketsResale.Test
                 new Ticket { Event = Events[9], Price = 1500, Seller = Users[2], Status = TicketStatuses.waiting }
             };
 
-
             SomeTickets = new List<Ticket>() { Tickets[0], Tickets[5], Tickets[9] };
 
             //Orders of Users
@@ -156,6 +155,8 @@ namespace TicketsResale.Test
         public async Task GetCities_CorrectListProvided_CorrectTotalReturned()
         {
             // Arrange
+            context = factory.CreateContextForSQLite();
+
             await context.Cities.AddRangeAsync(Cities); 
           
             await context.SaveChangesAsync();
@@ -173,6 +174,8 @@ namespace TicketsResale.Test
         public async Task GetCities_NullProvided_NullReturned()
         {
             // Arrange
+            context = factory.CreateContextForSQLite();
+
             var service = new CitiesService(context);
 
             // Act
@@ -186,6 +189,7 @@ namespace TicketsResale.Test
         public async Task GetCitiesWithPagination_CorrectDataProvided_CorrectTotalReturned()
         {
             // Arrange
+            context = factory.CreateContextForSQLite();
 
             await context.Cities.AddRangeAsync(Cities);
 
@@ -204,6 +208,7 @@ namespace TicketsResale.Test
         public async Task GetCitiesWithPagination_IncorrectDataProvided_CorrectTotalReturned()
         {
             // Arrange
+            context = factory.CreateContextForSQLite();
 
             await context.Cities.AddRangeAsync(Cities);
 
@@ -226,6 +231,7 @@ namespace TicketsResale.Test
         public async Task GetCitiesPages_CorrectDataProvided_CorrectTotalReturned()
         {
             // Arrange
+            context = factory.CreateContextForSQLite();
 
             await context.Cities.AddRangeAsync(Cities);
 
@@ -244,6 +250,7 @@ namespace TicketsResale.Test
         public async Task GetCitiesPages_IncorrectDataProvided_CorrectTotalReturned()
         {
             // Arrange
+            context = factory.CreateContextForSQLite();
 
             await context.Cities.AddRangeAsync(Cities);
 
@@ -288,6 +295,8 @@ namespace TicketsResale.Test
         public async Task GetCityById_CorrectCityProvided_CorrecCityReturned()
         {
             // Arrange
+            context = factory.CreateContextForSQLite();
+
             await context.Cities.AddRangeAsync(Cities);
             
             await context.SaveChangesAsync();
@@ -352,6 +361,8 @@ namespace TicketsResale.Test
         public async Task AddCityToDb_CorrectAdding()
         {
             // Arrange
+            context = factory.CreateContextForSQLite();
+
             var service = new CitiesService(context);
 
             // Act
@@ -361,7 +372,6 @@ namespace TicketsResale.Test
 
             // Assert
             Assert.AreEqual("Minsk", city.Name);
-
         }
 
         [Test]
@@ -404,6 +414,8 @@ namespace TicketsResale.Test
         public async Task GetEvents_CorrectListProvided_CorrectTotalReturned()
         {
             // Arrange
+            context = factory.CreateContextForSQLite();
+
             await context.EventCategories.AddRangeAsync(EventCategories);
             await context.Cities.AddRangeAsync(Cities);
             await context.Venues.AddRangeAsync(Venues);
@@ -425,6 +437,8 @@ namespace TicketsResale.Test
         public async Task GetEvents_NullProvided_NullReturned()
         {
             // Arrange
+            context = factory.CreateContextForSQLite();
+
             var service = new EventsService(context);
 
             // Act
@@ -438,6 +452,8 @@ namespace TicketsResale.Test
         public async Task GetEventsByTickets_CorrectListOfTicketsProvided_CorrectListOfEventsReturned()
         {
             // Arrange
+            context = factory.CreateContextForSQLite();
+
             await context.Users.AddRangeAsync(Users);
             await context.EventCategories.AddRangeAsync(EventCategories);
             await context.Cities.AddRangeAsync(Cities);
@@ -475,6 +491,8 @@ namespace TicketsResale.Test
         public async Task UpdEventToDb_CorrectUpdate()
         {
             // Arrange
+            context = factory.CreateContextForSQLite();
+
             await context.Events.AddRangeAsync(Events);
 
             await context.SaveChangesAsync();
@@ -493,6 +511,8 @@ namespace TicketsResale.Test
         public async Task RemoveEventFromDb_CorrectRemove()
         {
             // Arrange
+            context = factory.CreateContextForSQLite();
+
             await context.Events.AddRangeAsync(Events);
 
             await context.SaveChangesAsync();
@@ -511,6 +531,8 @@ namespace TicketsResale.Test
         public async Task GetEventsCategories_CorrectListProvided_CorrectTotalReturned()
         {
             // Arrange
+            context = factory.CreateContextForSQLite();
+
             await context.EventCategories.AddRangeAsync(EventCategories);
             await context.SaveChangesAsync();
 
@@ -528,6 +550,8 @@ namespace TicketsResale.Test
         public async Task GetEventsCategories_NullProvided_NullReturned()
         {
             // Arrange
+            context = factory.CreateContextForSQLite();
+
             var service = new EventsService(context);
 
             // Act
@@ -541,6 +565,8 @@ namespace TicketsResale.Test
         public async Task GetEventsByCategoryId_CorrectIdProvided_CorrectEventsReturned()
         {
             // Arrange
+            context = factory.CreateContextForSQLite();
+
             await context.Events.AddRangeAsync(Events);
             await context.EventCategories.AddRangeAsync(EventCategories);
             await context.SaveChangesAsync();
@@ -558,6 +584,8 @@ namespace TicketsResale.Test
         public async Task GetEventWithTickets_CorrectEventIdProvided_CorrectResultReturned()
         {
             // Arrange
+            context = factory.CreateContextForSQLite();
+
             await context.Users.AddRangeAsync(Users);
             await context.EventCategories.AddRangeAsync(EventCategories);
             await context.Cities.AddRangeAsync(Cities);
@@ -580,6 +608,8 @@ namespace TicketsResale.Test
         public async Task GetEventWithTickets_IncorrectEventIdProvided_EmtyObjectReturned()
         {
             // Arrange
+            context = factory.CreateContextForSQLite();
+
             await context.Users.AddRangeAsync(Users);
             await context.EventCategories.AddRangeAsync(EventCategories);
             await context.Cities.AddRangeAsync(Cities);
@@ -599,6 +629,167 @@ namespace TicketsResale.Test
             Assert.IsNull(eventWithTicketsModel.eventTickets);
         }
 
+        [Test]
+        public async Task AddVenueToDb_CorrectAdding()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            var service = new VenuesService(context);
+
+            // Act
+            await context.AddRangeAsync(Cities);
+            await context.SaveChangesAsync();
+
+            await service.AddVenueToDb(Venues[1]);
+
+            var venue = await context.Venues.FirstOrDefaultAsync();
+
+            // Assert
+            Assert.AreEqual("Pyshki forest park", venue.Name);
+
+        }
+
+        [Test]
+        public async Task UpdVenueToDb_CorrectUpdate()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Venues.AddRangeAsync(Venues);
+
+            await context.SaveChangesAsync();
+
+            var service = new VenuesService(context);
+            // Act
+            await service.UpdVenueToDb(UpdatedVenue);
+
+            var resultVenue = await context.Venues.Where(c => c.Name == UpdatedVenue.Name).FirstOrDefaultAsync();
+
+            // Assert
+            Assert.IsNotNull(resultVenue);
+        }
+
+        [Test]
+        public async Task RemoveVenueFromDb_CorrectRemove()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Venues.AddRangeAsync(Venues);
+
+            await context.SaveChangesAsync();
+
+            var service = new VenuesService(context);
+
+            // Act
+            await service.RemoveVenueFromDb(Venues[3]);
+
+            // Assert
+            Assert.AreEqual(6, context.Cities.Count());
+            Assert.IsNull(await context.Cities.Where(c => c.Name == "Central botanical garden").FirstOrDefaultAsync());
+        }
+
+        [Test]
+        public async Task GetVenues_CorrectListProvided_CorrectTotalReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Venues.AddRangeAsync(Venues);
+
+            await context.SaveChangesAsync();
+
+            var service = new VenuesService(context);
+
+            // Act
+            var venues = await service.GetVenues();
+
+            // Assert
+            Assert.IsNotEmpty(venues);
+        }
+
+        [Test]
+        public async Task GetVenues_NullProvided_NullReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            var service = new VenuesService(context);
+
+            // Act
+            var venues = await service.GetVenues();
+
+            // Assert
+            Assert.IsEmpty(venues);
+        }
+
+        [Test]
+        public async Task GetVenueById_CorrectCityProvided_CorrecCityReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Venues.AddRangeAsync(Venues);
+
+            await context.SaveChangesAsync();
+
+            var service = new VenuesService(context);
+
+            // Act
+            var resultVenue = await service.GetVenueById(3);
+
+            // Assert
+            Assert.IsNotNull(resultVenue);
+            Assert.AreEqual("Independense sq.", resultVenue.Name);
+        }
+
+        [Test]
+        public async Task GetVenueById_NullProvided_NullReturned()
+        {
+            // Arrange
+            var service = new VenuesService(context);
+
+            // Act
+            var venue = await service.GetVenueById(999);
+
+            // Assert
+            Assert.IsNull(venue);
+
+        }
+
+        [Test]
+        public async Task GetVenueNameById_CorrectCityProvided_CorrecCityReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Venues.AddRangeAsync(Venues);
+
+            await context.SaveChangesAsync();
+
+            var service = new VenuesService(context);
+
+            // Act
+            var venueName = await service.GetVenueNameById(3);
+
+            // Assert
+            Assert.AreEqual("Independense sq.", venueName);
+        }
+
+        [Test]
+        public async Task GetVenueNameById_NullProvided_NullReturned()
+        {
+            // Arrange
+            var service = new VenuesService(context);
+
+            // Act
+            var venue = await service.GetVenueNameById(999);
+
+            // Assert
+            Assert.IsNull(venue);
+
+        }
 
     }
 }

@@ -35,7 +35,6 @@ namespace TicketsResale.Models.Service
             }
             else return null;
         }
-        
 
         public async Task<List<Order>> GetOrdersByUserName(string userName)
         {

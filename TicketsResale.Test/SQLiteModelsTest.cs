@@ -30,7 +30,7 @@ namespace TicketsResale.Test
         private Event EventWithCategoryIdAndVenueId;
         private Event EventWithCategoryAndVenue;
 
-        [OneTimeSetUp]
+        [SetUp]
         public void Setup()
         {
 
@@ -104,7 +104,7 @@ namespace TicketsResale.Test
                 new Event { Name = "Global village 25th season", Venue = Venues[11], EventCategory = EventCategories[2], Date = new DateTime(2021, 04, 04), Banner = "events/global-village.jpg", Description = "<strong>The World Village Dubai</strong> will feature a total of <mark>78</mark> countries. With, new additions- Azerbaijan and Korea, the place promises to be too much fun! The countries will have 26 pavilions that will have cuisines, shows and products from all around the globe." }
             };
 
-            EventWithoutRelations = new Event { Name = "Festival of national cultures 2021", Venue = Venues[0], EventCategory = EventCategories[2], Date = new DateTime(2021, 06, 05), Banner = "events/fnk-grodno.jpg", Description = "The <strong>Republican Festival of National Cultures</strong> is a holiday of folklore colors of various peoples living in <em>Belarus</em>. Representatives of <strong>36</strong> nationalities participate in the festival, the attendance of the festival in <strong>2018</strong> was <strong>270</strong> thousand people." };
+            EventWithoutRelations = new Event { Name = "Festival of national cultures 2021", Date = new DateTime(2021, 06, 05), Banner = "events/fnk-grodno.jpg", Description = "The <strong>Republican Festival of National Cultures</strong> is a holiday of folklore colors of various peoples living in <em>Belarus</em>. Representatives of <strong>36</strong> nationalities participate in the festival, the attendance of the festival in <strong>2018</strong> was <strong>270</strong> thousand people." };
             EventWithCategoryIdAndVenueId = new Event { Name = "Festival of national cultures 2021", VenueId = 1, EventCategoryId = 3, Date = new DateTime(2021, 06, 05), Banner = "events/fnk-grodno.jpg", Description = "The <strong>Republican Festival of National Cultures</strong> is a holiday of folklore colors of various peoples living in <em>Belarus</em>. Representatives of <strong>36</strong> nationalities participate in the festival, the attendance of the festival in <strong>2018</strong> was <strong>270</strong> thousand people." };
             EventWithCategoryAndVenue = new Event { Name = "Festival of national cultures 2021", Venue = Venues[0], EventCategory = EventCategories[2], Date = new DateTime(2021, 06, 05), Banner = "events/fnk-grodno.jpg", Description = "The <strong>Republican Festival of National Cultures</strong> is a holiday of folklore colors of various peoples living in <em>Belarus</em>. Representatives of <strong>36</strong> nationalities participate in the festival, the attendance of the festival in <strong>2018</strong> was <strong>270</strong> thousand people." };
 
@@ -326,8 +326,9 @@ namespace TicketsResale.Test
         [Test]
         public async Task AddEvent_Without_Relation()
         {
-            // Act    
-            var data = await context.Events.AddAsync(EventWithoutRelations);
+            // Act  
+            await context.Cities.AddRangeAsync(Cities);
+            await context.Events.AddAsync(EventWithoutRelations);
 
             // Assert   
             Assert.Throws<DbUpdateException>(() => context.SaveChanges());

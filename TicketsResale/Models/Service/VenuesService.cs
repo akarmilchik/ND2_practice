@@ -18,29 +18,32 @@ namespace TicketsResale.Models.Service
 
         public async Task AddVenueToDb(Venue item)
         {
-            context.Database.EnsureCreated();
+            if (await context.Database.CanConnectAsync())
+            {
+                await context.Venues.AddAsync(item);
 
-            await context.Venues.AddAsync(item);
-
-            await context.SaveChangesAsync();
+                await context.SaveChangesAsync();
+            }
         }
 
         public async Task UpdVenueToDb(Venue item)
         {
-            context.Database.EnsureCreated();
+            if (await context.Database.CanConnectAsync())
+            {
+                context.Venues.Update(item);
 
-            context.Venues.Update(item);
-
-            await context.SaveChangesAsync();
+                await context.SaveChangesAsync();
+            }
         }
 
         public async Task RemoveVenueFromDb(Venue item)
         {
-            context.Database.EnsureCreated();
+            if (await context.Database.CanConnectAsync())
+            {
+                context.Venues.Remove(item);
 
-            context.Venues.Remove(item);
-
-            await context.SaveChangesAsync();
+                await context.SaveChangesAsync();
+            }
         }
 
         public async Task<List<Venue>> GetVenues()
