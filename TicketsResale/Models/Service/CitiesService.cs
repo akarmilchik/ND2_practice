@@ -16,10 +16,10 @@ namespace TicketsResale.Models.Service
         {
             this.context = storeContext;
         }
-        {
-            return await context.Cities.ToListAsync();
 
         public async Task<List<City>> GetCities()
+        {
+            return await context.Cities.ToListAsync();
         }
 
         public async Task<List<City>> GetCities(int page, int pageSize)
