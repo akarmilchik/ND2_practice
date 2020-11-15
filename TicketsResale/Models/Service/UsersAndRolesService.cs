@@ -30,8 +30,9 @@ namespace TicketsResale.Models
 
         public async Task UpdUserFirstName(StoreUser user, string firstName)
         {
-            if (await context.Database.CanConnectAsync())
+            if (await context.Database.CanConnectAsync() && firstName != null && firstName != "" && user != null)
             {
+
                 user.FirstName = firstName;
                 context.Users.Update(user);
 
@@ -40,7 +41,7 @@ namespace TicketsResale.Models
         }
         public async Task UpdUserLastName(StoreUser user, string lastName)
         {
-            if (await context.Database.CanConnectAsync())
+            if (await context.Database.CanConnectAsync() && lastName != null && lastName != "" && user != null)
             {
                 user.LastName = lastName;
                 context.Users.Update(user);
@@ -50,7 +51,7 @@ namespace TicketsResale.Models
         }
         public async Task UpdUserAddress(StoreUser user, string address)
         {
-            if (await context.Database.CanConnectAsync())
+            if (await context.Database.CanConnectAsync() && address != null && address != "" && user != null)
             {
                 user.Address = address;
                 context.Users.Update(user);
@@ -60,7 +61,7 @@ namespace TicketsResale.Models
         }
         public async Task UpdUserLocalization(StoreUser user, Localizations localization)
         {
-            if (await context.Database.CanConnectAsync())
+            if (await context.Database.CanConnectAsync() && localization != 0 && user != null)
             {
                 user.Localization = localization;
                 context.Users.Update(user);

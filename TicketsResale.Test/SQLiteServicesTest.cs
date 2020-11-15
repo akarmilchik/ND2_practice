@@ -31,8 +31,9 @@ namespace TicketsResale.Test
         List<int> PagesList;
         Event UpdatedEvent;
         Venue UpdatedVenue;
+        Order UpdatedOrder;
 
-        [OneTimeSetUp]
+        [SetUp]
         public void Setup()
         {
             factory = new ConnectionFactory();
@@ -149,6 +150,8 @@ namespace TicketsResale.Test
                 new Order { Buyer = Users[0], Status = OrderStatuses.confirmed, Ticket = Tickets[4], TrackNumber = "SN98762AB21" },
                 new Order { Buyer = Users[1], Status = OrderStatuses.rejected, Ticket = Tickets[22], TrackNumber = "too small" }
             };
+
+            UpdatedOrder = new Order { Buyer = Users[2], Status = OrderStatuses.confirmed, Ticket = Tickets[0], TrackNumber = "TN12412UR54" };
         }
 
         [Test]
@@ -788,6 +791,694 @@ namespace TicketsResale.Test
 
             // Assert
             Assert.IsNull(venue);
+
+        }
+
+        [Test]
+        public async Task GetOrders_CorrectListProvided_CorrectTotalReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Orders.AddRangeAsync(Orders);
+
+            await context.SaveChangesAsync();
+
+            var service = new OrdersService(context);
+
+            // Act
+            var orders = await service.GetOrders();
+
+            // Assert
+            Assert.IsNotEmpty(orders);
+        }
+
+        [Test]
+        public async Task GetOrders_NullProvided_NullReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            var service = new OrdersService(context);
+
+            // Act
+            var orders = await service.GetOrders();
+
+            // Assert
+            Assert.IsEmpty(orders);
+        }
+
+        [Test]
+        public async Task GetOrdersByTicketId_CorrectCityProvided_CorrecCityReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Orders.AddRangeAsync(Orders);
+
+            await context.SaveChangesAsync();
+
+            var service = new OrdersService(context);
+
+            // Act
+            var resultOrders = await service.GetOrdersByTicketId(1);
+
+            // Assert
+            Assert.IsNotNull(resultOrders);
+            Assert.IsTrue(resultOrders.Count > 0);
+        }
+
+        [Test]
+        public async Task GetOrdersByTicketId_EmptyProvided_EmptyReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            var service = new OrdersService(context);
+
+            // Act
+            var orders = await service.GetOrdersByTicketId(999);
+
+            // Assert
+            Assert.IsEmpty(orders);
+
+        }
+
+        [Test]
+        public async Task GetOrdersByUserName_CorrectCityProvided_CorrecCityReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Orders.AddRangeAsync(Orders);
+
+            await context.SaveChangesAsync();
+
+            var service = new OrdersService(context);
+
+            // Act
+            var resultOrders = await service.GetOrdersByUserName(Users[0].UserName);
+
+            // Assert
+            Assert.IsNotNull(resultOrders);
+            Assert.IsTrue(resultOrders.Count > 0);
+        }
+
+        [Test]
+        public async Task GetOrdersByUserName_NullProvided_NullReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            var service = new OrdersService(context);
+
+            // Act
+            var orders = await service.GetOrdersByUserName(null);
+
+            // Assert
+            Assert.IsNull(orders);
+
+        }
+
+        [Test]
+        public async Task GetOrdersByUserName_EmptyStringProvided_NullReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            var service = new OrdersService(context);
+
+            // Act
+            var orders = await service.GetOrdersByUserName("");
+
+            // Assert
+            Assert.IsNull(orders);
+
+        }
+
+        [Test]
+        public async Task AddTicketToOrder_CorrectAdding()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.AddRangeAsync(Cities);
+            await context.Users.AddRangeAsync(Users);
+            await context.Tickets.AddRangeAsync(Tickets);
+            await context.SaveChangesAsync();
+
+            var service = new OrdersService(context);
+
+            // Act
+            await service.AddTicketToOrder(Users[0].UserName, Tickets[4]);
+
+            var userOrders = await context.Orders.ToListAsync();
+
+            // Assert
+            Assert.IsNotNull(userOrders);
+            Assert.IsTrue(userOrders.Count() > 0);
+
+        }
+
+        [Test]
+        public async Task AddTicketToOrder_IncorrectAdding_UserNullProvided_NullReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.AddRangeAsync(Cities);
+            await context.Users.AddRangeAsync(Users);
+            await context.Tickets.AddRangeAsync(Tickets);
+            await context.SaveChangesAsync();
+
+            var service = new OrdersService(context);
+
+            // Act
+            await service.AddTicketToOrder(null, Tickets[4]);
+
+            var userOrders = await context.Orders.ToListAsync();
+
+            // Assert
+            Assert.IsEmpty(userOrders);
+        }
+
+        [Test]
+        public async Task UpdOrderToDb_CorrectUpdate()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Orders.AddRangeAsync(Orders);
+
+            await context.SaveChangesAsync();
+
+            var service = new OrdersService(context);
+            // Act
+            await service.UpdOrderToDb(UpdatedOrder);
+
+            var resultOrder = await context.Orders.Where(o => o.TrackNumber == UpdatedOrder.TrackNumber).FirstOrDefaultAsync();
+
+            // Assert
+            Assert.IsNotNull(resultOrder);
+        }
+
+        [Test]
+        public async Task GetUsers_CorrectListProvided_CorrectTotalReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Users.AddRangeAsync(Users);
+
+            await context.SaveChangesAsync();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            var users = await service.GetUsers();
+
+            // Assert
+            Assert.IsNotEmpty(users);
+        }
+
+        [Test]
+        public async Task GetUsers_NullProvided_NullReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            var users = await service.GetUsers();
+
+            // Assert
+            Assert.IsEmpty(users);
+        }
+
+        [Test]
+        public async Task GetRoles_CorrectListProvided_CorrectTotalReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Roles.AddRangeAsync(Roles);
+
+            await context.SaveChangesAsync();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            var roles = await service.GetRoles();
+
+            // Assert
+            Assert.IsNotEmpty(roles);
+        }
+
+        [Test]
+        public async Task GetRoles_NullProvided_NullReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            var roles = await service.GetRoles();
+
+            // Assert
+            Assert.IsEmpty(roles);
+        }
+
+        [Test]
+        public async Task UpdUserFirstName_CorrectUpdate()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Users.AddRangeAsync(Users);
+
+            await context.SaveChangesAsync();
+
+            var service = new UsersAndRolesService(context);
+            // Act
+            await service.UpdUserFirstName(Users[0], "Alexandr");
+
+            var user = await context.Users.Where(u => u.FirstName == "Alexandr").FirstOrDefaultAsync();
+
+            // Assert
+            Assert.IsNotNull(user);
+        }
+
+        [Test]
+        public async Task UpdUserFirstName_IncorrectUpdate_NullFirstName()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Users.AddRangeAsync(Users);
+
+            await context.SaveChangesAsync();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            await service.UpdUserFirstName(Users[0], null);
+
+            var user = await context.Users.Where(u => u.FirstName == "Alexandr").FirstOrDefaultAsync();
+
+            // Assert
+            Assert.IsNull(user);
+        }
+
+        [Test]
+        public async Task UpdUserFirstName_IncorrectUpdate_NullUser()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Users.AddRangeAsync(Users);
+
+            await context.SaveChangesAsync();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            await service.UpdUserFirstName(null, "Alexandr");
+
+            var user = await context.Users.Where(u => u.FirstName == "Alexandr").FirstOrDefaultAsync();
+
+            // Assert
+            Assert.IsNull(user);
+        }
+
+        [Test]
+        public async Task UpdUserLastName_CorrectUpdate()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Users.AddRangeAsync(Users);
+
+            await context.SaveChangesAsync();
+
+            var service = new UsersAndRolesService(context);
+            // Act
+            await service.UpdUserLastName(Users[0], "Abramov");
+
+            var user = await context.Users.Where(u => u.LastName == "Abramov").FirstOrDefaultAsync();
+
+            // Assert
+            Assert.IsNotNull(user);
+        }
+
+        [Test]
+        public async Task UpdUserLastName_IncorrectUpdate_NullLastName()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Users.AddRangeAsync(Users);
+
+            await context.SaveChangesAsync();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            await service.UpdUserLastName(Users[0], null);
+
+            var user = await context.Users.Where(u => u.LastName == "Abramov").FirstOrDefaultAsync();
+
+            // Assert
+            Assert.IsNull(user);
+        }
+
+        [Test]
+        public async Task UpdUserLastName_IncorrectUpdate_NullUser()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Users.AddRangeAsync(Users);
+
+            await context.SaveChangesAsync();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            await service.UpdUserLastName(null, "Abramov");
+
+            var user = await context.Users.Where(u => u.LastName == "Abramov").FirstOrDefaultAsync();
+
+            // Assert
+            Assert.IsNull(user);
+        }
+
+        public async Task UpdUserAddress_CorrectUpdate()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Users.AddRangeAsync(Users);
+
+            await context.SaveChangesAsync();
+
+            var service = new UsersAndRolesService(context);
+            // Act
+            await service.UpdUserAddress(Users[0], "Bangalor sq., 15");
+
+            var user = await context.Users.Where(u => u.Address == "Bangalor sq., 15").FirstOrDefaultAsync();
+
+            // Assert
+            Assert.IsNotNull(user);
+        }
+
+        [Test]
+        public async Task UpdUserAddress_IncorrectUpdate_NullAddress()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Users.AddRangeAsync(Users);
+
+            await context.SaveChangesAsync();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            await service.UpdUserAddress(Users[0], null);
+
+            var user = await context.Users.Where(u => u.Address == "Bangalor sq., 15").FirstOrDefaultAsync();
+
+            // Assert
+            Assert.IsNull(user);
+        }
+
+        [Test]
+        public async Task UpdUserAddress_IncorrectUpdate_NullUser()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Users.AddRangeAsync(Users);
+
+            await context.SaveChangesAsync();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            await service.UpdUserAddress(null, "Bangalor sq., 15");
+
+            var user = await context.Users.Where(u => u.Address == "Bangalor sq., 15").FirstOrDefaultAsync();
+
+            // Assert
+            Assert.IsNull(user);
+        }
+
+        public async Task UpdUserLocalization_CorrectUpdate()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Users.AddRangeAsync(Users);
+
+            await context.SaveChangesAsync();
+
+            var service = new UsersAndRolesService(context);
+            // Act
+            await service.UpdUserLocalization(Users[0], Localizations.eng);
+
+            var user = await context.Users.Where(u => u.Localization ==  Localizations.eng).FirstOrDefaultAsync();
+
+            // Assert
+            Assert.IsNotNull(user);
+        }
+
+        [Test]
+        public async Task UpdUserLocalization_IncorrectUpdate_IncorrectLocalization()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Users.AddRangeAsync(Users);
+
+            await context.SaveChangesAsync();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            await service.UpdUserLocalization(Users[0], new Localizations { });
+
+            var user = await context.Users.Where(u => u.Localization == new Localizations { }).FirstOrDefaultAsync();
+
+            // Assert
+            Assert.IsNull(user);
+        }
+
+        [Test]
+        public async Task GetUserFirstNameByUserName_CorrectUserNameProvided_CorrectFirstNameReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Users.AddRangeAsync(Users);
+
+            await context.SaveChangesAsync();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            var userFirstName = await service.GetUserFirstNameByUserName(Users[0].UserName);
+
+            // Assert
+            Assert.IsNotNull(userFirstName);
+            Assert.IsTrue(userFirstName == Users[0].FirstName);
+        }
+
+        [Test]
+        public async Task GetUserFirstNameByUserName_NullProvided_NullReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            var userFirstName = await service.GetUserFirstNameByUserName(null);
+
+            // Assert
+            Assert.IsNull(userFirstName);
+
+        }
+
+        [Test]
+        public async Task GetUserFirstNameByUserName_EmptyStringProvided_NullReturned()
+        {
+            // Arrange
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            var userFirstName = await service.GetUserFirstNameByUserName("");
+
+            // Assert
+            Assert.IsNull(userFirstName);
+
+        }
+
+
+        [Test]
+        public async Task GetUserLastNameByUserName_CorrectUserNameProvided_CorrectLastNameReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Users.AddRangeAsync(Users);
+
+            await context.SaveChangesAsync();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            var userLastName = await service.GetUserLastNameByUserName(Users[0].UserName);
+
+            // Assert
+            Assert.IsNotNull(userLastName);
+            Assert.IsTrue(userLastName == Users[0].LastName);
+        }
+
+        [Test]
+        public async Task GetUserLastNameByUserName_NullProvided_NullReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            var userLastName = await service.GetUserLastNameByUserName(null);
+
+            // Assert
+            Assert.IsNull(userLastName);
+
+        }
+
+        [Test]
+        public async Task GetUserLastNameByUserName_EmptyStringProvided_NullReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            var userLastName = await service.GetUserLastNameByUserName("");
+
+            // Assert
+            Assert.IsNull(userLastName);
+
+        }
+
+        [Test]
+        public async Task GetUserAddressByUserName_CorrectUserNameProvided_CorrectAddressReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Users.AddRangeAsync(Users);
+
+            await context.SaveChangesAsync();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            var userAddress = await service.GetUserAddressByUserName(Users[0].UserName);
+
+            // Assert
+            Assert.IsNotNull(userAddress);
+            Assert.IsTrue(userAddress == Users[0].Address);
+        }
+
+        [Test]
+        public async Task GetUserAddressByUserName_NullProvided_NullReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            var userAddress = await service.GetUserAddressByUserName(null);
+
+            // Assert
+            Assert.IsNull(userAddress);
+
+        }
+
+        [Test]
+        public async Task GetUserAddressByUserName_EmptyStringProvided_NullReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            var userAddress = await service.GetUserAddressByUserName("");
+
+            // Assert
+            Assert.IsNull(userAddress);
+
+        }
+
+        [Test]
+        public async Task GetUserLocalizationByUserName_CorrectUserNameProvided_CorrectLocalizationReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Users.AddRangeAsync(Users);
+
+            await context.SaveChangesAsync();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            var userLocalization = await service.GetUserLocalizationByUserName(Users[0].UserName);
+
+            // Assert
+            Assert.IsNotNull(userLocalization);
+            Assert.IsTrue(userLocalization == Users[0].Localization);
+        }
+
+        [Test]
+        public async Task GetUserLocalizationByUserName_NullProvided_NullReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            var userLocalization = await service.GetUserLocalizationByUserName(null);
+
+            // Assert
+            Assert.IsTrue(userLocalization == 0);
+
+        }
+
+        [Test]
+        public async Task GetUserLocalizationByUserName_EmptyStringProvided_NullReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            var userLocalization = await service.GetUserLocalizationByUserName("");
+
+            // Assert
+            Assert.IsTrue(userLocalization == 0);
 
         }
 
