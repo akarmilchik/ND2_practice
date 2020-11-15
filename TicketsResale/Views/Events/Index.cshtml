@@ -7,7 +7,7 @@
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            Categories
+            @localizer["Categories"]
             <select asp-for="@Model.EventsCategories[0].Id" class="form-control" asp-items="@ViewBag.EventsCategories"></select>
             @Html.ActionLink("Submit", "Index", "Events", new { eventId = 1 }, new { @class = "btn btn-primary" })
         </li>
