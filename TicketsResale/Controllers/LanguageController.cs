@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Http;
@@ -16,10 +17,15 @@ namespace TicketsResale.Controllers
             Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(locale)));
 
-
             var headers = Request.GetTypedHeaders();
             if (string.IsNullOrEmpty(returnUrl) && headers.Referer != null)
-                returnUrl = HttpUtility.UrlEncode(headers.Referer.PathAndQuery);
+            {
+                returnUrl = headers.Referer.PathAndQuery + "?locale=" + locale;
+            }
+            else
+            {
+                returnUrl = returnUrl + "?locale=" + locale;
+            }
 
             if (Url.IsLocalUrl(returnUrl) && !string.IsNullOrEmpty(returnUrl))
             {
@@ -27,7 +33,6 @@ namespace TicketsResale.Controllers
             }
 
             return Redirect(returnUrl);
-
 
         }
     }

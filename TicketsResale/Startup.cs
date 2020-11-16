@@ -36,7 +36,7 @@ namespace TicketsResale
                 options.DataAnnotationLocalizerProvider = (type, factory) =>
                 factory.Create(null);
             })
-            .AddViewLocalization(); ;
+            .AddViewLocalization();
 
             services.AddMvc().AddFluentValidation(f => f.RegisterValidatorsFromAssemblyContaining<Startup>());
 
@@ -141,6 +141,12 @@ namespace TicketsResale
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                /*
+                endpoints.MapControllerRoute(
+                    name: "lang",
+                    pattern: "",
+                    defaults: new { Controller = "Language", Action = "SetLanguage" });
+                */
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

@@ -17,7 +17,7 @@ namespace TicketsResale.Controllers
 
         public IActionResult Index()
         {
-            ViewData["Title"] = "Home";
+            ViewData["Title"] = localizer["homepagetitle"];
 
             return View();
         }

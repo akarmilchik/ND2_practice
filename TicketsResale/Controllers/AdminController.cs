@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
@@ -22,9 +23,9 @@ namespace TicketsResale.Controllers
         private readonly IVenuesService venuesService;
         private readonly IEventsService eventsService;
         private readonly IUsersAndRolesService usersAndRolesService;
-        private readonly ILogger<AdminController> logger;
+        private readonly IStringLocalizer<AdminController> localizer;
 
-        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<StoreUser> userManager,ICitiesService citiesService , IVenuesService venuesService, IEventsService eventsService, IUsersAndRolesService usersAndRolesService, ILogger<AdminController> logger)
+        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<StoreUser> userManager,ICitiesService citiesService , IVenuesService venuesService, IEventsService eventsService, IUsersAndRolesService usersAndRolesService, IStringLocalizer<AdminController> localizer)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -32,7 +33,7 @@ namespace TicketsResale.Controllers
             this.venuesService = venuesService;
             this.eventsService = eventsService;
             this.usersAndRolesService = usersAndRolesService;
-            this.logger = logger;
+            this.localizer = localizer;
         }
 
         public IActionResult Index()
@@ -42,7 +43,7 @@ namespace TicketsResale.Controllers
 
         public async Task<IActionResult> Cities(int page, int pageSize = 5)
         {
-            ViewData["Title"] = "Cities";
+            ViewData["Title"] = localizer["Cities"];
 
             var cities = await citiesService.GetCities(page, pageSize);
             var pages = citiesService.GetCitiesPages(pageSize);
@@ -57,7 +58,7 @@ namespace TicketsResale.Controllers
         public async Task<IActionResult> Events()
         {
 
-            ViewData["Title"] = "Events";
+            ViewData["Title"] = localizer["Events"];
             var model = new EventsViewModel
             {
                 Events = await eventsService.GetEvents(),
@@ -70,7 +71,7 @@ namespace TicketsResale.Controllers
 
         public async Task<IActionResult> Venues()
         {
-            ViewData["Title"] = "Venues";
+            ViewData["Title"] = localizer["Venues"];
 
             var model = new VenuesViewModel
             {
@@ -82,7 +83,7 @@ namespace TicketsResale.Controllers
         }
         public async Task<IActionResult> Users()
         {
-            ViewData["Title"] = "Users";
+            ViewData["Title"] = localizer["Users"];
 
             var users = await usersAndRolesService.GetUsers();
             var usersRoles = await usersAndRolesService.GetUsersRolesByUsers(users);

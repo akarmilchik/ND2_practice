@@ -9,7 +9,7 @@
         <li class="nav-item">
             @localizer["Categories"]
             <select asp-for="@Model.EventsCategories[0].Id" class="form-control" asp-items="@ViewBag.EventsCategories"></select>
-            @Html.ActionLink("Submit", "Index", "Events", new { eventId = 1 }, new { @class = "btn btn-primary" })
+            @Html.ActionLink(@localizer["Submit"].Value, "Index", "Events", new { eventId = 1 }, new { @class = "btn btn-primary" })
         </li>
         <li class="nav-item">
             <ul class="nav nav-tabs bg-dark">
@@ -31,7 +31,7 @@
                     <div class="card-body">
                         <h4><strong>@eventObj.Name</strong></h4>
                         <h4><strong>@Model.Cities.Where(c => c.Id == Model.Venues.Where(p => p.Id == eventObj.VenueId).Select(p => p.CityId).FirstOrDefault()).Select(c => c.Name).FirstOrDefault()</strong></h4>
-                        <h4>@localizer["Venue:"] @Model.Venues.Where(p => p.Id == eventObj.VenueId).Select(p => p.Name).FirstOrDefault()</h4>
+                        <h4>@localizer["Venue"]: @Model.Venues.Where(p => p.Id == eventObj.VenueId).Select(p => p.Name).FirstOrDefault()</h4>
                         <p><strong>@eventObj.Date.ToShortDateString()</strong></p>
                         <p class="text-justify">@Html.Raw(@eventObj.Description)</p>
                         @Html.ActionLink(localizer["Buy ticket"].Value, "GetEventTickets", "Tickets", new { eventId = eventObj.Id }, new { @class = "btn btn-primary" })

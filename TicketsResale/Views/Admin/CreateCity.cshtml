@@ -1,11 +1,14 @@
 ﻿@model TicketsResale.Business.Models.City
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 
 @{
-    ViewData["Title"] = "Create City";
+    ViewData["Title"] = @localizer["Create City"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h1>Create city</h1>
-<h4>Type here city name</h4>
+<h1>
+    @localizer["Create city"]</h1>
+<h4>
+    @localizer["Type here city name"]</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -15,8 +18,8 @@
                 <input asp-for="Name" class="form-control" />
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-success" />
-                <input type="submit" value="Back" class="btn btn-primary" asp-action="Cities" />
+                <input type="submit" value="@localizer["Create"]" class="btn btn-success" />
+                <input type="submit" value="@localizer["Back"]" class="btn btn-primary" asp-action="Cities" />
             </div>
         </form>
     </div>

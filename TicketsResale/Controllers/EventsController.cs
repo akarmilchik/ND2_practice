@@ -24,7 +24,7 @@ namespace TicketsResale.Business.Models
         }
         public async Task<IActionResult> Index(int categoryId)  
         {
-            ViewData["Title"] = "Events";
+            ViewData["Title"] = localizer["eventstitle"];
            
             var categories = await eventsService.GetEventsCategories();
             var list = new SelectList(categories, "Id", "Name");

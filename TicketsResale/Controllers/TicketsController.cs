@@ -33,7 +33,7 @@ namespace TicketsResale.Controllers
 
         public async Task<IActionResult> GetEventTickets(int eventId)
         {
-            ViewData["Title"] = localizer["title"];
+            ViewData["Title"] = localizer["ticketsTitle"];
 
             var eventTickets = await eventsService.GetEventWithTickets(eventId);
 
@@ -44,7 +44,7 @@ namespace TicketsResale.Controllers
         [Authorize]
         public async Task<IActionResult> MyTickets(TicketStatuses ticketStatus, string userName)
         {
-            ViewData["Title"] = localizer["My tickets"];
+            ViewData["Title"] = localizer["myTicketsTitle"];
 
             var tickets = await ticketsService.GetTicketsByStatusAndUserName(ticketStatus, userName);
 
@@ -76,7 +76,7 @@ namespace TicketsResale.Controllers
         [Authorize]
         public async Task<IActionResult> CreateTicket()
         {
-            ViewData["Title"] = "Create ticket";
+            ViewData["Title"] = localizer["createTicket"];
 
             var events = await eventsService.GetEvents();
 
