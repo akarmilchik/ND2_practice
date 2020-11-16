@@ -64,14 +64,16 @@ namespace TicketsResale.Models.Service
 
         public async Task<List<Ticket>> GetTicketsByUserId(string UserId)
         {
-            var ordersTicketsIds = await context.Orders.Where(o => o.BuyerId == UserId).Select(o => o.TicketId).ToListAsync();
+            var AllTickets = new List<Ticket>();
 
-            var AllTickets = await context.Tickets.Where(t => ordersTicketsIds.Contains(t.Id)) .ToListAsync();
+            if (UserId != null && UserId != "")
+            {
+                var ordersTicketsIds = await context.Orders.Where(o => o.BuyerId == UserId).Select(o => o.TicketId).ToListAsync();
 
+                AllTickets = await context.Tickets.Where(t => ordersTicketsIds.Contains(t.Id)).ToListAsync();
+            }
 
             return AllTickets;
-
         }
-
     }
 }

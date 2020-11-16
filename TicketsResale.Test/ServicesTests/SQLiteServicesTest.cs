@@ -32,6 +32,7 @@ namespace TicketsResale.Test
         Event UpdatedEvent;
         Venue UpdatedVenue;
         Order UpdatedOrder;
+        Ticket UpdatedTicket;
 
         [SetUp]
         public void Setup()
@@ -134,6 +135,7 @@ namespace TicketsResale.Test
                 new Ticket { Event = Events[9], Price = 1500, Seller = Users[2], Status = TicketStatuses.waiting }
             };
 
+            UpdatedTicket = new Ticket { Event = Events[0], Price = 999, Seller = Users[0], Status = TicketStatuses.selling }; 
             SomeTickets = new List<Ticket>() { Tickets[0], Tickets[5], Tickets[9] };
 
             //Orders of Users
@@ -1479,6 +1481,165 @@ namespace TicketsResale.Test
 
             // Assert
             Assert.IsTrue(userLocalization == 0);
+
+        }
+
+
+        [Test]
+        public async Task AddTicketToDb_CorrectAdding()
+        {
+            // Arrange
+            var service = new TicketsService(context);
+
+            // Act
+            await service.AddTicketToDb(Tickets[1]);
+
+            var tickets = await context.Tickets.ToListAsync();
+
+            // Assert
+            Assert.IsNotNull(tickets);
+            Assert.IsTrue(Tickets.Count() > 0);
+        }
+
+        [Test]
+        public async Task UpdTicketToDb_CorrectUpdate()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Tickets.AddRangeAsync(Tickets);
+
+            await context.SaveChangesAsync();
+
+            var service = new TicketsService(context);
+            // Act
+            await service.UpdTicketToDb(UpdatedTicket);
+
+            var resultTicket = await context.Tickets.Where(t => t.Price == UpdatedTicket.Price).FirstOrDefaultAsync();
+
+            // Assert
+            Assert.IsNotNull(resultTicket);
+        }
+
+        [Test]
+        public async Task GetTicketsByStatusAndUserName_CorrectDataProvided_CorrecResultReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Tickets.AddRangeAsync(Tickets);
+
+            await context.SaveChangesAsync();
+
+            var service = new TicketsService(context);
+
+            // Act
+            var resultTickets = await service.GetTicketsByStatusAndUserName(TicketStatuses.waiting, Users[0].UserName);
+
+            // Assert
+            Assert.IsNotNull(resultTickets);
+            Assert.IsTrue(resultTickets.Count > 0);
+        }
+
+        [Test]
+        public async Task GetTicketsByStatusAndUserName_NullProvided_EmptyReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            var service = new TicketsService(context);
+
+            // Act
+            var tickets = await service.GetTicketsByStatusAndUserName(TicketStatuses.waiting, null);
+
+            // Assert
+            Assert.IsEmpty(tickets);
+
+        }
+
+        [Test]
+        public async Task GetTicketsByStatusAndUserName_EmptyStringProvided_EmptyReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            var service = new TicketsService(context);
+
+            // Act
+            var tickets = await service.GetTicketsByStatusAndUserName(TicketStatuses.waiting, "");
+
+            // Assert
+            Assert.IsEmpty(tickets);
+
+        }
+
+        [Test]
+        public async Task GetTicketById_CorrectCityProvided_CorrecCityReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Tickets.AddRangeAsync(Tickets);
+
+            await context.SaveChangesAsync();
+
+            var service = new TicketsService(context);
+
+            // Act
+            var resultTicket = await service.GetTicketById(3);
+
+            // Assert
+            Assert.IsNotNull(resultTicket);
+            Assert.AreEqual(130, resultTicket.Price);
+        }
+
+        [Test]
+        public async Task GetTicketById_NullProvided_NullReturned()
+        {
+            // Arrange
+            var service = new TicketsService(context);
+
+            // Act
+            var ticket = await service.GetTicketById(999);
+
+            // Assert
+            Assert.IsNull(ticket);
+
+        }
+
+        [Test]
+        public async Task GetTicketsByUserId_CorrectIdProvided_CorrecTicketsReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Tickets.AddRangeAsync(Tickets);
+            await context.Orders.AddRangeAsync(Orders);
+
+            await context.SaveChangesAsync();
+
+            var service = new TicketsService(context);
+
+            // Act
+            var resultTickets = await service.GetTicketsByUserId(Users[0].Id);
+
+            // Assert
+            Assert.IsNotNull(resultTickets);
+            Assert.IsTrue(resultTickets.Count > 0);
+        }
+
+        [Test]
+        public async Task GetTicketsByUserId_NullProvided_NullReturned()
+        {
+            // Arrange
+            var service = new TicketsService(context);
+
+            // Act
+            var tickets = await service.GetTicketsByUserId(null);
+
+            // Assert
+            Assert.IsEmpty(tickets);
+            Assert.IsTrue(tickets.Count == 0);
 
         }
 
