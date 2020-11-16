@@ -33,6 +33,7 @@ namespace TicketsResale.Test
         Venue UpdatedVenue;
         Order UpdatedOrder;
         Ticket UpdatedTicket;
+        List<IdentityUserRole<string>> UsersRoles;
 
         [SetUp]
         public void Setup()
@@ -65,6 +66,8 @@ namespace TicketsResale.Test
                 new IdentityRole { Name = "Administrator" },
                 new IdentityRole { Name = "User" }
             };
+
+            UsersRoles = new List<IdentityUserRole<string>> { new IdentityUserRole<string> { RoleId = Roles[0].Id, UserId = Users[0].Id }, new IdentityUserRole<string> { RoleId = Roles[1].Id, UserId = Users[1].Id } };
 
             Venues = new List<Venue>()
             {
@@ -1643,6 +1646,79 @@ namespace TicketsResale.Test
 
         }
 
+        [Test]
+        public async Task GetUsersRolesByUsers_NullProvided_EmptyReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            var usersRoles = await service.GetUsersRolesByUsers(null);
+
+            // Assert
+            Assert.IsEmpty(usersRoles);
+
+        }
+
+        [Test]
+        public async Task GetUsersRolesByUsers_CorretDataProvided_CorrectResultReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Users.AddRangeAsync(Users);
+            await context.Roles.AddRangeAsync(Roles);
+
+            await context.SaveChangesAsync();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            var usersRoles = await service.GetUsersRolesByUsers(new List<StoreUser> { Users[0], Users[1]});
+
+            // Assert
+            Assert.IsNotNull(usersRoles);
+
+        }
+
+        [Test]
+        public async Task GetRolesByUsersRoles_NullProvided_EmptyReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            var roles = await service.GetRolesByUsersRoles(null);
+
+            // Assert
+            Assert.IsEmpty(roles);
+
+        }
+
+        [Test]
+        public async Task GetRolesByUsersRoles_CorretDataProvided_CorrectResultReturned()
+        {
+            // Arrange
+            context = factory.CreateContextForSQLite();
+
+            await context.Users.AddRangeAsync(Users);
+            await context.Roles.AddRangeAsync(Roles);
+
+            await context.SaveChangesAsync();
+
+            var service = new UsersAndRolesService(context);
+
+            // Act
+            var roles = await service.GetRolesByUsersRoles(UsersRoles);
+
+            // Assert
+            Assert.IsNotNull(roles);
+            Assert.AreEqual(2, roles.Count);
+        }
     }
 }
 

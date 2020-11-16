@@ -110,10 +110,12 @@ namespace TicketsResale.Models
         public async Task<List<IdentityUserRole<string>>> GetUsersRolesByUsers(List<StoreUser> users)
         {
             List<IdentityUserRole<string>> resUsersRoles = new List<IdentityUserRole<string>>();
-
-            foreach (StoreUser user in users)
+            if (users != null)
             {
-                resUsersRoles.Add(await context.UserRoles.Where(ur => ur.UserId == user.Id).FirstOrDefaultAsync());
+                foreach (StoreUser user in users)
+                {
+                    resUsersRoles.Add(await context.UserRoles.Where(ur => ur.UserId == user.Id).FirstOrDefaultAsync());
+                }
             }
             return resUsersRoles;
         }
@@ -121,17 +123,18 @@ namespace TicketsResale.Models
         public async Task<List<IdentityRole>> GetRolesByUsersRoles(List<IdentityUserRole<string>> usersRoles)
         {
             List<IdentityRole> resRoles = new List<IdentityRole>();
-
-            foreach (IdentityUserRole<string> userRole in usersRoles)
+            if (usersRoles != null)
             {
-                var role = await context.Roles.Where(r => r.Id == userRole.RoleId).FirstOrDefaultAsync();
-
-                if (!(resRoles.Contains(role)))
+                foreach (IdentityUserRole<string> userRole in usersRoles)
                 {
-                    resRoles.Add(role);
+                    var role = await context.Roles.Where(r => r.Id == userRole.RoleId).FirstOrDefaultAsync();
+
+                    if (!(resRoles.Contains(role)))
+                    {
+                        resRoles.Add(role);
+                    }
                 }
             }
-
             return resRoles;
         }
 
