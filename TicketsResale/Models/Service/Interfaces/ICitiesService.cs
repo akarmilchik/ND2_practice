@@ -11,6 +11,7 @@ namespace TicketsResale.Models.Service
         Task<List<City>> GetCities(int page, int pageSize);
         Task<List<City>> GetCities();
         List<int> GetCitiesPages(int pageSize);
+        IQueryable<City> GetCitiesQuery();
         Task<City> GetCityById(int id);
         Task<string> GetCityNameById(int id);
         Dictionary<string, int> GetNearPages(List<int> pages, int currentPage);

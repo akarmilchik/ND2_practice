@@ -17,6 +17,11 @@ using FluentValidation.AspNetCore;
 using Microsoft.Extensions.Localization;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
+using System.IO;
+using WebApiContrib.Core.Formatter.Csv;
+using Microsoft.Net.Http.Headers;
 
 namespace TicketsResale
 {
@@ -38,7 +43,12 @@ namespace TicketsResale
             })
             .AddViewLocalization();
 
-            services.AddMvc().AddFluentValidation(f => f.RegisterValidatorsFromAssemblyContaining<Startup>());
+            services.AddMvc().AddFluentValidation(f => f.RegisterValidatorsFromAssemblyContaining<Startup>()).AddCsvSerializerFormatters()
+                .AddXmlDataContractSerializerFormatters()
+                .AddMvcOptions(opts =>
+                {
+                    opts.FormatterMappings.SetMediaTypeMappingForFormat("csv", new MediaTypeHeaderValue("text/csv"));
+                });
 
             services.AddTransient<IStringLocalizer, EFStringLocalizer>();
             services.AddSingleton<IStringLocalizerFactory>(new EFStringLocalizerFactory(Configuration.GetConnectionString("StoreConnection")));
@@ -99,6 +109,27 @@ namespace TicketsResale
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
                 options.SlidingExpiration = true;
             });
+
+            services.AddSwaggerGen(c => {
+                /*
+                c.SwaggerDoc("API v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "TicketsResale API",
+                    Description = "A simple example ASP.NET Core Web API",
+                    TermsOfService = new Uri("https://example.com/terms"),
+                    License = new OpenApiLicense
+                    {
+                        Name = "Use under LICX",
+                        Url = new Uri("https://example.com/license"),
+
+                    }
+                });*/
+
+                var file = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var path = Path.Combine(AppContext.BaseDirectory, file);
+                c.IncludeXmlComments(path);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -117,6 +148,8 @@ namespace TicketsResale
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
+
+            app.UseSwagger();
 
             var supportedCultures = new[]
             {
@@ -138,18 +171,18 @@ namespace TicketsResale
             
             app.UseAuthorization();
 
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "TicketsResale API v1");
+            });
+
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
-                /*
-                endpoints.MapControllerRoute(
-                    name: "lang",
-                    pattern: "",
-                    defaults: new { Controller = "Language", Action = "SetLanguage" });
-                */
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllers();
             });
         }
     }

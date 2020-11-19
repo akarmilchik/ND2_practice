@@ -11,6 +11,13 @@
             <select asp-for="@Model.EventsCategories[0].Id" class="form-control" asp-items="@ViewBag.EventsCategories"></select>
             @Html.ActionLink(@localizer["Submit"].Value, "Index", "Events", new { eventId = 1 }, new { @class = "btn btn-primary" })
         </li>
+        <select id="category">
+            @foreach(var category in Model.EventsCategories)
+            {
+                <option value="@category.Id">@category.Name</option>
+            }
+        </select>
+
         <li class="nav-item">
             <ul class="nav nav-tabs bg-dark">
                 <li class="nav-item">
@@ -23,24 +30,35 @@
     </ul>
     <p> </p>
     <div class="row row-cols-2">
-        @foreach (var eventObj in Model.Events)
-        {
-            <div class="col-sm-6">
-                <div class="card text-center">
-                    <img src="~/img/@eventObj.Banner" alt="@eventObj.Name" class="card-img-top img-fluid" />
-                    <div class="card-body">
-                        <h4><strong>@eventObj.Name</strong></h4>
-                        <h4><strong>@Model.Cities.Where(c => c.Id == Model.Venues.Where(p => p.Id == eventObj.VenueId).Select(p => p.CityId).FirstOrDefault()).Select(c => c.Name).FirstOrDefault()</strong></h4>
-                        <h4>@localizer["Venue"]: @Model.Venues.Where(p => p.Id == eventObj.VenueId).Select(p => p.Name).FirstOrDefault()</h4>
-                        <p><strong>@eventObj.Date.ToShortDateString()</strong></p>
-                        <p class="text-justify">@Html.Raw(@eventObj.Description)</p>
-                        @Html.ActionLink(localizer["Buy ticket"].Value, "GetEventTickets", "Tickets", new { eventId = eventObj.Id }, new { @class = "btn btn-primary" })
-                    </div>
-                </div>
+        
+            <div id="eventsItems" class="col-sm-6">
+                
             </div>
 
-        }
     </div>
 </div>
+<script>
+    function CreateItem(item) {
+        return `<div class="card text-center">
+                    <img src="~/img/${item.Banner}" alt="${item.Name}" class="card-img-top img-fluid" />
+                    <div class="card-body">
+                        <h4><strong>${item.Name}</strong></h4>
+                        <h4><strong>${item.City.Name}</strong></h4>
+                        <h4>@localizer["Venue"]: ${item.Venue.Name}</h4>
+                        <p><strong>${item.Date.ToShortDateString()}</strong></p>
+                        <p class="text-justify">${item.Description})</p>
+                        <a href="#">Add ticket to order</a>
+                    </div>
+                </div>`;
+    }
+    $("#category").on("change", function () {
+        $("#category").load("api/v1/categories${this.value}/products", function (data) {
+            data
+        });
+    });
+    
+
+
+</script>
 
 
