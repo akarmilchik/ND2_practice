@@ -43,38 +43,18 @@ namespace TicketsResale.Models.Service
             return await context.Tickets.ToListAsync();
         }
 
-        public async Task<List<Ticket>> GetTicketsByStatusesAndUserName(TicketStatuses ticketStatus, OrderStatuses orderStatus, string userName)
+        public async Task<List<Ticket>> GetTicketsByStatusAndUserName(TicketStatuses ticketStatus, string userName)
         {
-            var chosenTickets = new List<Ticket>();
-            var tickets = await context.Tickets.Include(e => e.Seller).ToListAsync();
-            var sellers = await context.Users.ToListAsync();
-            var orders = await context.Orders.ToListAsync();
-            var seller = sellers.Where(s => s.UserName == userName).Select(s => s).FirstOrDefault();
-            var otherOrdersAll = orders.Where(o => o.BuyerId != seller.Id).Select(o => o).ToList();
+            List<Ticket> resultTickets = new List<Ticket>();
 
-            for (int i = 0; i < tickets.Count; i++)
+            string userId = await context.Users.Where(u => u.UserName == userName).Select(u => u.Id).FirstOrDefaultAsync();
+
+            if (userId != "" && ticketStatus != 0)
             {
-                if (orderStatus != 0)
-                {
-                    List<Order> otherOrdersOfCurrentTicketWithNeedOrderStatus = new List<Order>();
-                    if (otherOrdersAll.Count != 0)
-                    {
-                        otherOrdersOfCurrentTicketWithNeedOrderStatus = otherOrdersAll.Where(ci => ci.TicketId == tickets[i].Id && ci.Status == orderStatus).Select(ci => ci).ToList();
-                    }
-
-                    if ((tickets[i].SellerId == seller.Id) && (tickets[i].Status == ticketStatus) && (otherOrdersOfCurrentTicketWithNeedOrderStatus.Count != 0))
-                    { chosenTickets.Add(tickets[i]); }
-
-                }
-                else 
-                {
-                    if ((tickets[i].SellerId == seller.Id) && (tickets[i].Status == ticketStatus))
-                    { chosenTickets.Add(tickets[i]); }
-                }
-
+                resultTickets = await context.Tickets.Where(t => t.SellerId == userId && t.Status == ticketStatus).Select(t => t).ToListAsync();
             }
 
-            return chosenTickets;
+            return resultTickets;
         }
 
         public async Task<Ticket> GetTicketById(int id)
@@ -84,28 +64,16 @@ namespace TicketsResale.Models.Service
 
         public async Task<List<Ticket>> GetTicketsByUserId(string UserId)
         {
+            var AllTickets = new List<Ticket>();
 
-            var AllOrders = await context.Orders.Where(t => t.BuyerId == UserId).ToListAsync();
-
-            var AllTickets = await context.Tickets.ToListAsync();
-
-            List<Ticket> resTickets = new List<Ticket>();
-
-
-            foreach (Order order in AllOrders)
+            if (UserId != null && UserId != "")
             {
-                foreach (Ticket ticket in AllTickets)
-                {
-                    if (ticket.Id == order.TicketId)
-                    {
-                        resTickets.Add(ticket);
-                    }
-                }
+                var ordersTicketsIds = await context.Orders.Where(o => o.BuyerId == UserId).Select(o => o.TicketId).ToListAsync();
+
+                AllTickets = await context.Tickets.Where(t => ordersTicketsIds.Contains(t.Id)).ToListAsync();
             }
 
-            return resTickets;
-
+            return AllTickets;
         }
-
     }
 }

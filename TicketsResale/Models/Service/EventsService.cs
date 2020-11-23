@@ -17,7 +17,6 @@ namespace TicketsResale.Models.Service
             this.context = storeContext;
         }
 
-
         public async Task AddEventToDb(Event item)
         {
             context.Database.EnsureCreated();
@@ -45,10 +44,19 @@ namespace TicketsResale.Models.Service
             await context.SaveChangesAsync();
         }
 
-
         public async Task<List<Event>> GetEvents()
         {
             return await context.Events.ToListAsync();
+        }
+
+        public async Task<List<EventCategory>> GetEventsCategories()
+        {
+            return await context.EventCategories.ToListAsync();
+        }
+
+        public async Task<List<Event>> GetEventsByCategoryId(int categoryId)
+        {
+            return await context.Events.Where(e => e.EventCategoryId == categoryId).Select(e => e).ToListAsync();
         }
 
         public async Task<List<Event>> GetEventsByTickets(List<Ticket> tickets)
@@ -75,30 +83,34 @@ namespace TicketsResale.Models.Service
 
         public async Task<EventTicketsViewModel> GetEventWithTickets(int eventId)
         {
-            EventTicketsViewModel eventTickets = new EventTicketsViewModel();
-            Dictionary<Event, List<Ticket>> dic = new Dictionary<Event, List<Ticket>>();
+            if (eventId != 0)
+            {
+                EventTicketsViewModel eventTickets = new EventTicketsViewModel();
+                Dictionary<Event, List<Ticket>> dic = new Dictionary<Event, List<Ticket>>();
 
-            var chosenEvent = await context.Events.SingleOrDefaultAsync(e => e.Id == eventId);
-            var chosenTickets = await context.Tickets.Where(p => p.EventId == eventId).Select(p => p).ToListAsync();
-            var chosenVenue = await context.Venues.SingleOrDefaultAsync(v => v.Id == chosenEvent.VenueId);
-            var chosenCity = await context.Cities.SingleOrDefaultAsync(v => v.Id == chosenVenue.CityId);
-            var sellers = await context.Users.ToListAsync();
-            var orders = await context.Orders.ToListAsync();
+                var chosenEvent = await context.Events.SingleOrDefaultAsync(e => e.Id == eventId);
+                var chosenTickets = await context.Tickets.Where(p => p.EventId == eventId).Select(p => p).ToListAsync();
+                var chosenVenue = await context.Venues.SingleOrDefaultAsync(v => v.Id == chosenEvent.VenueId);
+                var chosenCity = await context.Cities.SingleOrDefaultAsync(v => v.Id == chosenVenue.CityId);
+                var sellers = await context.Users.ToListAsync();
+                var orders = await context.Orders.ToListAsync();
 
-            dic.Add(chosenEvent, chosenTickets);
+                dic.Add(chosenEvent, chosenTickets);
 
-            eventTickets.eventTickets = dic;
-            eventTickets.Venue = chosenVenue;
-            eventTickets.City = chosenCity;
-            eventTickets.Sellers = sellers;
-            eventTickets.Orders = orders;
+                eventTickets.eventTickets = dic;
+                eventTickets.Venue = chosenVenue;
+                eventTickets.City = chosenCity;
+                eventTickets.Sellers = sellers;
+                eventTickets.Orders = orders;
 
-            return eventTickets;
+                return eventTickets;
+            }
+            else
+                return new EventTicketsViewModel { };
         }
 
         public string SaveFileAndGetName(EventCreateViewModel @event)
         {
-
             var fileName = $"{ Path.GetRandomFileName()}" + $".{Path.GetExtension(@event.Banner.FileName)}";
 
             using (var stream = System.IO.File.Create(Path.Combine("wwwroot/img/events/", fileName)))
@@ -108,7 +120,5 @@ namespace TicketsResale.Models.Service
 
             return fileName;
         }
-
-
     }
 }

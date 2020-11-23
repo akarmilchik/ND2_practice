@@ -1,8 +1,9 @@
 ﻿@model IEnumerable<TicketsResale.Business.Models.City>
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 
 @{
-    ViewData["Title"] = "Cities";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+        ViewData["Title"] = @localizer["Cities"];
+        Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h1>Cities</h1>
 <ul class="nav nav-tabs bg-dark">
@@ -35,15 +36,15 @@
                 </td>
                 <td>
                     <ul class="nav d-sm-flex float-right bg-dark">
-                        <li class="nav-item bg-primary">   
+                        <li class="nav-item bg-primary">
                             <a class="nav-link text-light" asp-action="EditCity" asp-route-id="@item.Id">
-                                Edit
+                                @localizer["Edit"]
                             </a>
                         </li>
 
                         <li class="nav-item bg-danger">
                             <a class="nav-link text-light" asp-action="DeleteCity" asp-route-id="@item.Id">
-                                Delete
+                                @localizer["Delete"]
                             </a>
                         </li>
                     </ul>
@@ -52,3 +53,12 @@
         }
     </tbody>
 </table>
+<ul class="pagination align-content-center">
+    <li class="page-item"><a class="page-link bg-dark text-light" asp-action="Cities" asp-controller="Admin" asp-route-Page="@ViewBag.NearPages["prevPage"]"> << </a></li>
+    @foreach(int pageNav in ViewBag.Pages)
+    {
+        <li class="page-item"><a class="page-link bg-dark text-light" asp-action="Cities" asp-controller="Admin" asp-route-Page="@pageNav"> @pageNav </a></li>
+    }
+    <li class="page-item"><a class="page-link bg-dark text-light" asp-action="Cities" asp-controller="Admin" asp-route-Page="@ViewBag.NearPages["nextPage"]"> >> </a></li>
+</ul>
+

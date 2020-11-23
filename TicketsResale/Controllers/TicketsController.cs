@@ -2,13 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TicketsResale.Business.Models;
-using TicketsResale.Context;
 using TicketsResale.Models;
 using TicketsResale.Models.Service;
 
@@ -24,7 +20,7 @@ namespace TicketsResale.Controllers
         private readonly IUsersAndRolesService usersAndRolesService;
         private readonly IOrdersService ordersService;
 
-        public TicketsController(ITicketsService ticketsService, IOrdersService ticketsCartService, IEventsService eventsService, IVenuesService venuesService, ICitiesService citiesService, IUsersAndRolesService usersAndRolesService, IOrdersService ordersService, IStringLocalizer<TicketsController> localizer)
+        public TicketsController(ITicketsService ticketsService, IEventsService eventsService, IVenuesService venuesService, ICitiesService citiesService, IUsersAndRolesService usersAndRolesService, IOrdersService ordersService, IStringLocalizer<TicketsController> localizer)
         {
             this.localizer = localizer;
             this.ticketsService = ticketsService;
@@ -37,7 +33,7 @@ namespace TicketsResale.Controllers
 
         public async Task<IActionResult> GetEventTickets(int eventId)
         {
-            ViewData["Title"] = localizer["title"];
+            ViewData["Title"] = localizer["ticketsTitle"];
 
             var eventTickets = await eventsService.GetEventWithTickets(eventId);
 
@@ -46,11 +42,11 @@ namespace TicketsResale.Controllers
 
 
         [Authorize]
-        public async Task<IActionResult> MyTickets(TicketStatuses ticketStatus, OrderStatuses orderStatus, string userName)
+        public async Task<IActionResult> MyTickets(TicketStatuses ticketStatus, string userName)
         {
-            ViewData["Title"] = localizer["My tickets"];
+            ViewData["Title"] = localizer["myTicketsTitle"];
 
-            var tickets = await ticketsService.GetTicketsByStatusesAndUserName(ticketStatus, orderStatus, userName);
+            var tickets = await ticketsService.GetTicketsByStatusAndUserName(ticketStatus, userName);
 
             var model = new MyTicketsViewModel
             {
@@ -69,7 +65,7 @@ namespace TicketsResale.Controllers
 
             await ordersService.AddTicketToOrder(User.Identity.Name, ticket);
 
-            ticket.Status = TicketStatuses.sold;
+            ticket.Status = TicketStatuses.waiting;
 
             await ticketsService.UpdTicketToDb(ticket);
 
@@ -80,7 +76,7 @@ namespace TicketsResale.Controllers
         [Authorize]
         public async Task<IActionResult> CreateTicket()
         {
-            ViewData["Title"] = "Create ticket";
+            ViewData["Title"] = localizer["createTicket"];
 
             var events = await eventsService.GetEvents();
 
@@ -88,7 +84,7 @@ namespace TicketsResale.Controllers
 
             ViewBag.Events = listEvents;
 
-            return View("TicketCreateEdit");
+            return View("CreateTicket");
         }
 
         [HttpPost]
@@ -119,7 +115,7 @@ namespace TicketsResale.Controllers
 
             await ticketsService.AddTicketToDb(ticket);
 
-            return RedirectToAction("MyTickets", new { ticketStatus = 1, orderStatus = 0, userName = User.Identity.Name });
+            return RedirectToAction("MyTickets", new { ticketStatus = 1, userName = User.Identity.Name });
 
         }
 
@@ -148,16 +144,14 @@ namespace TicketsResale.Controllers
         [Authorize]
         public async Task<IActionResult> ConfirmTicket(ConfirmRejectTicketViewModel model, int ticketId)
         {
-            var allOrders = await ordersService.GetOrders();
-
-            var needOrders = allOrders.Where(ci => ci.TicketId == ticketId).ToList();
+            var needOrders = await ordersService.GetOrdersByTicketId(ticketId);
 
             var needTicket = await ticketsService.GetTicketById(ticketId);
 
             foreach (Order order in needOrders)
             {
                 order.Status = model.Confirmation ? OrderStatuses.confirmed : OrderStatuses.rejected;
-
+                order.TrackNumber = model.TrackNumber;
                 await ordersService.UpdOrderToDb(order);
             }
 

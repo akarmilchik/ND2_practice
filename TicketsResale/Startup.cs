@@ -14,6 +14,9 @@ using TicketsResale.Context;
 using TicketsResale.Models;
 using TicketsResale.Models.Service;
 using FluentValidation.AspNetCore;
+using Microsoft.Extensions.Localization;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace TicketsResale
 {
@@ -29,15 +32,17 @@ namespace TicketsResale
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix).AddDataAnnotationsLocalization();
+            services.AddControllersWithViews().AddDataAnnotationsLocalization(options => {
+                options.DataAnnotationLocalizerProvider = (type, factory) =>
+                factory.Create(null);
+            })
+            .AddViewLocalization();
 
             services.AddMvc().AddFluentValidation(f => f.RegisterValidatorsFromAssemblyContaining<Startup>());
 
-            services.AddLocalization(opts =>
-            {
-                opts.ResourcesPath = "Resources";
-            });
-            
+            services.AddTransient<IStringLocalizer, EFStringLocalizer>();
+            services.AddSingleton<IStringLocalizerFactory>(new EFStringLocalizerFactory(Configuration.GetConnectionString("StoreConnection")));
+
             services.AddScoped<ITicketsService, TicketsService>();
             services.AddScoped<IOrdersService, OrdersService>();
             services.AddScoped<IEventsService, EventsService>();
@@ -50,6 +55,8 @@ namespace TicketsResale
                 o.UseSqlServer(Configuration.GetConnectionString("StoreConnection"))
                 .EnableSensitiveDataLogging();
             });
+
+            services.AddDbContext<StoreContext>(options => options.UseSqlServer(Configuration.GetConnectionString("StoreConnection")));
 
             services.AddDefaultIdentity<StoreUser>().AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<StoreContext>();
@@ -111,14 +118,19 @@ namespace TicketsResale
 
             app.UseStaticFiles();
 
-            var supportedLocales = new[] { "en-US", "ru-RU" , "be-BY"};
+            var supportedCultures = new[]
+            {
+                new CultureInfo("en-US"),
+                new CultureInfo("ru-RU"),
+                new CultureInfo("be-BY")
+            };
 
-            var localizationOptions = new RequestLocalizationOptions().
-                            SetDefaultCulture(supportedLocales[0])
-                            .AddSupportedCultures(supportedLocales)
-                            .AddSupportedUICultures(supportedLocales);
-
-            app.UseRequestLocalization(localizationOptions);
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("ru-RU"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            });
 
             app.UseRouting();
             
@@ -129,6 +141,12 @@ namespace TicketsResale
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                /*
+                endpoints.MapControllerRoute(
+                    name: "lang",
+                    pattern: "",
+                    defaults: new { Controller = "Language", Action = "SetLanguage" });
+                */
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

@@ -12,7 +12,7 @@ namespace TicketsResale.Business.Models
 
         public string Address { get; set; }
 
-        public string Localization { get; set; }
+        public Localizations Localization { get; set; }
 
     }
 }

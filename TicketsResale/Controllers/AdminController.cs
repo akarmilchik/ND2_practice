@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
@@ -22,9 +23,9 @@ namespace TicketsResale.Controllers
         private readonly IVenuesService venuesService;
         private readonly IEventsService eventsService;
         private readonly IUsersAndRolesService usersAndRolesService;
-        private readonly ILogger<AdminController> logger;
+        private readonly IStringLocalizer<AdminController> localizer;
 
-        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<StoreUser> userManager,ICitiesService citiesService , IVenuesService venuesService, IEventsService eventsService, IUsersAndRolesService usersAndRolesService, ILogger<AdminController> logger)
+        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<StoreUser> userManager,ICitiesService citiesService , IVenuesService venuesService, IEventsService eventsService, IUsersAndRolesService usersAndRolesService, IStringLocalizer<AdminController> localizer)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -32,25 +33,32 @@ namespace TicketsResale.Controllers
             this.venuesService = venuesService;
             this.eventsService = eventsService;
             this.usersAndRolesService = usersAndRolesService;
-            this.logger = logger;
+            this.localizer = localizer;
         }
 
         public IActionResult Index()
         {
             return View("Index");
         }
-        public async Task<IActionResult> Cities()
-        {
-            ViewData["Title"] = "Cities";
 
-            var cities = await citiesService.GetCities();
+        public async Task<IActionResult> Cities(int page, int pageSize = 5)
+        {
+            ViewData["Title"] = localizer["Cities"];
+
+            var cities = await citiesService.GetCities(page, pageSize);
+            var pages = citiesService.GetCitiesPages(pageSize);
+
+            ViewBag.Pages = pages;
+            ViewBag.CurrentPage = page;
+            ViewBag.NearPages = citiesService.GetNearPages(pages, page);
 
             return View("Cities", cities);
         }
+
         public async Task<IActionResult> Events()
         {
 
-            ViewData["Title"] = "Events";
+            ViewData["Title"] = localizer["Events"];
             var model = new EventsViewModel
             {
                 Events = await eventsService.GetEvents(),
@@ -60,9 +68,10 @@ namespace TicketsResale.Controllers
             return View("Events", model);
 
         }
+
         public async Task<IActionResult> Venues()
         {
-            ViewData["Title"] = "Venues";
+            ViewData["Title"] = localizer["Venues"];
 
             var model = new VenuesViewModel
             {
@@ -74,7 +83,7 @@ namespace TicketsResale.Controllers
         }
         public async Task<IActionResult> Users()
         {
-            ViewData["Title"] = "Users";
+            ViewData["Title"] = localizer["Users"];
 
             var users = await usersAndRolesService.GetUsers();
             var usersRoles = await usersAndRolesService.GetUsersRolesByUsers(users);
@@ -169,23 +178,19 @@ namespace TicketsResale.Controllers
             return RedirectToAction("Events");
         }
 
-        public async Task<IActionResult> EditEvent(int? id)
+        public async Task<IActionResult> EditEvent(int id)
         {
-            if (id != null)
-            {
-                var events = await eventsService.GetEvents();
+            var @event = await eventsService.GetEventById(id);
 
-                Event eevent = events.FirstOrDefault(p => p.Id == id);
+            var venues = await venuesService.GetVenues();
 
-                var venues = await venuesService.GetVenues();
+            var list = new SelectList(venues, "Id", "Name");
 
-                var list = new SelectList(venues, "Id", "Name");
+            ViewBag.Venues = list;
 
-                ViewBag.Venues = list;
-
-                if (eevent != null)
-                    return View(eevent);
-            }
+            if (@event != null)
+                return View(@event);
+            
             return NotFound();
         }
 
@@ -293,7 +298,7 @@ namespace TicketsResale.Controllers
             {
                 var user = await usersAndRolesService.GetUserById(id);
                 var userRole = await usersAndRolesService.GetUserRoleByUser(user);
-                var role = await usersAndRolesService.GetRoleByUserRole(userRole);
+                var userFirstRole = await usersAndRolesService.GetRoleByUserRole(userRole);
                 var roles = await usersAndRolesService.GetRoles();
                 var list = new SelectList(roles, "Id", "Name");
 
@@ -302,10 +307,10 @@ namespace TicketsResale.Controllers
                 var model = new UsersRolesViewModel
                 {
                     User = user,
-                    Role = role,
+                    Role = userFirstRole,
                     UserRole = userRole,
                     UserId = id,
-                    FirstRoleId = role.Id
+                    FirstRoleId = userFirstRole.Id
                 };
 
 

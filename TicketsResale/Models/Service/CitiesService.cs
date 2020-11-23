@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,6 +20,64 @@ namespace TicketsResale.Models.Service
         public async Task<List<City>> GetCities()
         {
             return await context.Cities.ToListAsync();
+        }
+
+        public async Task<List<City>> GetCities(int page, int pageSize)
+        {
+            if (pageSize <= 0)
+                pageSize = 10;
+
+            if (page <= 0)
+                page = 1;
+
+            var needCities = ((await context.Cities.ToListAsync()).Skip(pageSize * (page - 1)).Take(pageSize)).ToList();
+
+            return needCities;
+        }
+
+        public List<int> GetCitiesPages(int pageSize)
+        { 
+            var countCities = context.Cities.Count();
+
+            if (pageSize == 0)
+                pageSize = 1;
+
+            var res = (countCities / pageSize) + 1;
+
+            List<int> result = new List<int>();
+
+            for(int i = 1; i <= res; i++)
+            { 
+                result.Add(i); 
+            }
+
+            return result;
+        }
+
+        public Dictionary<string, int> GetNearPages(List<int> pages, int currentPage)
+        {
+            Dictionary<string, int> nearPages = new Dictionary<string, int>();
+
+            if (currentPage == 0)
+                currentPage = 1;
+
+
+            if (currentPage > 1 && currentPage < pages.Count())
+            {
+                nearPages.Add("prevPage", currentPage - 1);
+                nearPages.Add("nextPage", currentPage + 1);
+            }
+            else if (currentPage == 1)
+            {
+                nearPages.Add("prevPage", currentPage);
+                nearPages.Add("nextPage", currentPage + 1);
+            }
+            else
+            {
+                nearPages.Add("prevPage", currentPage - 1);
+                nearPages.Add("nextPage", currentPage);
+            }
+            return nearPages;
         }
 
         public async Task<City> GetCityById(int id)
@@ -55,6 +114,7 @@ namespace TicketsResale.Models.Service
             context.Database.EnsureCreated();
 
             context.Cities.Remove(item);
+
 
             await context.SaveChangesAsync();
         }

@@ -9,7 +9,11 @@ namespace TicketsResale.Context
         public StoreContext(DbContextOptions<StoreContext> options) : base(options)
         {  }
 
+        public DbSet<Culture> Cultures { get; set; }
+        public DbSet<Resource> Resources { get; set; }
+
         public DbSet<City> Cities { get; set; }
+        public DbSet<EventCategory> EventCategories { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Venue> Venues { get; set; }
@@ -20,6 +24,7 @@ namespace TicketsResale.Context
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<City>().ToTable("Cities");
+            modelBuilder.Entity<EventCategory>().ToTable("EventCategories");
             modelBuilder.Entity<Event>().ToTable("Events");
             modelBuilder.Entity<Ticket>().ToTable("Tickets");
             modelBuilder.Entity<Venue>().ToTable("Venues");

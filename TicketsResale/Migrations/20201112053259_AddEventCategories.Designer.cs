@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TicketsResale.Context;
 
 namespace TicketsResale.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20201112053259_AddEventCategories")]
+    partial class AddEventCategories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -169,21 +171,6 @@ namespace TicketsResale.Migrations
                     b.ToTable("Cities");
                 });
 
-            modelBuilder.Entity("TicketsResale.Business.Models.Culture", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Cultures");
-                });
-
             modelBuilder.Entity("TicketsResale.Business.Models.Event", b =>
                 {
                     b.Property<int>("Id")
@@ -259,29 +246,6 @@ namespace TicketsResale.Migrations
                     b.HasIndex("TicketId");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("TicketsResale.Business.Models.Resource", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CultureId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Key")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CultureId");
-
-                    b.ToTable("Resources");
                 });
 
             modelBuilder.Entity("TicketsResale.Business.Models.StoreUser", b =>
@@ -489,13 +453,6 @@ namespace TicketsResale.Migrations
                         .HasForeignKey("TicketId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("TicketsResale.Business.Models.Resource", b =>
-                {
-                    b.HasOne("TicketsResale.Business.Models.Culture", "Culture")
-                        .WithMany("Resources")
-                        .HasForeignKey("CultureId");
                 });
 
             modelBuilder.Entity("TicketsResale.Business.Models.Ticket", b =>

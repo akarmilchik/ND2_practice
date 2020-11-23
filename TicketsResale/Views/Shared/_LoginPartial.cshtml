@@ -9,12 +9,12 @@
 {
     <ul class="navbar-nav flex-grow-1">
         <li class="nav-item">
-            <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello, @User.Identity.Name!</a>
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@localizer["Hello"], @User.Identity.Name!</a>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link">Logout</button>
-            </form>
+                <button type="submit" class="nav-link btn btn-link">@localizer["Logout"]</button>
+</form>
         </li>
     </ul>
     <ul class="navbar-nav flex-grow-1">
@@ -37,7 +37,7 @@
         {
             <li class="nav-item">
                 <a class="nav-link" asp-area="Identity" asp-controller="Admin" asp-action="Index">
-                    <img src="~/img/icons/settings-light.svg" width="20" height="20" class="d-inline-block align-top" alt="" loading="lazy"> Admin panel
+                    <img src="~/img/icons/settings-light.svg" width="20" height="20" class="d-inline-block align-top" alt="" loading="lazy">@localizer["Admin panel"]
                 </a>
             </li>
         }
@@ -47,10 +47,10 @@ else
 {
     <ul class="navbar-nav flex-grow-1">
         <li class="nav-item">
-            <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Register</a>
-        </li>
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">@localizer["Register"]</a>
+</li>
         <li class="nav-item">
-            <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
-        </li>
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">@localizer["Login"]</a>
+</li>
     </ul>
 }
