@@ -75,5 +75,18 @@ namespace TicketsResale.Models.Service
 
             return AllTickets;
         }
+
+
+        public async Task<List<Ticket>> GetTicketsByEventId(int eventId)
+        {
+            var AllTickets = new List<Ticket>();
+
+            if (eventId != 0)
+            {
+                AllTickets = await context.Tickets.Where(t => t.EventId == eventId).ToListAsync();
+            }
+
+            return AllTickets;
+        }
     }
 }

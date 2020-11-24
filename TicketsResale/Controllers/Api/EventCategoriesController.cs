@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TicketsResale.Business.Models;
 using TicketsResale.Context;
+using TicketsResale.Filters;
 using TicketsResale.Models.Service;
 
 namespace TicketsResale.Controllers.Api

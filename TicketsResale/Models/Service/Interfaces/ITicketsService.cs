@@ -9,6 +9,7 @@ namespace TicketsResale.Models.Service
         Task AddTicketToDb(Ticket item);
         Task<Ticket> GetTicketById(int id);
         Task<List<Ticket>> GetTickets();
+        Task<List<Ticket>> GetTicketsByEventId(int eventId);
         Task<List<Ticket>> GetTicketsByStatusAndUserName(TicketStatuses ticketStatus, string userName);
         Task<List<Ticket>> GetTicketsByUserId(string UserId);
         Task UpdTicketToDb(Ticket item);

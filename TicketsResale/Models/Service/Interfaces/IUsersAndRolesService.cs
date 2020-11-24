@@ -25,5 +25,6 @@ namespace TicketsResale.Models
         Task UpdUserLastName(StoreUser user, string lastName);
         Task UpdUserLocalization(StoreUser user, Localizations localization);
         Task<StoreUser> GetUserByUserName(string userName);
+        Task<List<StoreUser>> GetUsersByListOfId(List<string> userIds);
     }
 }

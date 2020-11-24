@@ -1,0 +1,25 @@
+﻿@model IEnumerable<TicketsResale.Business.Models.EventCategory>
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+
+<h1>@localizer["Events"]</h1>
+
+<select onchange="getEvents(this.options[this.selectedIndex].value)">
+    @foreach (var category in Model)
+    {
+        <option value="@category.Id">@category.Name</option>
+    }
+</select>
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>City</th>
+            <th>Venue</th>
+            <th>Date</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+

@@ -1,17 +1,26 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using TicketsResale.Business.Models;
 using TicketsResale.Context;
+using TicketsResale.Queries;
 
 namespace TicketsResale.Models.Service
 {
     public class EventsService : IEventsService
     {
         private readonly StoreContext context;
+        private readonly ISortingProvider<Event> sortingProvider;
 
+        public EventsService(StoreContext storeContext, ISortingProvider<Event> sortingProvider)
+        {
+            this.context = storeContext;
+            this.sortingProvider = sortingProvider;
+        }
         public EventsService(StoreContext storeContext)
         {
             this.context = storeContext;
@@ -49,6 +58,26 @@ namespace TicketsResale.Models.Service
             return await context.Events.ToListAsync();
         }
 
+        public async Task<PagedResult<Event>> GetEventsQuery(EventQuery query)
+        {
+            var queryable = context.Events.AsQueryable();
+
+            if (query.EventCategories != null)
+            {
+                queryable = queryable.Where(e => query.EventCategories.Contains(e.EventCategoryId));
+            }
+
+            var count = await queryable.CountAsync();
+
+            queryable = sortingProvider.ApplySorting(queryable, query);
+
+            queryable = queryable.ApplyPagination(query);
+
+            var items = await queryable.ToListAsync();
+
+            return new PagedResult<Event> { TotalCount = count, Items = items };
+        }
+
         public async Task<List<EventCategory>> GetEventsCategories()
         {
             return await context.EventCategories.ToListAsync();
@@ -81,32 +110,17 @@ namespace TicketsResale.Models.Service
             return await context.Events.FindAsync(id);
         }
 
-        public async Task<EventTicketsViewModel> GetEventWithTickets(int eventId)
+
+        public async Task<IEnumerable<EventCategory>> GetEventCategoriesWithEvents()
         {
-            if (eventId != 0)
+            var categories = context.EventCategories.Where(c => c.Events.Any());
+
+            foreach (EventCategory category in categories)
             {
-                EventTicketsViewModel eventTickets = new EventTicketsViewModel();
-                Dictionary<Event, List<Ticket>> dic = new Dictionary<Event, List<Ticket>>();
-
-                var chosenEvent = await context.Events.SingleOrDefaultAsync(e => e.Id == eventId);
-                var chosenTickets = await context.Tickets.Where(p => p.EventId == eventId).Select(p => p).ToListAsync();
-                var chosenVenue = await context.Venues.SingleOrDefaultAsync(v => v.Id == chosenEvent.VenueId);
-                var chosenCity = await context.Cities.SingleOrDefaultAsync(v => v.Id == chosenVenue.CityId);
-                var sellers = await context.Users.ToListAsync();
-                var orders = await context.Orders.ToListAsync();
-
-                dic.Add(chosenEvent, chosenTickets);
-
-                eventTickets.eventTickets = dic;
-                eventTickets.Venue = chosenVenue;
-                eventTickets.City = chosenCity;
-                eventTickets.Sellers = sellers;
-                eventTickets.Orders = orders;
-
-                return eventTickets;
+                category.Events = await context.Events.Where(e => e.EventCategoryId == category.Id).Select(e => e).ToListAsync();
             }
-            else
-                return new EventTicketsViewModel { };
+
+            return await categories.ToListAsync();
         }
 
         public string SaveFileAndGetName(EventCreateViewModel @event)

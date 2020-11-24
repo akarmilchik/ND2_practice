@@ -1,23 +1,11 @@
 ﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
-@model EventsViewModel
+@model IEnumerable<TicketsResale.Business.Models.EventCategory>
 
 <h1>@localizer["Events"]</h1>
 
 <div class="container-fluid">
 
     <ul class="nav nav-tabs">
-        <li class="nav-item">
-            @localizer["Categories"]
-            <select asp-for="@Model.EventsCategories[0].Id" class="form-control" asp-items="@ViewBag.EventsCategories"></select>
-            @Html.ActionLink(@localizer["Submit"].Value, "Index", "Events", new { eventId = 1 }, new { @class = "btn btn-primary" })
-        </li>
-        <select id="category">
-            @foreach(var category in Model.EventsCategories)
-            {
-                <option value="@category.Id">@category.Name</option>
-            }
-        </select>
-
         <li class="nav-item">
             <ul class="nav nav-tabs bg-dark">
                 <li class="nav-item">
@@ -27,38 +15,66 @@
                 </li>
             </ul>
         </li>
+        <p></p>
+        <li class="nav-item">
+              @localizer["Categories"]
+            <select id="category">
+                @foreach (var category in Model)
+                {
+                    <option value="@category.Id">@category.Name</option>
+                }
+            </select>
+
+        </li>
+
     </ul>
     <p> </p>
-    <div class="row row-cols-2">
+    <div id="eventsItems" class="row row-cols-2">
         
-            <div id="eventsItems" class="col-sm-6">
-                
-            </div>
-
-    </div>
+     </div>
 </div>
-<script>
-    function CreateItem(item) {
-        return `<div class="card text-center">
-                    <img src="~/img/${item.Banner}" alt="${item.Name}" class="card-img-top img-fluid" />
-                    <div class="card-body">
-                        <h4><strong>${item.Name}</strong></h4>
-                        <h4><strong>${item.City.Name}</strong></h4>
-                        <h4>@localizer["Venue"]: ${item.Venue.Name}</h4>
-                        <p><strong>${item.Date.ToShortDateString()}</strong></p>
-                        <p class="text-justify">${item.Description})</p>
-                        <a href="#">Add ticket to order</a>
-                    </div>
-                </div>`;
-    }
-    $("#category").on("change", function () {
-        $("#category").load("api/v1/categories${this.value}/products", function (data) {
-            data
+</div>
+@section Scripts
+{
+    <script>
+        const filters = {
+            categories: [],
+            page: 1,
+            pageSize: 5,
+            sortBy: "Date",
+            sortOrder: "Ascending"
+        };
+        
+
+        function createItem(item) {
+            return `<div class="col-sm-6">
+                        <div class="card text-center">
+                            <img src="/img/${item.banner}" alt="${item.name}" class="card-img-top img-fluid" />
+                            <div class="card-body">
+                                <h4><strong>${item.name}</strong></h4>
+                                <h4>Item city name<strong>${item.name}</strong></h4>
+                                <h4>@localizer["Venue"] name: ${item.name}</h4>
+                                <p><strong>${item.date}</strong></p>
+                                <p class="text-justify">${item.description})</p>
+                                <a href="#">Buy ticket</a>
+                            </div>
+                        </div>
+                    </div>`;
+        };
+        $(document).ready(function() {
+            $("#category").on("change", function () {
+                filters.categories = $(this).val();
+                getEvents();
+            });
         });
-    });
-    
 
-
-</script>
+        function getEvents() {
+            $.get(`api/v1/events`, filters, function (data) {
+                $("#eventsItems").empty().append($.map(data, createItem));
+            });
+        };
+        
+    </script>
+}
 
 

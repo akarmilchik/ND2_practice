@@ -15,7 +15,6 @@ namespace TicketsResale.Areas.Identity.Pages.Account
     {
         private readonly UserManager<StoreUser> _userManager;
         private readonly IEmailSender _sender;
-
         public RegisterConfirmationModel(UserManager<StoreUser> userManager, IEmailSender sender)
         {
             _userManager = userManager;

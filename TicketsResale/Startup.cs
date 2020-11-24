@@ -1,27 +1,29 @@
+using AutoMapper;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Antiforgery;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Localization;
+using Microsoft.Net.Http.Headers;
 using System;
+using System.Globalization;
+using System.IO;
+using System.Reflection;
+using System.Text.Json.Serialization;
 using TicketsResale.Business.Models;
 using TicketsResale.Context;
+using TicketsResale.Filters;
+using TicketsResale.Mapper;
 using TicketsResale.Models;
 using TicketsResale.Models.Service;
-using FluentValidation.AspNetCore;
-using Microsoft.Extensions.Localization;
-using System.Globalization;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.OpenApi.Models;
-using System.Reflection;
-using System.IO;
+using TicketsResale.Queries;
 using WebApiContrib.Core.Formatter.Csv;
-using Microsoft.Net.Http.Headers;
 
 namespace TicketsResale
 {
@@ -47,12 +49,16 @@ namespace TicketsResale
                 .AddXmlDataContractSerializerFormatters()
                 .AddMvcOptions(opts =>
                 {
+                    opts.Filters.Add(typeof(CacheFilterAttribute));
                     opts.FormatterMappings.SetMediaTypeMappingForFormat("csv", new MediaTypeHeaderValue("text/csv"));
-                });
+                })
+                .AddJsonOptions(opts => opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()))
+                .AddRazorRuntimeCompilation();
 
             services.AddTransient<IStringLocalizer, EFStringLocalizer>();
             services.AddSingleton<IStringLocalizerFactory>(new EFStringLocalizerFactory(Configuration.GetConnectionString("StoreConnection")));
 
+            services.AddScoped<CacheFilterAttribute>();
             services.AddScoped<ITicketsService, TicketsService>();
             services.AddScoped<IOrdersService, OrdersService>();
             services.AddScoped<IEventsService, EventsService>();
@@ -130,6 +136,16 @@ namespace TicketsResale
                 var path = Path.Combine(AppContext.BaseDirectory, file);
                 c.IncludeXmlComments(path);
             });
+
+            services.AddMemoryCache();
+
+            services.AddAutoMapper(typeof(MappingProfile));
+
+            services.Scan(scan => scan
+                .FromAssemblyOf<BaseQuery>()
+                .AddClasses(c => c.AssignableTo(typeof(ISortingProvider<>)))
+                .AsImplementedInterfaces()
+                .WithScopedLifetime());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

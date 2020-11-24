@@ -589,55 +589,6 @@ namespace TicketsResale.Test
         }
 
         [Test]
-        public async Task GetEventWithTickets_CorrectEventIdProvided_CorrectResultReturned()
-        {
-            // Arrange
-            context = factory.CreateContextForSQLite();
-
-            await context.Users.AddRangeAsync(Users);
-            await context.EventCategories.AddRangeAsync(EventCategories);
-            await context.Cities.AddRangeAsync(Cities);
-            await context.Events.AddRangeAsync(Events);
-            await context.Tickets.AddRangeAsync(Tickets);
-            await context.Orders.AddRangeAsync(Orders);
-            await context.SaveChangesAsync();
-
-            var service = new EventsService(context);
-
-            // Act
-            var eventWithTicketsModel = await service.GetEventWithTickets(1);
-
-            // Assert
-            Assert.IsNotNull(eventWithTicketsModel);
-            Assert.IsNotNull(eventWithTicketsModel.eventTickets);
-        }
-
-        [Test]
-        public async Task GetEventWithTickets_IncorrectEventIdProvided_EmtyObjectReturned()
-        {
-            // Arrange
-            context = factory.CreateContextForSQLite();
-
-            await context.Users.AddRangeAsync(Users);
-            await context.EventCategories.AddRangeAsync(EventCategories);
-            await context.Cities.AddRangeAsync(Cities);
-            await context.Events.AddRangeAsync(Events);
-            await context.Tickets.AddRangeAsync(Tickets);
-            await context.Orders.AddRangeAsync(Orders);
-            await context.SaveChangesAsync();
-
-            var service = new EventsService(context);
-
-            // Act
-            var eventWithTicketsModel = await service.GetEventWithTickets(0);
-
-            // Assert
-            Assert.IsNotNull(eventWithTicketsModel);
-            Assert.IsNull(eventWithTicketsModel.Event);
-            Assert.IsNull(eventWithTicketsModel.eventTickets);
-        }
-
-        [Test]
         public async Task AddVenueToDb_CorrectAdding()
         {
             // Arrange
