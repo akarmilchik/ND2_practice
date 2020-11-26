@@ -26,35 +26,22 @@ namespace TicketsResale.Business.Models
         {
 
             ViewData["Title"] = localizer["eventstitle"];
+
+            var categories = await eventsService.GetEventsCategories();
             /*
-             var categories = await eventsService.GetEventsCategories();
-             var list = new SelectList(categories, "Id", "Name");
-             ViewBag.EventsCategories = list;
+            var events = await ;
 
-             //Events = await eventsService.GetEventsByCategoryId(categoryId),
-
-             var model = new EventsViewModel
-             {
-                 EventsCategories = categories,
-                 Events = await eventsService.GetEvents(),
-                 Venues = await venuesService.GetVenues(),
-                 Cities = await citiesService.GetCities(),
-             };
+            var model = new EventsViewModel
+            {
+                Tickets = tickets,
+                Events = await eventsService.GetEventsByTickets(tickets),
+                Users = await usersAndRolesService.GetUsers(),
+                ticketStatus = ticketStatus
+            };
             */
 
-            var categories = await eventsService.GetEventsCategories();
-            return View(categories);
-        }
-
-
-        public async Task<IActionResult> Index2()
-        {
-            ViewData["Title"] = localizer["eventstitle"];
-
-            var categories = await eventsService.GetEventsCategories();
 
             return View(categories);
         }
-
     }
 }
