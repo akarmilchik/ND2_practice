@@ -2,6 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+	  <MpaRoot>Client\</MpaRoot>
+	  <WWWRoot>wwwroot\</WWWRoot>
+	  <DefaultItemExcludes>$(DefaultItemExcludes);$(MpaRoot)node_modules\**</DefaultItemExcludes>
+	  <LangVersion>9</LangVersion>
   </PropertyGroup>
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -113,6 +117,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.10">
       <PrivateAssets>all</PrivateAssets>
@@ -195,5 +200,46 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>
+<!--
+  <ItemGroup>
+    <Folder Include="wwwroot\dist\" />
+  </ItemGroup>
 
+	<ItemGroup>-->
+		<!-- Don't publish the MPA source files, but do show them in the project files list -->
+	<!--<Content Remove="$(MpaRoot)**" />
+		<None Remove="$(MpaRoot)**" />
+		<None Include="$(MpaRoot)**" Exclude="$(MpaRoot)node_modules\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Remove="$(WWWRoot)\dist**" />
+		<None Remove="$(WWWRoot)\dist**" />
+		<None Include="$(WWWRoot)\dist**" Exclude="$(WWWRoot)dist\**" />
+	</ItemGroup>
+
+	<Target Name="NpmInstall" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And (!Exists('$(MpaRoot)node_modules')) ">-->
+		<!-- Ensure Node.js is installed -->
+	<!-- <Exec Command="node version" ContinueOnError="true">
+			<Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+		</Exec>
+		<Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+		<Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+		<Exec WorkingDirectory="$(MpaRoot)" Command="npm install" />
+	</Target>
+
+	<Target Name="NpmRunBuild" BeforeTargets="Build" DependsOnTargets="NpmInstall">
+		<Exec WorkingDirectory="$(MpaRoot)" Command="npm run build" />
+	</Target>
+
+	<Target Name="NpmClean" BeforeTargets="Clean">
+		<RemoveDir Directories="$(WWWRoot)dist\" />
+	</Target>-->
+<!--
+	<Target Name="NpmCssCopy" BeforeTargets="Clean" DependsOnTargets="NpmClean">
+		<Copy SourceFiles="$(WWWRoot)site.css" DestinationFolder="$(WWWRoot)dist/" />
+	</Target>
+	<Target Name="NpmCssMapCopy" BeforeTargets="Clean" DependsOnTargets="NpmCssCopy">
+		<Copy SourceFiles="$(WWWRoot)site.css.map" DestinationFolder="$(WWWRoot)dist/" />
+	</Target>-->
 </Project>

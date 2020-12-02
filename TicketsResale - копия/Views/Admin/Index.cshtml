@@ -1,0 +1,41 @@
+﻿<h1>Admin panel</h1>
+
+<div class="container">
+
+    <table class="table">
+        <thead>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <p>Here you can edit data of the site TicketsResale. <br />By clicking on the corresponding button you will be redirected to the data editing page.</p>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <div class="col-4">
+        <ul class="nav nav-tabs flex-column bg-dark">
+            <li class="nav-item">
+                <a class="nav-link text-light" asp-area="" asp-controller="Admin" asp-action="Cities" asp-route-page="1">
+                    Cities
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-light" asp-area="" asp-controller="Admin" asp-action="Venues">
+                    Venues
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-light" asp-area="" asp-controller="Admin" asp-action="Events">
+                    Events
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-light" asp-area="" asp-controller="Admin" asp-action="Users">
+                    Manage users rights
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

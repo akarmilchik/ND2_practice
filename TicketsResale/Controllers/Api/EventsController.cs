@@ -14,15 +14,11 @@ namespace TicketsResale.Controllers.Api
     public class EventsController : Controller
     {
         private readonly IEventsService eventsService;
-        private readonly IVenuesService venuesService;
-        private readonly ICitiesService citiesService;
         private readonly IMapper mapper;
 
-        public EventsController(IEventsService eventsService, IVenuesService venuesService, ICitiesService citiesService, IMapper mapper)
+        public EventsController(IEventsService eventsService, IMapper mapper)
         {
             this.eventsService = eventsService;
-            this.venuesService = venuesService;
-            this.citiesService = citiesService;
             this.mapper = mapper;
         }
 
@@ -36,6 +32,16 @@ namespace TicketsResale.Controllers.Api
             HttpContext.Response.Headers.Add("x-total-count", pagedResult.TotalCount.ToString());
 
             return Ok(mapper.Map<IEnumerable<EventResource>>(pagedResult.Items));
+        }
+
+        [HttpGet]
+        [Route("autosuggest")]
+        [ProducesResponseType(typeof(IEnumerable<EventResource>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetMatchedEvents([FromQuery] EventQuery query)
+        {
+            var matchedEvents = await eventsService.GetMatchedEvents(query, 10);
+
+            return Ok(new JsonResult(matchedEvents));
         }
     }
 }

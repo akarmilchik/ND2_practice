@@ -1,0 +1,17 @@
+﻿@model TicketsResale.Business.Models.City;
+
+@{
+    ViewData["Title"] = "Delete City";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1>Delete city</h1>
+<h4>Are you sure you want to delete city: @Html.DisplayFor(modelItem => Model.Name)?</h4>
+<div>
+    <hr />
+    <form asp-action="DeleteCity" asp-controller="Admin" asp-route-id="@Model.Id">
+        <div class="form-group">
+            <input type="submit" value="Delete" class="btn btn-danger" />
+            <input type="submit" value="Back" class="btn btn-primary" asp-action="Cities" />
+        </div>
+    </form>
+</div>

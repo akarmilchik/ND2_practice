@@ -61,7 +61,7 @@ html {
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
-    background-image: url(../img/body-flowers.jpg);
+    background-image: url(../img/body_flowers.jpg);
     background-repeat: repeat;
     background-size: contain;
 }

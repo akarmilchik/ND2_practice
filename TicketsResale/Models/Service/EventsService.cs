@@ -60,11 +60,31 @@ namespace TicketsResale.Models.Service
 
         public async Task<PagedResult<Event>> GetEventsQuery(EventQuery query)
         {
-            var queryable = context.Events.AsQueryable();
+            var queryable = context.Events.Include(e => e.Venue).ThenInclude(v => v.City).AsQueryable();
 
+            if (query.searchString != null)
+            {
+                queryable = queryable.Where(e => e.Name.Contains(query.searchString.Trim()));
+            }
             if (query.EventCategories != null)
             {
                 queryable = queryable.Where(e => query.EventCategories.Contains(e.EventCategoryId));
+            }
+            if (query.Cities != null)
+            {
+                queryable = queryable.Where(e => query.Cities.Contains(e.Venue.CityId));
+            }
+            if (query.Venues != null)
+            {
+                queryable = queryable.Where(e => query.Venues.Contains(e.VenueId));
+            }
+            if (query.DateFrom != null)
+            {
+                queryable = queryable.Where(e => e.Date >= query.DateFrom);
+            }
+            if (query.DateTo != null)
+            {
+                queryable = queryable.Where(e => e.Date <= query.DateTo);
             }
 
             var count = await queryable.CountAsync();
@@ -76,6 +96,24 @@ namespace TicketsResale.Models.Service
             var items = await queryable.ToListAsync();
 
             return new PagedResult<Event> { TotalCount = count, Items = items };
+        }
+
+        public async Task<IEnumerable<Event>> GetMatchedEvents(EventQuery query, int countOfRelevantResults)
+        {
+            var queryable = context.Events.Include(e => e.Venue).ThenInclude(v => v.City);
+
+            var matchedEvents = queryable.Where(e => e.Name.Contains(query.searchString.Trim()));
+            /*
+            matchedEvents = matchedEvents.Concat(queryable.Where(e => e.Venue.City.Name.Contains(query.searchString.Trim())));
+
+            matchedEvents = matchedEvents.Concat(queryable.Where(e => e.Venue.Name.Contains(query.searchString.Trim())));
+            */
+            if (matchedEvents.Count() > countOfRelevantResults)
+            {
+                matchedEvents = matchedEvents.Take(countOfRelevantResults);
+            }
+
+            return await matchedEvents.ToListAsync();
         }
 
         public async Task<List<EventCategory>> GetEventsCategories()

@@ -17,6 +17,7 @@ namespace TicketsResale.Models.Service
         Task<List<Event>> GetEventsByTickets(List<Ticket> tickets);
         Task<List<EventCategory>> GetEventsCategories();
         Task<PagedResult<Event>> GetEventsQuery(EventQuery query);
+        Task<IEnumerable<Event>> GetMatchedEvents(EventQuery query, int matchedEventsCount);
         Task RemoveEventFromDb(Event item);
         string SaveFileAndGetName(EventCreateViewModel @event);
         Task UpdEventToDb(Event item);

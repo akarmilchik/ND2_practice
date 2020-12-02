@@ -1,0 +1,76 @@
+﻿@model EventsViewModel
+
+@{
+    ViewData["Title"] = "Events";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1>Events</h1>
+<ul class="nav nav-tabs bg-dark">
+    <li class="nav-item">
+        <a class="nav-link text-light" asp-action="Index">
+            Back
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-light" asp-action="CreateEvent">
+            Create new
+        </a>
+    </li>
+</ul>
+<table class="table bg-dark text-light">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Events[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Events[0].Date)
+            </th>
+            <th>
+                Venue
+            </th>
+            <th> 
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Events[0].Description)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Events) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @item.Date.ToShortDateString()
+            </td>
+            <td>
+                @Model.Venues.Where(v => v.Id == item.VenueId).Select(v => v.Name).FirstOrDefault()
+            </td>
+            <td>
+                <img src="~/img/@item.Banner" alt="@item.Name" class="card-img-top img-fluid" />
+            </td>
+            <td>
+                @Html.Raw(item.Description)
+            </td>
+            <td>
+                <ul class="nav d-sm-flex float-right bg-dark text-center">
+                    <li class="nav-item bg-primary">
+                        <a class="nav-link text-light" asp-action="EditEvent" asp-route-id="@item.Id">
+                            Edit
+                        </a>
+                    </li>
+
+                    <li class="nav-item bg-danger">
+                        <a class="nav-link text-light" asp-action="DeleteEvent" asp-route-id="@item.Id">
+                            Delete
+                        </a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

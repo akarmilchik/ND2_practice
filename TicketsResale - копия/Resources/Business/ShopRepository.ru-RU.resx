@@ -1,0 +1,306 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="adrUser0" xml:space="preserve">
+    <value>Беларусь, г. Гродно, пр. Космонавтов, д. 15</value>
+  </data>
+  <data name="adrUser1" xml:space="preserve">
+    <value>Испания, г. Барселона, ав. Санлайт, 132/1</value>
+  </data>
+  <data name="adrUser2" xml:space="preserve">
+    <value>США, г. Нью Йорк, ав. 123, 6/1</value>
+  </data>
+  <data name="adrVen1" xml:space="preserve">
+    <value>ул. Фестивальная, д. 10</value>
+  </data>
+  <data name="adrVen10" xml:space="preserve">
+    <value>Торговый центр №2</value>
+  </data>
+  <data name="adrVen2" xml:space="preserve">
+    <value>пр. Независимости, 15</value>
+  </data>
+  <data name="adrVen3" xml:space="preserve">
+    <value>ул. Сурганова, 2Б</value>
+  </data>
+  <data name="adrVen4" xml:space="preserve">
+    <value>Карьер Де Ла Пау, Сан-Адриа-де-Бесос, 12</value>
+  </data>
+  <data name="adrVen5" xml:space="preserve">
+    <value>город Игулада</value>
+  </data>
+  <data name="adrVen6" xml:space="preserve">
+    <value>245 Запад, ул. 44</value>
+  </data>
+  <data name="adrVen7" xml:space="preserve">
+    <value>1260 пр. между 50-й и 51-й ул.</value>
+  </data>
+  <data name="adrVen8" xml:space="preserve">
+    <value>Префектура Кото 135-0048, Monzennakacho 2-1-8</value>
+  </data>
+  <data name="adrVen9" xml:space="preserve">
+    <value>префектура Тайто 111-0032, Асакуса  2-3-1 , Храм Асакуса</value>
+  </data>
+  <data name="Alexey" xml:space="preserve">
+    <value>Алексей</value>
+  </data>
+  <data name="Alibaba" xml:space="preserve">
+    <value>Алибаба</value>
+  </data>
+  <data name="BALLOON FESTIVAL" xml:space="preserve">
+    <value>Фестиваль воздушных шаров</value>
+  </data>
+  <data name="Barselona" xml:space="preserve">
+    <value>Барселона</value>
+  </data>
+  <data name="Bestseller" xml:space="preserve">
+    <value>Бестселлер</value>
+  </data>
+  <data name="Broadway Majestic Theatre" xml:space="preserve">
+    <value>Бродвейский Магический Театр</value>
+  </data>
+  <data name="Central botanical garden" xml:space="preserve">
+    <value>Центральный ботанический сад</value>
+  </data>
+  <data name="Color Fest 2020" xml:space="preserve">
+    <value>Фестиваль красок 2020</value>
+  </data>
+  <data name="confirmed" xml:space="preserve">
+    <value>Подтверждено</value>
+  </data>
+  <data name="desEv0" xml:space="preserve">
+    <value>&lt;strong&gt; Республиканский фестиваль национальных культур &lt;/strong&gt; - это праздник фольклорных красок разных народов, проживающих в &lt;em&gt; Беларуси &lt;/em&gt;. В фестивале участвуют представители &lt;strong&gt; 36 &lt;/strong&gt; национальностей, посещаемость фестиваля в &lt;strong&gt; 2018 &lt;/strong&gt; составила &lt;strong&gt; 270 &lt;/strong&gt; тысяч человек.</value>
+  </data>
+  <data name="desEv1" xml:space="preserve">
+    <value>Любимая танцевальная музыка, масса естественных ярких красок и веселые конкурсы - лишь часть того, что ждет гостей &lt;strong&gt; Фестиваля красок &lt;/strong&gt;. Здесь будет царить атмосфера счастья и беззаботности, тысячи улыбок ярких лиц и теплые объятия колоритных веселых ребят создадут непередаваемое чувство единства, которое захлестнет вашу голову!</value>
+  </data>
+  <data name="desEv2" xml:space="preserve">
+    <value>Программа &lt;strong&gt; Primavera Sound Festival &lt;/strong&gt; &lt;em&gt; (испанский + английский \ "Звуки весны \") &lt;/em&gt; в Барселоне обычно блистает самыми известными группами и музыкантами из &lt;ins&gt; всего мира. &lt;/ins&gt; Мероприятие проходит в конце мая или в конце июня и собирает около &lt;strong&gt; 100 000 &lt;/strong&gt; любителей музыки.</value>
+  </data>
+  <data name="desEv3" xml:space="preserve">
+    <value>Путешествуйте во времени и окажитесь на выходных в ... &lt;strong&gt; Древней Греции &lt;/strong&gt;? Легко! &lt;ins&gt; 14-15 сентября &lt;/ins&gt; &lt;strong&gt; Центральный ботанический сад &lt;/strong&gt; превратится в маленькую Элладу. Вас ждет настоящее погружение в страну древних богов, колыбель наук, культуры и искусства.</value>
+  </data>
+  <data name="desEv4" xml:space="preserve">
+    <value>С 11 по 14 июля в городе &lt;strong&gt; Игуалада &lt;/strong&gt;, в часе езды от Барселоны, пройдет фестиваль воздушных шаров. Полет на воздушном шаре - это романтично и красиво, а когда рядом в небе около двадцати ярких воздушных шаров, это завораживает. Кроме того, фестиваль Игуалада считается крупнейшим в &lt;em&gt; Европе &lt;/em&gt;.</value>
+  </data>
+  <data name="desEv5" xml:space="preserve">
+    <value>Основанный на романе ужасов &lt;mark&gt; 1910 &lt;/mark&gt; &lt;strong&gt; Гастона Леру &lt;/strong&gt;, снятом по бесчисленному количеству фильмов, &lt;strong&gt; Призрак Оперы &lt;/strong&gt; следует за уродливым композитором, который преследует Большой Парижский оперный театр. Укрытый от внешнего мира в подземной пещере, одинокий романтик преподает и сочиняет оперы для &lt;em&gt; Кристин &lt;/em&gt;, великолепной молодой будущей звезды сопрано. По мере того, как звезда &lt;em&gt; Кристины &lt;/em&gt; поднимается и на сцену выходит красивый жених из ее прошлого, Призрак сходит с ума, терроризируя владельцев оперного театра и компанию своими убийственными методами. И все же &lt;em&gt; Кристин &lt;/em&gt; тянется к загадочному человеку.</value>
+  </data>
+  <data name="desEv6" xml:space="preserve">
+    <value>Мало что является таким символом &lt;strong&gt; Нью-Йорка &lt;/strong&gt; или курортного сезона, как &lt;strong&gt; The Rockettes &lt;/strong&gt;, танцевальная компания, которая выступает в &lt;em&gt; Radio City Music Hall &lt;/em&gt;. в Манхэттене с &lt;mark&gt; 1932 &lt;/mark&gt;. Наиболее известен своими потрясающими движениями ногами, в которых десятки танцоров, кажется, движутся как один в идеальном унисон, а также своим восхитительным ежегодным праздничным мероприятием &lt;strong&gt; The Radio City Christmas Spectacular &lt;/strong&gt; - The Rockettes ' Смесь современного танца и классического балета понравилась миллионам и миллионам людей, отчасти благодаря гастрольной труппе труппы, которая развлекает театры по всей стране.</value>
+  </data>
+  <data name="desEv7" xml:space="preserve">
+    <value>&lt;strong&gt; Ежегодная сакура-мацури в Фукагаве &lt;/strong&gt; проходит вдоль реки &lt;em&gt; Оойокогава &lt;/em&gt;, которая, казалось бы, бесконечна, и тропа полностью цветет сакуры. Из всех фестивалей сакуры, которые может предложить &lt;strong&gt; Токио &lt;/strong&gt;, это единственное место, где вы можете полюбоваться красивыми пейзажами снизу, путешествуя на лодках в японском стиле. Пара исполнителей на сямисэне также будет путешествовать на борту, исполняя «Синнаи-нагаси», традиционную японскую мелодию, которая перенесет вас в период Эдо (1603-1868).</value>
+  </data>
+  <data name="desEv8" xml:space="preserve">
+    <value>&lt;strong&gt; Фестиваль Санджа &lt;/strong&gt; (&lt;em&gt; 三 社 祭, Санджа Мацури &lt;/em&gt;) - это ежегодный фестиваль в районе &lt;strong&gt; Асакуса &lt;/strong&gt;, который обычно проходит в третьи полные выходные мая. . Он проводится в честь трех основателей храма Сэнсодзи, которые хранятся в храме Асакуса по соседству с храмом. Почти два миллиона человек посещают Асакуса за три дня фестиваля, что делает его одним из самых популярных фестивалей в Токио.</value>
+  </data>
+  <data name="desEv9" xml:space="preserve">
+    <value>&lt;strong&gt; World Village Dubai &lt;/strong&gt; будет включать в себя &lt;mark&gt; 78 &lt;/mark&gt; стран. С новыми дополнениями - Азербайджаном и Кореей, место обещает быть слишком веселым! В странах будет 26 павильонов, в которых будут представлены кухни, шоу и продукты со всего мира.</value>
+  </data>
+  <data name="Dubai" xml:space="preserve">
+    <value>Дубай</value>
+  </data>
+  <data name="Dubai world trade center" xml:space="preserve">
+    <value>Всемирный торговый центр Дубая</value>
+  </data>
+  <data name="Edo Fukagawa Sakura Festival" xml:space="preserve">
+    <value>Фестиваль сакуры Эдо Фукагава</value>
+  </data>
+  <data name="Festival of national cultures 2021" xml:space="preserve">
+    <value>Фестиваль национальных культур 2021</value>
+  </data>
+  <data name="Fukagawa Sakura" xml:space="preserve">
+    <value>Фукагава Сакура</value>
+  </data>
+  <data name="Global village" xml:space="preserve">
+    <value>Мировая деревня</value>
+  </data>
+  <data name="Global village 25th season" xml:space="preserve">
+    <value>Мировая деревня сезон 25</value>
+  </data>
+  <data name="Grodno" xml:space="preserve">
+    <value>Гродно</value>
+  </data>
+  <data name="Igulada" xml:space="preserve">
+    <value>Игулада</value>
+  </data>
+  <data name="Independense sq." xml:space="preserve">
+    <value>площадь Независимости</value>
+  </data>
+  <data name="Jominez" xml:space="preserve">
+    <value>Джоминез</value>
+  </data>
+  <data name="Magic garden. Festival of Music and Theater" xml:space="preserve">
+    <value>Волшебный сад. Фестиваль музыки и театра</value>
+  </data>
+  <data name="Maxwell" xml:space="preserve">
+    <value>Максвелл</value>
+  </data>
+  <data name="Minsk" xml:space="preserve">
+    <value>Минск</value>
+  </data>
+  <data name="New York" xml:space="preserve">
+    <value>Нью Йорк</value>
+  </data>
+  <data name="Park Forum" xml:space="preserve">
+    <value>парк Форум</value>
+  </data>
+  <data name="Primavera Sound Barselona" xml:space="preserve">
+    <value>Звуки Primavera Барселона</value>
+  </data>
+  <data name="Pyshki forest park" xml:space="preserve">
+    <value>лесопарк Пышки</value>
+  </data>
+  <data name="Radio city Rockettes" xml:space="preserve">
+    <value>Радио Сити Рокеттес</value>
+  </data>
+  <data name="rejected" xml:space="preserve">
+    <value>Отклонено</value>
+  </data>
+  <data name="Robinson" xml:space="preserve">
+    <value>Робинсон</value>
+  </data>
+  <data name="ROCKETTES CHRISTMAS SPECTACULAR 2021" xml:space="preserve">
+    <value>Рождественский спектакль ROCKETTES 2021</value>
+  </data>
+  <data name="Sanja Matsuri" xml:space="preserve">
+    <value>Санджа Мацури</value>
+  </data>
+  <data name="Sanja Matsuri Festival" xml:space="preserve">
+    <value>Фестиваль Санджа Мацури</value>
+  </data>
+  <data name="selling" xml:space="preserve">
+    <value>На продаже</value>
+  </data>
+  <data name="sold" xml:space="preserve">
+    <value>Продано</value>
+  </data>
+  <data name="Sovetskaya sq." xml:space="preserve">
+    <value>пл. Советская</value>
+  </data>
+  <data name="The Phantom of the Opera" xml:space="preserve">
+    <value>Призрак оперы</value>
+  </data>
+  <data name="Tokyo" xml:space="preserve">
+    <value>Токио</value>
+  </data>
+  <data name="waiting" xml:space="preserve">
+    <value>Ожидание</value>
+  </data>
+</root>
