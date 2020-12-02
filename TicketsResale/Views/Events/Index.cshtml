@@ -19,12 +19,6 @@
                     <option value="@category.Id">@category.Name</option>
                 }
             </select>
-            <select id="cat2" multiple class="selectpicker">
-                @foreach (var cate in Model.EventsCategories)
-                {
-                    <option value="@cate.Id">@cate.Name</option>
-                }
-            </select>
         </li>
         <li class="nav-item" style="padding-right: 15px">
             @localizer["City"]
