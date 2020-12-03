@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TicketsResale.Business.Models;
 
 namespace TicketsResale.Models
@@ -9,5 +10,13 @@ namespace TicketsResale.Models
         public List<Event> Events { get; set; }
         public List<City> Cities { get; set; }
         public List<Venue> Venues { get; set; }
+        public string searchString { get; set; }
+        public DateTime? DateFrom { get; set; }
+        public DateTime? DateTo { get; set; }
+        public string SearchString { get; set; }
+        public SortParams SortBy { get; set; }
+        public SortOrder SortOrder { get; set; }
+        public int PageSize { get; set; }
+        
     }
 }

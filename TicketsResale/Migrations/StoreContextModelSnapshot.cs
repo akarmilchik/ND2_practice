@@ -15,7 +15,7 @@ namespace TicketsResale.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.9")
+                .HasAnnotation("ProductVersion", "3.1.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -204,7 +204,7 @@ namespace TicketsResale.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("VenueId")
                         .HasColumnType("int");
@@ -212,6 +212,8 @@ namespace TicketsResale.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("EventCategoryId");
+
+                    b.HasIndex("Name");
 
                     b.HasIndex("VenueId");
 
@@ -466,13 +468,13 @@ namespace TicketsResale.Migrations
             modelBuilder.Entity("TicketsResale.Business.Models.Event", b =>
                 {
                     b.HasOne("TicketsResale.Business.Models.EventCategory", "EventCategory")
-                        .WithMany()
+                        .WithMany("Events")
                         .HasForeignKey("EventCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TicketsResale.Business.Models.Venue", "Venue")
-                        .WithMany("Events")
+                        .WithMany()
                         .HasForeignKey("VenueId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -514,7 +516,7 @@ namespace TicketsResale.Migrations
             modelBuilder.Entity("TicketsResale.Business.Models.Venue", b =>
                 {
                     b.HasOne("TicketsResale.Business.Models.City", "City")
-                        .WithMany("Venues")
+                        .WithMany()
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

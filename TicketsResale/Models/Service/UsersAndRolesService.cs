@@ -102,6 +102,11 @@ namespace TicketsResale.Models
             return await context.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
         }
 
+        public async Task<List<StoreUser>> GetUsersByListOfId(List<string> userIds)
+        {
+            return await context.Users.Where(u => userIds.Contains(u.Id)).ToListAsync();
+        }
+
         public async Task<StoreUser> GetUserByUserName(string userName)
         {
             return await context.Users.Where(u => u.UserName == userName).FirstOrDefaultAsync();

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,18 +42,21 @@ namespace TicketsResale.Controllers
             return View("Index");
         }
 
-        public async Task<IActionResult> Cities(int page, int pageSize = 5)
+        public IActionResult Cities(int page, int pageSize = 5)
         {
+            IEnumerable<City> cities;
+
             ViewData["Title"] = localizer["Cities"];
 
-            var cities = await citiesService.GetCities(page, pageSize);
+            cities = citiesService.GetCitiesQuery().Skip(pageSize * (page - 1)).Take(pageSize);
+
             var pages = citiesService.GetCitiesPages(pageSize);
 
             ViewBag.Pages = pages;
             ViewBag.CurrentPage = page;
             ViewBag.NearPages = citiesService.GetNearPages(pages, page);
 
-            return View("Cities", cities);
+            return View("Cities", cities.ToList());
         }
 
         public async Task<IActionResult> Events()

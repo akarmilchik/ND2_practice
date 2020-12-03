@@ -1,46 +1,92 @@
-﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
-@model EventsViewModel
+﻿@model EventsViewModel
+@using TicketsResale.Business.Models;
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+
+@{ object options = new
+    {
+        eventTicketsUrl = Url.Action("GetEventTickets", "Tickets"),
+    };
+}
 
 <h1>@localizer["Events"]</h1>
-
-<div class="container-fluid">
-
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-            @localizer["Categories"]
-            <select asp-for="@Model.EventsCategories[0].Id" class="form-control" asp-items="@ViewBag.EventsCategories"></select>
-            @Html.ActionLink(@localizer["Submit"].Value, "Index", "Events", new { eventId = 1 }, new { @class = "btn btn-primary" })
+<li class="container-fluid">
+    <ul class="nav nav-pills">
+        <li class="nav-item" style="padding-right: 15px">
+            @localizer["Category"]
+            <select id="category" multiple class="selectpicker">
+                @foreach (var category in Model.EventsCategories)
+                {
+                    <option value="@category.Id">@category.Name</option>
+                }
+            </select>
         </li>
-        <li class="nav-item">
-            <ul class="nav nav-tabs bg-dark">
-                <li class="nav-item">
-                    <a class="nav-link text-light" asp-action="CreateTicket" asp-controller="Tickets">
-                        Create new ticket
-                    </a>
-                </li>
-            </ul>
+        <li class="nav-item" style="padding-right: 15px">
+            @localizer["City"]
+            <select id="city" multiple class="selectpicker">
+                @foreach (var city in Model.Cities)
+                {
+                    <option value="@city.Id">@city.Name</option>
+                }
+            </select>
+        </li>
+        <li class="nav-item" style="padding-right: 15px">
+            @localizer["Venue"]
+            <select id="venue" multiple class="selectpicker">
+            </select>
         </li>
     </ul>
-    <p> </p>
-    <div class="row row-cols-2">
-        @foreach (var eventObj in Model.Events)
-        {
-            <div class="col-sm-6">
-                <div class="card text-center">
-                    <img src="~/img/@eventObj.Banner" alt="@eventObj.Name" class="card-img-top img-fluid" />
-                    <div class="card-body">
-                        <h4><strong>@eventObj.Name</strong></h4>
-                        <h4><strong>@Model.Cities.Where(c => c.Id == Model.Venues.Where(p => p.Id == eventObj.VenueId).Select(p => p.CityId).FirstOrDefault()).Select(c => c.Name).FirstOrDefault()</strong></h4>
-                        <h4>@localizer["Venue"]: @Model.Venues.Where(p => p.Id == eventObj.VenueId).Select(p => p.Name).FirstOrDefault()</h4>
-                        <p><strong>@eventObj.Date.ToShortDateString()</strong></p>
-                        <p class="text-justify">@Html.Raw(@eventObj.Description)</p>
-                        @Html.ActionLink(localizer["Buy ticket"].Value, "GetEventTickets", "Tickets", new { eventId = eventObj.Id }, new { @class = "btn btn-primary" })
-                    </div>
-                </div>
+    <ul class="nav nav-pills">
+        <li class="nav-item" style="padding-right: 15px">
+            <label>@localizer["DateFrom"]</label>
+            @Html.TextBoxFor(Model => Model.DateFrom, new { type = "date", id = "dateFrom", @class = "form-control d-inline" })
+        </li>
+        <li class="nav-item" style="padding-right: 15px">
+            <label>@localizer["DateTo"]</label>
+            @Html.TextBoxFor(Model => Model.DateTo, new { type = "date", id = "dateTo", @class = "form-control d-inline" })
+        </li>
+        <li class="nav-item" style="padding-right: 15px">
+            <label>@localizer["SortBy"]</label>
+            <select id="sortBy" class="form-control d-inline" asp-items="Html.GetEnumSelectList<SortParams>()"></select>
+        </li>
+        <li class="nav-item" style="padding-right: 15px">
+            <label>@localizer["SortOrder"]</label>
+            <select id="sortOrder" class="form-control d-inline" asp-items="Html.GetEnumSelectList<SortOrder>()"></select>
+        </li>
+    </ul>
+    <ul class="nav nav-pills">
+        <li class="nav-item" style="padding-right: 15px">
+            <label>@localizer["PageSize"]</label>
+            @Html.DropDownListFor(Model => Model.PageSize, new SelectList(PagesSizes.Sizes), new { id = "pageSize", @class = "form-control d-inline" })
+        </li>
+        <li class="nav-item" style="padding-top: 30px; padding-right: 15px">
+            <a class="nav-item nav-link active bg-light text-dark" asp-action="CreateTicket" asp-controller="Tickets">
+                Create ticket
+            </a>
+        </li>
+        <li>
+            <div class="searchBoxForm" style="padding-top: 35px">
+                @Html.TextBoxFor(Model => Model.searchString, new { @class = "searchBox", @id = "autosuggest" }) <input value="@localizer["Search"]" id="search" class="searchBoxSubmit" type="submit">
             </div>
-
-        }
+        </li>
+    </ul>
+    <p></p>
+    <div id="eventItems" class="row row-cols-2">
     </div>
-</div>
+    <p></p>
+    <div class="d-flex justify-content-center">
+        <nav aria-label="...">
+
+            <ul class="pagination">
+            </ul>
+        </nav>
+    </div>
+
+@section Scripts
+{
+    <script>
+        const options = @Html.Raw(Json.Serialize(@options));
+    </script>
+    <script src="dist/event.entry.js" type="module" defer></script>
+}
 
 

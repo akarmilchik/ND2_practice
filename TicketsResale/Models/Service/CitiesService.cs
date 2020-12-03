@@ -35,6 +35,14 @@ namespace TicketsResale.Models.Service
             return needCities;
         }
 
+
+        public IQueryable<City> GetCitiesQuery()
+        {
+            var needCities = context.Cities.OrderBy(c => c.Name);
+
+            return needCities;
+        }
+
         public List<int> GetCitiesPages(int pageSize)
         { 
             var countCities = context.Cities.Count();

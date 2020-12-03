@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Localization;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TicketsResale.Business.Models;
@@ -33,11 +34,34 @@ namespace TicketsResale.Controllers
 
         public async Task<IActionResult> GetEventTickets(int eventId)
         {
+            EventTicketsViewModel model;
+
+            Dictionary<Event, List<Ticket>> dic = new Dictionary<Event, List<Ticket>>();
+
             ViewData["Title"] = localizer["ticketsTitle"];
 
-            var eventTickets = await eventsService.GetEventWithTickets(eventId);
+            var @event = await eventsService.GetEventById(eventId);
 
-            return View("EventTickets", eventTickets);
+            var eventTickets = await ticketsService.GetTicketsByEventId(eventId);
+            var eventVenue = await venuesService.GetVenueById(@event.VenueId);
+            var eventCity = await citiesService.GetCityById(eventVenue.CityId);
+
+            var sellersIdsByEvent = eventTickets.AsEnumerable().Select(et => et.SellerId).ToList();
+
+            var sellersOfTicketsByEvent = await usersAndRolesService.GetUsersByListOfId(sellersIdsByEvent);
+
+            dic.Add(@event, eventTickets);
+
+            model = new EventTicketsViewModel
+            {
+                eventTickets = dic,   
+                Venue = eventVenue,
+                City = eventCity,
+                Sellers = sellersOfTicketsByEvent
+            };
+
+
+            return View("EventTickets", model);
         }
 
 
