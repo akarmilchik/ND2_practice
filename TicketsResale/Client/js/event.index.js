@@ -96,24 +96,30 @@ $(document).ready(function () {
         getEvents();
     });
 
-    $("#autosuggest").autoComplete({
-        resolver: "custom",
-        events: {
-            search: function (searchString, response) {
-                $.ajax({
-                    url: "api/v1/events/autosuggest",
-                    data: { filtersEvent, searchString: searchString },
-                    traditional: true,
-                    success: function (data, xhr) {
-                        const suggestedData = data.value.map(item => {
-                            return { value: item.name, text: item.name };
-                        });
-                        response(suggestedData);
-                    }
-                });
-            }
-        }
+    $('#autosuggest').autoComplete({
+        resolverSettings: {
+            url: 'api/v1/events/autosuggest',
+        },
     });
+
+    // $("#autosuggest").autoComplete({
+    //     resolver: "custom",
+    //     events: {
+    //         search: function (searchString, response) {
+    //             $.ajax({
+    //                 url: "api/v1/events/autosuggest",
+    //                 data: { filtersEvent, searchString: searchString },
+    //                 traditional: true,
+    //                 success: function (data, xhr) {
+    //                     const suggestedData = data.value.map(item => {
+    //                         return { value: item.name, text: item.name };
+    //                     });
+    //                     response(suggestedData);
+    //                 }
+    //             });
+    //         }
+    //     }
+    // });
 });
 
 

@@ -37,11 +37,11 @@ namespace TicketsResale.Controllers.Api
         [HttpGet]
         [Route("autosuggest")]
         [ProducesResponseType(typeof(IEnumerable<EventResource>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetMatchedEvents([FromQuery] EventQuery query)
+        public async Task<IActionResult> GetMatchedEvents(string q)
         {
-            var matchedEvents = await eventsService.GetMatchedEvents(query, 10);
+            var matchedEvents = await eventsService.GetMatchedEvents(q, 10);
 
-            return Ok(new JsonResult(matchedEvents));
+            return Ok(matchedEvents);
         }
     }
 }

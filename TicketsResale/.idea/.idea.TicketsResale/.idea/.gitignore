@@ -1,0 +1,13 @@
+﻿# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/modules.xml
+/contentModel.xml
+/projectSettingsUpdater.xml
+/.idea.TicketsResale.iml
+# Datasource local storage ignored files
+/../../../../../../../../../:\dev\academy\!Repos\Кармильчик Алексей\TicketsResale\.idea\.idea.TicketsResale\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/

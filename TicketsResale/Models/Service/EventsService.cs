@@ -98,20 +98,20 @@ namespace TicketsResale.Models.Service
             return new PagedResult<Event> { TotalCount = count, Items = items };
         }
 
-        public async Task<IEnumerable<Event>> GetMatchedEvents(EventQuery query, int countOfRelevantResults)
+        public async Task<IEnumerable<string>> GetMatchedEvents(string q, int countOfRelevantResults)
         {
-            var queryable = context.Events.Include(e => e.Venue).ThenInclude(v => v.City);
+            var queryable = context.Events.AsQueryable();
 
-            var matchedEvents = queryable.Where(e => e.Name.Contains(query.searchString.Trim()));
+            var matchedEvents = queryable
+                .Where(e => e.Name.Contains(q.Trim().ToLower()))
+                .OrderBy(e => e.Name)
+                .Select(e => e.Name)
+                .Take(countOfRelevantResults);
             /*
             matchedEvents = matchedEvents.Concat(queryable.Where(e => e.Venue.City.Name.Contains(query.searchString.Trim())));
 
             matchedEvents = matchedEvents.Concat(queryable.Where(e => e.Venue.Name.Contains(query.searchString.Trim())));
             */
-            if (matchedEvents.Count() > countOfRelevantResults)
-            {
-                matchedEvents = matchedEvents.Take(countOfRelevantResults);
-            }
 
             return await matchedEvents.ToListAsync();
         }
