@@ -25,7 +25,7 @@ namespace TicketsResale.Context
 
             modelBuilder.Entity<City>().ToTable("Cities");
             modelBuilder.Entity<EventCategory>().ToTable("EventCategories");
-            modelBuilder.Entity<Event>().ToTable("Events");
+            modelBuilder.Entity<Event>().ToTable("Events").HasIndex(e => e.Name);
             modelBuilder.Entity<Ticket>().ToTable("Tickets");
             modelBuilder.Entity<Venue>().ToTable("Venues");
             modelBuilder.Entity<Order>().ToTable("Orders");
