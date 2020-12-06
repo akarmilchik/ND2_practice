@@ -48,6 +48,9 @@ namespace TicketsResale.Controllers
 
             ViewData["Title"] = localizer["Cities"];
 
+            if (page < 1)
+                page = 1;
+
             cities = citiesService.GetCitiesQuery().Skip(pageSize * (page - 1)).Take(pageSize);
 
             var pages = citiesService.GetCitiesPages(pageSize);
@@ -208,12 +211,12 @@ namespace TicketsResale.Controllers
 
         public async Task<IActionResult> DeleteEvent(int id)
         {
-            var @event = await eventsService.GetEventById(id);
-            var venueName = venuesService.GetVenueNameById(@event.VenueId);
+            var @event = await eventsService.GetEventWithVenueById(id);
+            //var venueName = venuesService.GetVenueNameById(@event.VenueId);
 
             if (@event != null)
             {
-                ViewBag.VenueName = venueName;
+                ViewBag.VenueName = @event.Venue.Name;
                 return View(@event);
             }
            

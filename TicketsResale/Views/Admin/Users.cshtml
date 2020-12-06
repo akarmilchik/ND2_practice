@@ -1,14 +1,15 @@
 ﻿@model UsersViewModel
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 
 @{
     ViewData["Title"] = "Events";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>Users</h2>
+<h2>@localizer["Users"]</h2>
 <ul class="nav nav-tabs bg-dark">
     <li class="nav-item">
         <a class="nav-link text-light" asp-action="Index">
-            Back
+            @localizer["Back"]
         </a>
     </li>
 </ul>
@@ -16,10 +17,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Users[0].UserName)
+                @localizer["Name"]
             </th>
             <th>
-                Role
+                @localizer["Role"]
             </th>
             <th></th>
         </tr>
@@ -38,7 +39,7 @@
                     <ul class="nav d-sm-flex float-right bg-dark text-center">
                         <li class="nav-item bg-primary">
                             <a class="nav-link text-light" asp-action="EditUser" asp-controller="Admin" asp-route-id="@item.Id">
-                                Edit
+                                @localizer["Edit"]
                             </a>
                         </li>
                     </ul>

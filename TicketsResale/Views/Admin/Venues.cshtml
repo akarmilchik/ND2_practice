@@ -1,19 +1,21 @@
 ﻿@model VenuesViewModel
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 
 @{
     ViewData["Title"] = "Venues";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h1>Venues</h1>
+<h1>
+    @localizer["Venues"]</h1>
 <ul class="nav nav-tabs bg-dark">
     <li class="nav-item">
         <a class="nav-link text-light" asp-action="Index">
-            Back
+            @localizer["Back"]
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link text-light" asp-action="CreateVenue">
-            Create new
+            @localizer["Create"]
         </a>
     </li>
 </ul>
@@ -21,44 +23,45 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Venues[0].Name)
+                @localizer["Name"]
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Venues[0].Address)
+                @localizer["Address"]
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Venues[0].City)
+                @localizer["City"]
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Venues) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Model.Cities.Where(c => c.Id == item.CityId).Select(c => c.Name).FirstOrDefault()
-            </td>
-            <td>
-                <ul class="nav d-sm-flex float-right bg-dark text-center">
-                    <li class="nav-item bg-primary">
-                        <a class="nav-link text-light" asp-action="EditVenue"  asp-route-id="@item.Id">
-                            Edit
-                        </a>
-                    </li>
-                    <li class="nav-item bg-danger">
-                        <a class="nav-link text-light" asp-action="DeleteVenue"  asp-route-id="@item.Id">
-                            Delete
-                        </a>
-                    </li>
-                </ul>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Venues)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Model.Cities.Where(c => c.Id == item.CityId).Select(c => c.Name).FirstOrDefault()
+                </td>
+                <td>
+                    <ul class="nav d-sm-flex float-right bg-dark text-center">
+                        <li class="nav-item bg-primary">
+                            <a class="nav-link text-light" asp-action="EditVenue" asp-route-id="@item.Id">
+                                @localizer["Edit"]
+                            </a>
+                        </li>
+                        <li class="nav-item bg-danger">
+                            <a class="nav-link text-light" asp-action="DeleteVenue" asp-route-id="@item.Id">
+                                @localizer["Delete"]
+                            </a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
