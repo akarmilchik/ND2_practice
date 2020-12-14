@@ -1,0 +1,12 @@
+﻿.item label {
+    display: flex;
+    width: 70px;
+}
+
+.item label span {
+    flex-grow: 1;
+}
+
+.item label input {
+    margin: auto 0;
+}

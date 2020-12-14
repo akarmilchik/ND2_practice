@@ -6,10 +6,10 @@ import Navigation from '../Navigation/Navigation'
 const Header = () => {
     return (
         <div className={style.header}>
-          <Logo />
-          <Navigation />
-      </div>
+            <Logo />
+            <Navigation />
+        </div>
     );
-}
+};
 
 export default Header;

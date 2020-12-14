@@ -2,8 +2,6 @@ import React from 'react';
 import style from './MyOrders.module.css'
 
 const MyOrders = () => {
-   
-
     return (
         <>
             <div className={`${style.item} ${style.odd}`}>

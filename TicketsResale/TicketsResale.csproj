@@ -3,8 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
 	  <MpaRoot>Client\</MpaRoot>
+     <SpaRoot>ClientApp\</SpaRoot>
 	  <WWWRoot>wwwroot\</WWWRoot>
-	  <DefaultItemExcludes>$(DefaultItemExcludes);$(MpaRoot)node_modules\**</DefaultItemExcludes>
+	  <DefaultItemExcludes>$(DefaultItemExcludes);$(MpaRoot)node_modules\**;$(SpaRoot)node_modules\**</DefaultItemExcludes>
 	  <LangVersion>9</LangVersion>
   </PropertyGroup>
 	<PropertyGroup>
@@ -13,19 +14,15 @@
 	</PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ClientApp\**" />
     <Compile Remove="Context\Ado\**" />
     <Compile Remove="Views\Roles\**" />
     <Compile Remove="Views\User\**" />
-    <Content Remove="ClientApp\**" />
     <Content Remove="Context\Ado\**" />
     <Content Remove="Views\Roles\**" />
     <Content Remove="Views\User\**" />
-    <EmbeddedResource Remove="ClientApp\**" />
     <EmbeddedResource Remove="Context\Ado\**" />
     <EmbeddedResource Remove="Views\Roles\**" />
     <EmbeddedResource Remove="Views\User\**" />
-    <None Remove="ClientApp\**" />
     <None Remove="Context\Ado\**" />
     <None Remove="Views\Roles\**" />
     <None Remove="Views\User\**" />
@@ -102,6 +99,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\components\Category\Category.module.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="ClientApp\src\components\Category\Category.module.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Client\css\site.css" />
     <Content Include="Client\js\site.js" />
   </ItemGroup>
@@ -111,11 +116,14 @@
     <PackageReference Include="FluentValidation.AspNetCore" Version="9.3.0-preview3" />
     <PackageReference Include="FontAwesome" Version="4.7.0" />
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="3.1.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.10" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Xml" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.10" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.10" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -130,6 +138,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.10" />
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="3.1.10" />
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="3.1.10" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.10" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.10" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="RazorEngine" Version="3.10.0" />
