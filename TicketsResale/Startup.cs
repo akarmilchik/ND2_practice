@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -13,13 +12,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Localization;
 using Microsoft.Net.Http.Headers;
 using System;
-using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Text.Json.Serialization;
 using TicketsResale.Business.Models;
 using TicketsResale.Context;
-using TicketsResale.Filters;
 using TicketsResale.Mapper;
 using TicketsResale.Models;
 using TicketsResale.Models.Service;
@@ -50,7 +47,6 @@ namespace TicketsResale
                 .AddXmlDataContractSerializerFormatters()
                 .AddMvcOptions(opts =>
                 {
-                    opts.Filters.Add(typeof(CacheFilterAttribute));
                     opts.FormatterMappings.SetMediaTypeMappingForFormat("csv", new MediaTypeHeaderValue("text/csv"));
                 })
                 .AddJsonOptions(opts => opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()))
@@ -59,7 +55,6 @@ namespace TicketsResale
             services.AddTransient<IStringLocalizer, EFStringLocalizer>();
             services.AddSingleton<IStringLocalizerFactory>(new EFStringLocalizerFactory(Configuration.GetConnectionString("StoreConnection")));
 
-            services.AddScoped<CacheFilterAttribute>();
             services.AddScoped<ITicketsService, TicketsService>();
             services.AddScoped<IOrdersService, OrdersService>();
             services.AddScoped<IEventsService, EventsService>();

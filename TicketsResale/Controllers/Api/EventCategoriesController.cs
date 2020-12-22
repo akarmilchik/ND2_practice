@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using TicketsResale.Business.Models;
 using TicketsResale.Context;
-using TicketsResale.Filters;
-using TicketsResale.Models.Service;
 
 namespace TicketsResale.Controllers.Api
 {
@@ -31,12 +29,10 @@ namespace TicketsResale.Controllers.Api
         /// <returns>List of EventCategory</returns>
         /// 
         [HttpGet]
-        //[ServiceFilter(typeof(CacheFilterAttribute))]
-       // [ProducesResponseType(typeof(ICollection<EventCategory>), StatusCodes.Status200OK)]
         [Produces("application/json", "application/xml", "text/csv")]
-        public async Task<IEnumerable<EventCategory>> GetCategories()
+        public async Task<IActionResult> GetCategories()
         { 
-            return await context.EventCategories.ToListAsync();
+            return Ok(await context.EventCategories.ToListAsync());
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
-﻿import React from 'react';
-import style from "./Category.module.css";
+﻿// eslint-disable-next-line
+import React from 'react';
+import style from "../Categories/Categories.module.css";
 
 
 const Category = (props) => {
@@ -10,10 +11,15 @@ const Category = (props) => {
     return (
         <div className={style.item}>
             <label>
-                <span>{s.name}</span>
-                <input type="checkbox" onChange={handleChange} />
+                <span>{props.name}</span>
+                <input 
+                type="checkbox" 
+                onChange={handleChange}
+                checked={props.selected} 
+                />
             </label>
-        </div>);
+        </div>
+    );
 };
 
 export default Category;

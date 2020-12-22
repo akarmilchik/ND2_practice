@@ -1,6 +1,6 @@
-﻿.item label {
+.item label {
     display: flex;
-    width: 70px;
+    width: 80px;
 }
 
 .item label span {

@@ -1,21 +1,40 @@
-﻿import React from "react";
-import style from "./Categories.module.css";
+import React from "react";
+import Category from '../Category/Category';
 
-
-const Categories = (props) => {
-    const items = props.categories.map((category) => {
+class Categories extends React.Component {
+    createItems = () => {
+      const { categories, selectedCategories, onCategoryChange } = this.props;
+  
+      return categories.map((category) => {
+        const selected = selectedCategories.indexOf(category.id) >= 0;
         return (
-            <Category id={category.id} name={category.name} onCategoryChange={ props.onCategoryChange} />
-    });
-
-    return (
+          <Category
+            id={category.id}
+            name={category.name}
+            onCategoryChange={onCategoryChange}
+            selected={selected}
+          />
+        );
+      });
+    };
+  
+    handleClear = () => {
+      const { clearSelectedCategories } = this.props;
+      clearSelectedCategories();
+    };
+  
+    render() {
+      return (
         <div>
-            <div>
-                <span>Clear</span>
-            </div>
-            {items}
+          <div>
+            <button className=".clear" onClick={this.handleClear}>
+              Clear
+            </button>
+          </div>
+          {this.createItems()}
         </div>
-    );
-};
+      );
+    }
+  }
 
 export default Categories;

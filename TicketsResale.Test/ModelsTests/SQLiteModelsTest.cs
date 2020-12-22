@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using NUnit.Framework;
-using TicketsResale.Business.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+using TicketsResale.Business.Models;
 using TicketsResale.Context;
 
 namespace TicketsResale.Test
@@ -21,8 +20,8 @@ namespace TicketsResale.Test
         private List<Venue> Venues;
         private List<EventCategory> EventCategories;
         private List<Event> Events;
-        private List<Ticket> Tickets;
         private List<Order> Orders;
+        private List<Ticket> Tickets;
         private Venue VenueWithoutRelations;
         private Venue VenueWithCityId;
         private Venue VenueWithCity;

@@ -11,16 +11,14 @@ namespace TicketsResale.Controllers
     [Authorize]
     public class OrdersController : Controller
     {
-        private readonly IOrdersService ticketsCartService;
         private readonly ITicketsService ticketsService;
         private readonly IEventsService eventsService;
         private readonly IUsersAndRolesService usersAndRolesService;
         private readonly IOrdersService ordersService;
         private readonly IStringLocalizer<OrdersController> localizer;
 
-        public OrdersController(IOrdersService ticketsCartService, ITicketsService ticketsService, IEventsService eventsService, IUsersAndRolesService usersAndRolesService, IOrdersService ordersService, IStringLocalizer<OrdersController> localizer)
+        public OrdersController(ITicketsService ticketsService, IEventsService eventsService, IUsersAndRolesService usersAndRolesService, IOrdersService ordersService, IStringLocalizer<OrdersController> localizer)
         {
-            this.ticketsCartService = ticketsCartService;
             this.ticketsService = ticketsService;
             this.eventsService = eventsService;
             this.usersAndRolesService = usersAndRolesService;
