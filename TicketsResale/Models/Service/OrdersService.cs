@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TicketsResale.Business.Models;
 using TicketsResale.Context;
+using TicketsResale.Controllers.Api.Models.Requests;
 
 namespace TicketsResale.Models.Service
 {
@@ -73,7 +74,6 @@ namespace TicketsResale.Models.Service
             }
             await context.SaveChangesAsync();
         }
-
 
     }
 }

@@ -6,13 +6,22 @@
     </div>
     <ul class="nav nav-tabs justify-content-center">
         <li class="nav-item bg-dark text-light">
-            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-ticketStatus="1" asp-route-userName="@User.Identity.Name">Selling</a>
+            @if (Model.ticketStatus == TicketsResale.Business.Models.TicketStatuses.selling)
+            { <a class="nav-link bg-primary text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-ticketStatus="1" asp-route-userName="@User.Identity.Name">@localizer["Selling"]</a>}
+            else
+            { <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-ticketStatus="1" asp-route-userName="@User.Identity.Name">@localizer["Selling"]</a>}
         </li>
         <li class="nav-item bg-dark text-light">
-            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-ticketStatus="2" asp-route-userName="@User.Identity.Name">Waiting Confirmation</a>
+            @if (Model.ticketStatus == TicketsResale.Business.Models.TicketStatuses.waiting)
+            { <a class="nav-link bg-primary text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-ticketStatus="2" asp-route-userName="@User.Identity.Name">@localizer["Waiting Confirmation"]</a> }
+            else 
+            { <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-ticketStatus="2" asp-route-userName="@User.Identity.Name">@localizer["Waiting Confirmation"]</a>}
         </li>
         <li class="nav-item bg-dark text-light">
-            <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-ticketStatus="3" asp-route-userName="@User.Identity.Name">Sold</a>
+            @if (Model.ticketStatus == TicketsResale.Business.Models.TicketStatuses.sold)
+            {<a class="nav-link bg-primary text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-ticketStatus="3" asp-route-userName="@User.Identity.Name">@localizer["Sold"]</a>}
+            else
+            { <a class="nav-link bg-dark text-light" asp-area="" asp-controller="Tickets" asp-action="MyTickets" asp-route-ticketStatus="3" asp-route-userName="@User.Identity.Name">@localizer["Sold"]</a>}
         </li>
     </ul>
 </header>
@@ -21,7 +30,7 @@
 
     <li class="nav-item">
         <a class="nav-link text-light" asp-action="CreateTicket">
-            Add ticket
+            @localizer["Create ticket"]
         </a>
     </li>
 </ul>
@@ -31,16 +40,16 @@
             <th>
             </th>
             <th>
-                Name
+                @localizer["Name"]
             </th>
             <th>
-                Date
+                @localizer["Date"]
             </th>
             <th>
-                Price
+                @localizer["Price"]
             </th>
             <th>
-                Seller
+                @localizer["Seller"]
             </th>
             <th></th>
         </tr>
@@ -70,7 +79,7 @@
                         <ul class="nav flex-column bg-dark">
                             <li class="nav-item bg-primary">
                                 <a class="nav-link text-light" asp-action="ConfirmTicket" asp-controller="Tickets" asp-route-id="@ticket.Id">
-                                    Confirm | Reject
+                                    @localizer["Confirm"] | @localizer["Reject"]
                                 </a>
                             </li>
                         </ul>

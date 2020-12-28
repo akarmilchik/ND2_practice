@@ -9,7 +9,7 @@ namespace TicketsResale.Business.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<Resource> Resources { get; set; }
+        public IEnumerable<Resource> Resources { get; set; }
         public Culture()
         {
             Resources = new List<Resource>();

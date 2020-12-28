@@ -6,10 +6,10 @@ namespace TicketsResale.Models
 {
     public class EventsViewModel
     {
-        public List<EventCategory> EventsCategories { get; set; }
-        public List<Event> Events { get; set; }
-        public List<City> Cities { get; set; }
-        public List<Venue> Venues { get; set; }
+        public IEnumerable<EventCategory> EventsCategories { get; set; }
+        public IEnumerable<Event> Events { get; set; }
+        public IEnumerable<City> Cities { get; set; }
+        public IEnumerable<Venue> Venues { get; set; }
         public string searchString { get; set; }
         public DateTime? DateFrom { get; set; }
         public DateTime? DateTo { get; set; }

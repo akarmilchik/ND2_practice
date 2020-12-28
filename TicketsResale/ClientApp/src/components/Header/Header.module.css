@@ -1,0 +1,14 @@
+.header {
+    background: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%)
+}
+
+.header{
+    margin-bottom: 3px;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    align-items: center;
+}
+
+
+
+    

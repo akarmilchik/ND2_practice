@@ -36,19 +36,19 @@
         </li>
     </ul>
     <ul class="nav nav-pills">
-        <li class="nav-item" style="padding-right: 15px">
+        <li class="nav-item" style="padding-right: 35px">
             <label>@localizer["DateFrom"]</label>
             @Html.TextBoxFor(Model => Model.DateFrom, new { type = "date", id = "dateFrom", @class = "form-control d-inline" })
         </li>
-        <li class="nav-item" style="padding-right: 15px">
+        <li class="nav-item" style="padding-right: 35px">
             <label>@localizer["DateTo"]</label>
             @Html.TextBoxFor(Model => Model.DateTo, new { type = "date", id = "dateTo", @class = "form-control d-inline" })
         </li>
-        <li class="nav-item" style="padding-right: 15px">
+        <li class="nav-item" style="padding-right: 33px">
             <label>@localizer["SortBy"]</label>
             <select id="sortBy" class="form-control d-inline" asp-items="Html.GetEnumSelectList<SortParams>()"></select>
         </li>
-        <li class="nav-item" style="padding-right: 15px">
+        <li class="nav-item">
             <label>@localizer["SortOrder"]</label>
             <select id="sortOrder" class="form-control d-inline" asp-items="Html.GetEnumSelectList<SortOrder>()"></select>
         </li>
@@ -58,13 +58,14 @@
             <label>@localizer["PageSize"]</label>
             @Html.DropDownListFor(Model => Model.PageSize, new SelectList(PagesSizes.Sizes), new { id = "pageSize", @class = "form-control d-inline" })
         </li>
-        <li class="nav-item" style="padding-top: 30px; padding-right: 15px">
-            <a class="nav-item nav-link active bg-light text-dark" asp-action="CreateTicket" asp-controller="Tickets">
+        <li class="nav-item" style="padding-top: 30px">
+            <a class="nav-item nav-link active bg-dark text-light" asp-action="CreateTicket" asp-controller="Tickets">
                 Create ticket
             </a>
         </li>
+        <li class="col-sm"></li>
         <li>
-            <div class="searchBoxForm" style="padding-top: 35px">
+            <div class="searchBoxForm" style="padding-top: 35px; padding-left: 29px">
                 @Html.TextBoxFor(Model => Model.searchString, new { @class = "searchBox", @id = "autosuggest" }) <input value="@localizer["Search"]" id="search" class="searchBoxSubmit" type="submit">
             </div>
         </li>

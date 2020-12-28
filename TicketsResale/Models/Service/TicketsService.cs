@@ -76,7 +76,6 @@ namespace TicketsResale.Models.Service
             return AllTickets;
         }
 
-
         public async Task<List<Ticket>> GetTicketsByEventId(int eventId)
         {
             var AllTickets = new List<Ticket>();

@@ -8,10 +8,8 @@ namespace TicketsResale.Context
     {
         public StoreContext(DbContextOptions<StoreContext> options) : base(options)
         {  }
-
         public DbSet<Culture> Cultures { get; set; }
         public DbSet<Resource> Resources { get; set; }
-
         public DbSet<City> Cities { get; set; }
         public DbSet<EventCategory> EventCategories { get; set; }
         public DbSet<Event> Events { get; set; }

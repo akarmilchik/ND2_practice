@@ -148,6 +148,11 @@ namespace TicketsResale.Models.Service
             return await context.Events.FindAsync(id);
         }
 
+        public async Task<Event> GetEventWithVenueById(int id)
+        {
+            return await context.Events.Include(e => e.Venue).Where(e => e.Id == id).FirstOrDefaultAsync();
+        }
+
 
         public async Task<IEnumerable<EventCategory>> GetEventCategoriesWithEvents()
         {

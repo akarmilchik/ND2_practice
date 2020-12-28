@@ -1,0 +1,16 @@
+.even{
+    grid-area: categories;
+    padding: 10px;
+    background: linear-gradient(62deg,#E0C3FC 0%,  #8EC5FC 100%);
+}
+
+.odd {
+    grid-area: filters;
+    padding: 10px;
+    background: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
+}
+
+.item {
+   padding: 10px;
+   margin-bottom: 3px;
+}
